@@ -4,8 +4,8 @@
     <description>OutSystems' cordova geolocation plugin</description>
     <author>OutSystems Inc</author>
 
-    <js-module name="OSFilePlugin" src="dist/plugin.js">
-        <clobbers target="cordova.plugins.OSFilePlugin" />
+    <js-module name="FilePlugin" src="dist/plugin.js">
+        <clobbers target="cordova.plugins.FilePlugin" />
     </js-module>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">

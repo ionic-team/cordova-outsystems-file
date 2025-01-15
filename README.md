@@ -6,7 +6,7 @@
 <h3 align="center"> cordova-outsystems-file</h3>
 
   <p align="center">
-    OutSystems' Cordova Plugin for Geolocation.
+    OutSystems' Cordova Plugin for File Management.
     <br />
     <a href="https://github.com/ionic-team/repo_name">🔌 Capacitor Plugin</a>
     ·

@@ -473,7 +473,7 @@ export interface CopyResult {
   uri: string;
 }
 
-export interface FilesystemPlugin {
+export interface IFilePlugin {
   /**
    * Read a file from disk
    *

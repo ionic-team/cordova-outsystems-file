@@ -33,4 +33,19 @@ cordova plugin add <path-to-repo-local-clone>
 
 <docgen-index>
 
+* [`readFile(...)`](#readfile)
+* [`writeFile(...)`](#writefile)
+* [`appendFile(...)`](#appendfile)
+* [`deleteFile(...)`](#deletefile)
+* [`mkdir(...)`](#mkdir)
+* [`rmdir(...)`](#rmdir)
+* [`readdir(...)`](#readdir)
+* [`getUri(...)`](#geturi)
+* [`stat(...)`](#stat)
+* [`rename(...)`](#rename)
+* [`copy(...)`](#copy)
+* [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
+* [Enums](#enums)
+
 </docgen-index>

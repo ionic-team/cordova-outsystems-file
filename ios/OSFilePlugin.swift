@@ -6,8 +6,8 @@ final class OSFilePlugin: CDVPlugin {
         //Empty for now
     }
 
-    @objc(ping:)
-    func ping(command: CDVInvokedUrlCommand) {
+    @objc(readFile:)
+    func readFile(command: CDVInvokedUrlCommand) {
         guard
             let argumentsModel: OSFileInputArgumentsSimpleModel = self.createModel(for: command.argument(at: 0))
         else {

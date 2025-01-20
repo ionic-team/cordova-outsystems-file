@@ -1,0 +1,115 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)
+// swift-module-flags: -target arm64-apple-ios14.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name OSFilesystemLib
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum OSFILEItemType : Swift.Encodable {
+  case directory
+  case file
+  public static func == (a: OSFilesystemLib.OSFILEItemType, b: OSFilesystemLib.OSFILEItemType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct OSFILEItemAttributeModel {
+  public var creationDateTimestamp: Swift.Double {
+    get
+  }
+  public var modificationDateTimestamp: Swift.Double {
+    get
+  }
+  public var size: Swift.UInt64 {
+    get
+  }
+  public var type: OSFilesystemLib.OSFILEItemType {
+    get
+  }
+}
+extension OSFilesystemLib.OSFILEItemAttributeModel {
+  public static func create(from attributeDictionary: [Foundation.FileAttributeKey : Any]) -> OSFilesystemLib.OSFILEItemAttributeModel
+}
+public protocol OSFILEDirectoryManager {
+  func createDirectory(atURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
+  func removeDirectory(atURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
+  func listDirectory(atURL: Foundation.URL) throws -> [Foundation.URL]
+}
+public protocol OSFILEFileManager {
+  func readFile(atURL: Foundation.URL, withEncoding: OSFilesystemLib.OSFILEEncoding) throws -> Swift.String
+  func getFileURL(atPath: Swift.String, withSearchPath: OSFilesystemLib.OSFILESearchPath) throws -> Foundation.URL
+  func deleteFile(atURL: Foundation.URL) throws
+  func saveFile(atURL: Foundation.URL, withEncodingAndData: OSFilesystemLib.OSFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws -> Foundation.URL
+  func appendData(_ data: OSFilesystemLib.OSFILEEncodingValueMapper, atURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
+  func getItemAttributes(atPath: Swift.String) throws -> OSFilesystemLib.OSFILEItemAttributeModel
+  func renameItem(fromURL: Foundation.URL, toURL: Foundation.URL) throws
+  func copyItem(fromURL: Foundation.URL, toURL: Foundation.URL) throws
+}
+public enum OSFILEEncoding {
+  case byteBuffer
+  case string(encoding: OSFilesystemLib.OSFILEStringEncoding)
+}
+public enum OSFILEEncodingValueMapper {
+  case byteBuffer(value: Foundation.Data)
+  case string(encoding: OSFilesystemLib.OSFILEStringEncoding, value: Swift.String)
+}
+public enum OSFILEStringEncoding {
+  case ascii
+  case utf8
+  case utf16
+  public static func == (a: OSFilesystemLib.OSFILEStringEncoding, b: OSFilesystemLib.OSFILEStringEncoding) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum OSFILESearchPath {
+  case directory(type: OSFilesystemLib.OSFILEDirectoryType)
+  case raw
+}
+public enum OSFILEDirectoryType {
+  case cache
+  case document
+  case library
+  case notSyncedLibrary
+  case temporary
+  public static func == (a: OSFilesystemLib.OSFILEDirectoryType, b: OSFilesystemLib.OSFILEDirectoryType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct OSFILEManager {
+  public init(fileManager: Foundation.FileManager = .default)
+}
+extension OSFilesystemLib.OSFILEManager : OSFilesystemLib.OSFILEDirectoryManager {
+  public func createDirectory(atURL pathURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
+  public func removeDirectory(atURL pathURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
+  public func listDirectory(atURL pathURL: Foundation.URL) throws -> [Foundation.URL]
+}
+extension OSFilesystemLib.OSFILEManager : OSFilesystemLib.OSFILEFileManager {
+  public func readFile(atURL fileURL: Foundation.URL, withEncoding encoding: OSFilesystemLib.OSFILEEncoding) throws -> Swift.String
+  public func getFileURL(atPath path: Swift.String, withSearchPath searchPath: OSFilesystemLib.OSFILESearchPath) throws -> Foundation.URL
+  public func deleteFile(atURL url: Foundation.URL) throws
+  @discardableResult
+  public func saveFile(atURL fileURL: Foundation.URL, withEncodingAndData encodingMapper: OSFilesystemLib.OSFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws -> Foundation.URL
+  public func appendData(_ encodingMapper: OSFilesystemLib.OSFILEEncodingValueMapper, atURL url: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
+  public func getItemAttributes(atPath path: Swift.String) throws -> OSFilesystemLib.OSFILEItemAttributeModel
+  public func renameItem(fromURL originURL: Foundation.URL, toURL destinationURL: Foundation.URL) throws
+  public func copyItem(fromURL originURL: Foundation.URL, toURL destinationURL: Foundation.URL) throws
+}
+extension Foundation.URL {
+  public var urlPath: Swift.String {
+    get
+  }
+}
+extension OSFilesystemLib.OSFILEItemType : Swift.Equatable {}
+extension OSFilesystemLib.OSFILEItemType : Swift.Hashable {}
+extension OSFilesystemLib.OSFILEStringEncoding : Swift.Equatable {}
+extension OSFilesystemLib.OSFILEStringEncoding : Swift.Hashable {}
+extension OSFilesystemLib.OSFILEDirectoryType : Swift.Equatable {}
+extension OSFilesystemLib.OSFILEDirectoryType : Swift.Hashable {}

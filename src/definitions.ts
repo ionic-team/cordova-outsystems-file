@@ -68,6 +68,33 @@ export enum Directory {
    * @since 1.0.0
    */
   ExternalStorage = 'EXTERNAL_STORAGE',
+
+  /**
+   * The external cache directory.
+   * Android ONly
+   * On Android it's the primary shared/external cache.
+   * It's not accesible on Android 10 unless the app enables legacy External Storage
+   * by adding `android:requestLegacyExternalStorage="true"` in the `application` tag
+   * in the `AndroidManifest.xml`.
+   * It's not accesible on Android 11 or newer.
+   *
+   * @since 1.0.0
+   */
+  ExternalCache = 'EXTERNAL_CACHE',
+
+  /**
+   * iOS only
+   *
+   * @since 1.0.0
+   */
+  LibraryNoCloud = 'LIBRARY_NO_CLOUD',
+
+  /**
+  * iOS only
+  *
+  * @since 1.0.0
+  */
+  Temporary = 'TEMPORARY',
 }
 
 export enum Encoding {

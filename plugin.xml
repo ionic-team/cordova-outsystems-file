@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.outsystems.plugins.file" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<widget id="com.outsystems.plugins.filesystem" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>OSGeolocationPlugin</name>
     <description>OutSystems' cordova geolocation plugin</description>
     <author>OutSystems Inc</author>
 
     <js-module name="FilePlugin" src="dist/plugin.js">
-        <clobbers target="cordova.plugins.FilePlugin" />
+        <clobbers target="cordova.plugins.Filesystem" />
     </js-module>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
@@ -28,7 +28,7 @@
     </platform>
    <platform name="ios">
         <config-file parent="/*" target="config.xml">
-            <feature name="OSGeolocation">
+            <feature name="OSFilePlugin">
                 <param name="ios-package" value="OSFilePlugin" />
             </feature>
             <preference name="SwiftVersion" value="5" />

@@ -68,7 +68,7 @@ export class FilePluginWeb implements IFilePlugin {
 
     return new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-      request.onupgradeneeded = FilesystemWeb.doUpgrade;
+      request.onupgradeneeded = FilePluginWeb.doUpgrade;
       request.onsuccess = () => {
         this._db = request.result;
         resolve(request.result);

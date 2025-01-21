@@ -1,4 +1,4 @@
-import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, IFilePlugin, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../src/definitions";
+import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../src/definitions";
 import { FilePluginWeb } from "../../src/web";
 
 class OSFilePlugin {
@@ -17,7 +17,7 @@ class OSFilePlugin {
         }
 
         // @ts-ignore
-        CapacitorUtils.Synapse.File.readFile(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
     }
     writeFile(success: (result: WriteFileResult) => void, error: (err: PluginError) => void, options: WriteFileOptions): void {
         // @ts-ignore
@@ -28,7 +28,7 @@ class OSFilePlugin {
         }
 
         // @ts-ignore
-        CapacitorUtils.Synapse.File.writeFile(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
     }
     appendFile(success: () => void, error: (err: PluginError) => void, options: AppendFileOptions): void {
         // @ts-ignore
@@ -38,7 +38,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.appendFile(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options)
     }
     deleteFile(success: () => void, error: (err: PluginError) => void, options: DeleteFileOptions): void {
         // @ts-ignore
@@ -48,7 +48,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.deleteFile(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
     }
     mkdir(success: () => void, error: (err: PluginError) => void, options: MkdirOptions): void {
         // @ts-ignore
@@ -58,7 +58,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.mkdir(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options)
     }
     rmdir(success: () => void, error: (err: PluginError) => void, options: RmdirOptions): void {
         // @ts-ignore
@@ -68,7 +68,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.rmdir(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
     }
     readdir(success: (res: ReaddirResult) => void, error: (err: PluginError) => void, options: ReaddirOptions): void {
         // @ts-ignore
@@ -78,7 +78,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.readdir(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.readdir(success, error, options)
     }
     getUri(success: (res: GetUriResult) => void, error: (err: PluginError) => void, options: GetUriOptions): void {
         // @ts-ignore
@@ -88,7 +88,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.getUri(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.getUri(success, error, options)
     }
     stat(success: (res: StatResult) => void, error: (err: PluginError) => void, options: StatOptions): void {
         // @ts-ignore
@@ -98,7 +98,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.stat(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.stat(success, error, options)
     }
     rename(success: () => void, error: (err: PluginError) => void, options: RenameOptions): void {
         // @ts-ignore
@@ -108,7 +108,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.rename(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.rename(success, error, options)
     }
 
     copy(success: (res: CopyResult) => void, error: (err: PluginError) => void, options: CopyOptions): void {
@@ -119,7 +119,7 @@ class OSFilePlugin {
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.copy(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.copy(success, error, options)
     }
 
 }

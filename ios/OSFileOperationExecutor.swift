@@ -1,13 +1,13 @@
 import Foundation
 import OSFilesystemLib
 
-typealias PluginResultData = [String: Any]
-
-struct FilesystemOperationExecutor {
+struct OSFileOperationExecutor {
     let service: FileService
     let commandDelegate: CDVCommandDelegate
 
-    func execute(_ operation: FilesystemOperation, _ command: CDVInvokedUrlCommand) {
+    func execute(_ operation: OSFileOperation, _ command: CDVInvokedUrlCommand) {
+        let status: PluginStatus
+
         do {
             var resultData: PluginResultData?
 
@@ -41,25 +41,27 @@ struct FilesystemOperationExecutor {
                 resultData = [Constants.ResultDataKey.uri: destination.absoluteString]
             }
 
-            commandDelegate.handleSuccess(command, data: resultData)
+            status = .success(resultData)
         } catch {
-            commandDelegate.handleError(command, error: mapError(error, for: operation))
+            status = .failure(mapError(error, for: operation))
         }
+
+        commandDelegate.handle(command, status: status)
     }
 
-    private func mapError(_ error: Error, for operation: FilesystemOperation) -> OSFileError {
+    private func mapError(_ error: Error, for operation: OSFileOperation) -> OSFileError {
         return switch operation {
-        case .read: .readFileFailed(error)
-        case .write: .saveFileFailed(error)
-        case .append: .appendFileFailed(error)
-        case .delete: .deleteFileFailed(error)
-        case .mkdir: .createDirectoryFailed(error)
-        case .rmdir: .removeDirectoryFailed(error)
-        case .readdir: .readDirectoryFailed(error)
-        case .stat: .readFileAttributesFailed(error)
+        case .read: .operationFailed(method: .readFile, error)
+        case .write: .operationFailed(method: .writeFile, error)
+        case .append: .operationFailed(method: .appendFile, error)
+        case .delete: .operationFailed(method: .deleteFile, error)
+        case .mkdir: .operationFailed(method: .mkdir, error)
+        case .rmdir: .operationFailed(method: .rmdir, error)
+        case .readdir: .operationFailed(method: .readdir, error)
+        case .stat: .operationFailed(method: .stat, error)
         case .getUri: .invalidPath("")
-        case .rename: .renameFileFailed(error)
-        case .copy: .copyFileFailed(error)
+        case .rename: .operationFailed(method: .rename, error)
+        case .copy: .operationFailed(method: .copy, error)
         }
     }
 

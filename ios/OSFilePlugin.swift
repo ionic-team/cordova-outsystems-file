@@ -17,137 +17,168 @@ final class OSFilePlugin: CDVPlugin {
 
 // MARK: - Public API Methods
 private extension OSFilePlugin {
+    @objc(readFile:)
+    func readFile(command: CDVInvokedUrlCommand) {
+        guard let options: OSReadFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readFile)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .read(url: $0, encoding: options.encoding)
+        }
+    }
+
+    @objc(writeFile:)
+    func writeFile(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathRecursiveEncodingMapperFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .writeFile)))
+        }
+
+        guard let encodingMapper = options.encodingMapper else {
+            return commandDelegate.handle(command, status: .failure(.operationFailed(method: .writeFile, nil)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .write(url: $0, encodingMapper: encodingMapper, recursive: options.recursive)
+        }
+    }
+
+    @objc(appendFile:)
+    func appendFile(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathRecursiveEncodingMapperFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .appendFile)))
+        }
+
+        guard let encodingMapper = options.encodingMapper else {
+            return commandDelegate.handle(command, status: .failure(.operationFailed(method: .appendFile, nil)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .append(url: $0, encodingMapper: encodingMapper, recursive: options.recursive)
+        }
+    }
+
+    @objc(deleteFile:)
+    func deleteFile(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .deleteFile)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .delete(url: $0)
+        }
+    }
+
     @objc(mkdir:)
     func mkdir(command: CDVInvokedUrlCommand) {
-        guard let options: OSFileMkdirOptions = command.createModel()
+        guard let options: OSSinglePathRecursiveFileOptions = command.createModel()
         else {
-            return commandDelegate.handleError(command, error: .inputArgumentsIssue(target: .mkdir))
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .mkdir)))
         }
 
         performSinglePathOperation(command, options) {
             .mkdir(url: $0, recursive: options.recursive)
         }
     }
-}
 
-extension CDVCommandDelegate {
-    func handleError(_ command: CDVInvokedUrlCommand, error: OSFileError) {
-        let pluginResult = CDVPluginResult(status: .error, messageAs: error.toDictionary())
-        send(pluginResult, callbackId: command.callbackId)
+    @objc(rmdir:)
+    func rmdir(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathRecursiveFileOptions = command.createModel()
+        else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .rmdir)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .rmdir(url: $0, recursive: options.recursive)
+        }
     }
 
-    func handleSuccess(_ command: CDVInvokedUrlCommand, data: PluginResultData?) {
-        let pluginResult = CDVPluginResult(status: .ok, messageAs: data)
-        send(pluginResult, callbackId: command.callbackId)
-    }
-}
+    @objc(readdir:)
+    func readdir(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readdir)))
+        }
 
-class OSSinglePathFileOptions: Decodable {
-    let path: String
-    let directory: OSFILESearchPath
-
-    enum CodingKeys: CodingKey {
-        case path
-        case directory
+        performSinglePathOperation(command, options) {
+            .readdir(url: $0)
+        }
     }
 
-    init(path: String, directory: OSFILESearchPath) {
-        self.path = path
-        self.directory = directory
+    @objc(stat:)
+    func stat(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .stat)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .stat(url: $0)
+        }
     }
 
-    required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+    @objc(getUri:)
+    func getUri(command: CDVInvokedUrlCommand) {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .getUri)))
+        }
 
-        path = try container.decode(String.self, forKey: .path)
-        let directoryText = try container.decode(String.self, forKey: .directory)
-        directory = .create(from: directoryText, withDefaultSearchPath: .raw, andDefaultDirectoryType: .document)
-    }
-}
-
-class OSDualPathFileOptions: Decodable {
-    let from: OSSinglePathFileOptions
-    let to: OSSinglePathFileOptions
-
-    enum CodingKeys: CodingKey {
-        case from
-        case directory
-
-        case to
-        case toDirectory
+        performSinglePathOperation(command, options) {
+            .getUri(url: $0)
+        }
     }
 
-    required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+    @objc(rename:)
+    func rename(command: CDVInvokedUrlCommand) {
+        guard let options: OSDualPathFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .rename)))
+        }
 
-        let fromPath = try container.decode(String.self, forKey: .from)
-        let fromDirectoryText = try container.decode(String.self, forKey: .directory)
-        let fromDirectory = OSFILESearchPath.create(from: fromDirectoryText, withDefaultSearchPath: .raw, andDefaultDirectoryType: .document)
-        from = .init(path: fromPath, directory: fromDirectory)
-
-        let toPath = try container.decode(String.self, forKey: .to)
-        let toDirectoryText = try container.decode(String.self, forKey: .toDirectory)
-        let toDirectory = OSFILESearchPath.create(from: toDirectoryText, withDefaultSearchPath: fromDirectory)
-        to = .init(path: toPath, directory: toDirectory)
-    }
-}
-
-class OSFileMkdirOptions: OSSinglePathFileOptions {
-    let recursive: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case recursive
+        performDualPathOperation(command, options) {
+            .rename(source: $0, destination: $1)
+        }
     }
 
-    required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+    @objc(copy:)
+    func copy(command: CDVInvokedUrlCommand) {
+        guard let options: OSDualPathFileOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .copy)))
+        }
 
-        recursive = try container.decodeIfPresent(Bool.self, forKey: .recursive) ?? false
-
-        try super.init(from: decoder)
-    }
-}
-
-extension CDVInvokedUrlCommand {
-    func createModel<T: Decodable>() -> T? {
-        guard let argumentsDictionary = argument(at: 0) as? [String: Any],
-              let argumentsData = try? JSONSerialization.data(withJSONObject: argumentsDictionary),
-              let argumentsModel = try? JSONDecoder().decode(T.self, from: argumentsData)
-        else { return nil }
-        return argumentsModel
+        performDualPathOperation(command, options) {
+            .copy(source: $0, destination: $1)
+        }
     }
 }
 
 // MARK: - Operation Execution
 private extension OSFilePlugin {
-    func performSinglePathOperation(_ command: CDVInvokedUrlCommand, _ options: OSSinglePathFileOptions, operationBuilder: (URL) -> FilesystemOperation) {
+    func performSinglePathOperation(_ command: CDVInvokedUrlCommand, _ options: OSSinglePathFileOptions, operationBuilder: (URL) -> OSFileOperation) {
         executeOperation(command) { service in
-            FilesystemLocationResolver(service: service)
+            OSFileLocationResolver(service: service)
                 .resolveSinglePath(from: options)
                 .map { operationBuilder($0) }
         }
     }
 
-    func performDualPathOperation(_ command: CDVInvokedUrlCommand, _ options: OSDualPathFileOptions, operationBuilder: (URL, URL) -> FilesystemOperation) {
+    func performDualPathOperation(_ command: CDVInvokedUrlCommand, _ options: OSDualPathFileOptions, operationBuilder: (URL, URL) -> OSFileOperation) {
         executeOperation(command) { service in
-            FilesystemLocationResolver(service: service)
+            OSFileLocationResolver(service: service)
                 .resolveDualPaths(from: options)
                 .map { operationBuilder($0.source, $0.destination) }
         }
     }
 
-    func executeOperation(_ command: CDVInvokedUrlCommand, operationProvider: (FileService) -> Result<FilesystemOperation, OSFileError>) {
+    func executeOperation(_ command: CDVInvokedUrlCommand, operationProvider: (FileService) -> Result<OSFileOperation, OSFileError>) {
         switch getService() {
         case .success(let service):
             switch operationProvider(service) {
             case .success(let operation):
-                let executor = FilesystemOperationExecutor(service: service, commandDelegate: commandDelegate)
+                let executor = OSFileOperationExecutor(service: service, commandDelegate: commandDelegate)
                 executor.execute(operation, command)
             case .failure(let error):
-                commandDelegate.handleError(command, error: error)
+                commandDelegate.handle(command, status: .failure(error))
             }
         case .failure(let error):
-            commandDelegate.handleError(command, error: error)
+            commandDelegate.handle(command, status: .failure(error))
         }
     }
 }

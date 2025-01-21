@@ -34,13 +34,16 @@
             <preference name="SwiftVersion" value="5" />
         </config-file>
 
+        <source-file src="ios/CordovaStructures+Extensions.swift" />
+        <source-file src="ios/OSDualPathFileOptions.swift" />
+        <source-file src="ios/OSFileConstants.swift" />
+        <source-file src="ios/OSFileError.swift" />
+        <source-file src="ios/OSFileLocationResolver.swift" />
+        <source-file src="ios/OSFileOperation.swift" />     
+        <source-file src="ios/OSFileOperationExecutor.swift" />
         <source-file src="ios/OSFilePlugin.swift" />
-        <source-file src="ios/FilesystemConstants.swift" />
-        <source-file src="ios/FilesystemLocationResolver.swift" />
-        <source-file src="ios/FilesystemOperation.swift" />
-        <source-file src="ios/FilesystemOperationResolver.swift" />
-        <source-file src="ios/OSFileError.swift" />     
         <source-file src="ios/OSFILEStructures+Converters.swift" />
+        <source-file src="ios/OSSinglePathFileOptions.swift" />
     
         <framework src="ios/OSFilesystemLib.xcframework" embed="true" custom="true" />
 

@@ -1,7 +1,7 @@
 import Foundation
 import OSFilesystemLib
 
-struct FilesystemLocationResolver {
+struct OSFileLocationResolver {
     let service: FileService
 
     func resolveSinglePath(from options: OSSinglePathFileOptions) -> Result<URL, OSFileError> {

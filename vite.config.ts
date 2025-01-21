@@ -9,7 +9,7 @@ export default defineConfig({
     target: 'es2020',
     lib: {
       entry: './src/index.ts',
-      name: 'OSGeolocation',
+      name: 'OSFilePlugin',
       fileName: (format) => `plugin.${format === 'es' ? 'mjs' : format === 'cjs' ? 'cjs' : 'js'}`,
       formats: ['es', 'cjs', 'umd'],
     },

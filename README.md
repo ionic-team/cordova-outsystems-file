@@ -6,7 +6,7 @@
 <h3 align="center"> cordova-outsystems-file</h3>
 
   <p align="center">
-    OutSystems' Cordova Plugin for Geolocation.
+    OutSystems' Cordova Plugin for File Management.
     <br />
     <a href="https://github.com/ionic-team/repo_name">🔌 Capacitor Plugin</a>
     ·
@@ -32,5 +32,20 @@ cordova plugin add <path-to-repo-local-clone>
 ## API
 
 <docgen-index>
+
+* [`readFile(...)`](#readfile)
+* [`writeFile(...)`](#writefile)
+* [`appendFile(...)`](#appendfile)
+* [`deleteFile(...)`](#deletefile)
+* [`mkdir(...)`](#mkdir)
+* [`rmdir(...)`](#rmdir)
+* [`readdir(...)`](#readdir)
+* [`getUri(...)`](#geturi)
+* [`stat(...)`](#stat)
+* [`rename(...)`](#rename)
+* [`copy(...)`](#copy)
+* [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
+* [Enums](#enums)
 
 </docgen-index>

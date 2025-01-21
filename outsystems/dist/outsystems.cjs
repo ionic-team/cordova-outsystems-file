@@ -35,7 +35,8 @@ class LegacyCordovaBridge {
       directory,
       recursive: true
     };
-    CapacitorUtils.Synapse.File.mkdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options);
+    return `${directory}/${path}/${name}`;
   }
   writeFile(success, error, isInternal, isTemporary, data, path) {
     let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
@@ -44,7 +45,7 @@ class LegacyCordovaBridge {
       data,
       directory
     };
-    CapacitorUtils.Synapse.File.writeFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
   }
 }
 const LegacyMigration = new LegacyCordovaBridge();
@@ -82,7 +83,7 @@ const _FilePluginWeb = class _FilePluginWeb {
     }
     return new Promise((resolve2, reject) => {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-      request.onupgradeneeded = FilesystemWeb.doUpgrade;
+      request.onupgradeneeded = _FilePluginWeb.doUpgrade;
       request.onsuccess = () => {
         this._db = request.result;
         resolve2(request.result);
@@ -564,67 +565,67 @@ class OSFilePlugin {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.readFile(options).then((file) => success(file)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.readFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.readFile(success, error, options);
   }
   writeFile(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.writeFile(options).then((result) => success(result)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.writeFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
   }
   appendFile(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.appendFile(options).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.appendFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options);
   }
   deleteFile(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.deleteFile(options).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.deleteFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options);
   }
   mkdir(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.mkdir(options).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.mkdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options);
   }
   rmdir(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.rmdir(options).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.rmdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options);
   }
   readdir(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.readdir(options).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.readdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.readdir(success, error, options);
   }
   getUri(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.getUri(options).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.getUri(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.getUri(success, error, options);
   }
   stat(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.stat(options).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.stat(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.stat(success, error, options);
   }
   rename(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.rename(options).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.rename(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.rename(success, error, options);
   }
   copy(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
       this.webPlugin.copy(options).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.File.copy(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.copy(success, error, options);
   }
 }
 const Instance = new OSFilePlugin();

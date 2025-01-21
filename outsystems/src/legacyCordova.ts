@@ -1,7 +1,6 @@
 import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult } from "../../src/definitions";
 
 class LegacyCordovaBridge {
-
     private getDirectoryTypeFrom(isInternal: boolean, isTemporary: boolean): Directory {
         // @ts-ignore
         if (cordova.platformId == 'android') {
@@ -13,7 +12,7 @@ class LegacyCordovaBridge {
         return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
     }
 
-    createDirectory(success: () => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
+    createDirectory(success: () => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): string {
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
 
         let options: MkdirOptions = {
@@ -23,7 +22,8 @@ class LegacyCordovaBridge {
         }
 
         // @ts-ignore
-        CapacitorUtils.Synapse.File.mkdir(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options)
+        return `${directory}/${path}/${name}`
     }
 
     writeFile(success: (fs: WriteFileResult) => void, error: (err: PluginError) => void, isInternal: boolean, isTemporary: boolean, data: string | Blob, path: string): void {
@@ -35,7 +35,7 @@ class LegacyCordovaBridge {
             directory: directory
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.File.writeFile(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
     }
 
 }

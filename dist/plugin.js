@@ -1,5 +1,5 @@
 (function(global, factory) {
-  typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("cordova")) : typeof define === "function" && define.amd ? define(["exports", "cordova"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.FilePlugin = {}, global.cordova));
+  typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require("cordova")) : typeof define === "function" && define.amd ? define(["exports", "cordova"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, factory(global.OSFilePlugin = {}, global.cordova));
 })(this, function(exports2, cordova) {
   "use strict";
   function s(t) {
@@ -49,37 +49,37 @@
   }
   var exec = cordova.require("cordova/exec");
   function readFile(success, error, options) {
-    exec(success, error, "OSFilePlugin", "readFile", []);
+    exec(success, error, "OSFilePlugin", "readFile", [options]);
   }
   function writeFile(success, error, options) {
-    exec(success, error, "OSFilePlugin", "writeFile", []);
+    exec(success, error, "OSFilePlugin", "writeFile", [options]);
   }
   function appendFile(success, error, options) {
-    exec(success, error, "OSFilePlugin", "appendFile", []);
+    exec(success, error, "OSFilePlugin", "appendFile", [options]);
   }
   function deleteFile(success, error, options) {
-    exec(success, error, "OSFilePlugin", "deleteFile", []);
+    exec(success, error, "OSFilePlugin", "deleteFile", [options]);
   }
   function mkdir(success, error, options) {
-    exec(success, error, "OSFilePlugin", "mkdir", []);
+    exec(success, error, "OSFilePlugin", "mkdir", [options]);
   }
   function rmdir(success, error, options) {
-    exec(success, error, "OSFilePlugin", "rmdir", []);
+    exec(success, error, "OSFilePlugin", "rmdir", [options]);
   }
   function readdir(success, error, options) {
-    exec(success, error, "OSFilePlugin", "readdir", []);
+    exec(success, error, "OSFilePlugin", "readdir", [options]);
   }
   function getUri(success, error, options) {
-    exec(success, error, "OSFilePlugin", "getUri", []);
+    exec(success, error, "OSFilePlugin", "getUri", [options]);
   }
   function stat(success, error, options) {
-    exec(success, error, "OSFilePlugin", "stat", []);
+    exec(success, error, "OSFilePlugin", "stat", [options]);
   }
   function rename(success, error, options) {
-    exec(success, error, "OSFilePlugin", "rename", []);
+    exec(success, error, "OSFilePlugin", "rename", [options]);
   }
   function copy(success, error, options) {
-    exec(success, error, "OSFilePlugin", "copy", []);
+    exec(success, error, "OSFilePlugin", "copy", [options]);
   }
   module.exports = {
     readFile,
@@ -101,6 +101,9 @@
     Directory2["Cache"] = "CACHE";
     Directory2["External"] = "EXTERNAL";
     Directory2["ExternalStorage"] = "EXTERNAL_STORAGE";
+    Directory2["ExternalCache"] = "EXTERNAL_CACHE";
+    Directory2["LibraryNoCloud"] = "LIBRARY_NO_CLOUD";
+    Directory2["Temporary"] = "TEMPORARY";
     return Directory2;
   })(Directory || {});
   var Encoding = /* @__PURE__ */ ((Encoding2) => {

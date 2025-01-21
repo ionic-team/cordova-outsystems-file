@@ -24,6 +24,16 @@ class LegacyCordovaBridge {
         CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
     }
 
+    readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean,): void {
+
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+        let options: ReadFileOptions = {
+            path: path,
+            directory: directory
+        }
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
+    }
 
 }
 

@@ -12,6 +12,20 @@ class LegacyCordovaBridge {
         return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
     }
 
+    createDirectory(success: () => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): string {
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+
+        let options: MkdirOptions = {
+            path: `${path}/${name}`,
+            directory: directory,
+            recursive: true
+        }
+
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options)
+        return `${directory}/${path}/${name}`
+    }
+
     writeFile(success: (res: WriteFileResult) => void, error: (err: PluginError) => void, data: string | Blob, path: string, isInternal: boolean, isTemporary: boolean,): void {
 
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);

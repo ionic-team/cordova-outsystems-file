@@ -19,15 +19,6 @@ var Encoding = /* @__PURE__ */ ((Encoding2) => {
   return Encoding2;
 })(Encoding || {});
 class LegacyCordovaBridge {
-  getDirectoryTypeFrom(isInternal, isTemporary) {
-    if (cordova.platformId == "android") {
-      if (isInternal) {
-        return isTemporary ? Directory.Cache : Directory.Data;
-      }
-      return isTemporary ? Directory.ExternalCache : Directory.ExternalStorage;
-    }
-    return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
-  }
   createDirectory(success, error, name, path, isInternal, isTemporary) {
     let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
     let options = {
@@ -35,8 +26,27 @@ class LegacyCordovaBridge {
       directory,
       recursive: true
     };
-    CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options);
-    return `${directory}/${path}/${name}`;
+    let getUriSuccess = (uri) => {
+      success(uri);
+    };
+    let mkDirSuccess = () => {
+      this.getUri(getUriSuccess, error, name, path, isInternal, isTemporary);
+    };
+    CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options);
+  }
+  listDirectory(success, error, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options = {
+      path,
+      directory
+    };
+    let synapseSuccess = (res) => {
+      success(
+        res.files.filter((fileInfo) => fileInfo.type == "directory").map((fileInfo) => fileInfo.name),
+        res.files.filter((fileInfo) => fileInfo.type == "file").map((fileInfo) => fileInfo.name)
+      );
+    };
+    CapacitorUtils.Synapse.Filesystem.readdir(synapseSuccess, error, options);
   }
   writeFile(success, error, isInternal, isTemporary, data, path) {
     let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
@@ -46,6 +56,26 @@ class LegacyCordovaBridge {
       directory
     };
     CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
+  }
+  getDirectoryTypeFrom(isInternal, isTemporary) {
+    if (cordova.platformId == "android") {
+      if (isInternal) {
+        return isTemporary ? Directory.Cache : Directory.Data;
+      }
+      return isTemporary ? Directory.ExternalCache : Directory.ExternalStorage;
+    }
+    return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
+  }
+  getUri(success, error, name, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options = {
+      path: `${path}/${name}`,
+      directory
+    };
+    let synapseSuccess = (res) => {
+      success(res.uri);
+    };
+    CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options);
   }
 }
 const LegacyMigration = new LegacyCordovaBridge();

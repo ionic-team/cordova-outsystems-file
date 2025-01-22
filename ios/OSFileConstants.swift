@@ -11,6 +11,6 @@ struct Constants {
         static let name = "name"
         static let size = "size"
         static let type = "type"
-        static let url = "url"
+        static let uri = "uri"
     }
 }

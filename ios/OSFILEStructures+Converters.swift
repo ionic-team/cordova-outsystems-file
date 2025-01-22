@@ -73,7 +73,7 @@ extension OSFILEItemAttributeModel {
             Constants.ItemAttributeJSONKey.size: size,
             Constants.ItemAttributeJSONKey.ctime: UInt64(creationDateTimestamp.rounded()),
             Constants.ItemAttributeJSONKey.mtime: UInt64(modificationDateTimestamp.rounded()),
-            Constants.ItemAttributeJSONKey.url: url.absoluteString
+            Constants.ItemAttributeJSONKey.uri: url.absoluteString
         ]
     }
 }

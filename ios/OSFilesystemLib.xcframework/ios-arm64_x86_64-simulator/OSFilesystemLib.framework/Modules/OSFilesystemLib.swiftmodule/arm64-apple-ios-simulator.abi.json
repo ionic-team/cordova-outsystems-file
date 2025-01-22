@@ -2462,37 +2462,44 @@
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 2866,
+      "offset": 2859,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 3193,
+      "offset": 3186,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 6064,
+      "offset": 6055,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "StringLiteral",
-      "offset": 6415,
+      "offset": 6406,
       "length": 9,
       "value": "\"NoCloud\""
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 7483,
+      "offset": 7474,
       "length": 4,
       "value": "true"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/URL+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 138,
+      "length": 5,
+      "value": "false"
     }
   ]
 }

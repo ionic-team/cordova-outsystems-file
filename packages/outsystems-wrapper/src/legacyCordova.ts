@@ -1,4 +1,4 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, ReadFileResult, ReadFileOptions } from "../../src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, ReadFileResult, ReadFileOptions, DeleteFileOptions } from "../../src/definitions";
 
 class LegacyCordovaBridge {
     private getDirectoryTypeFrom(isInternal: boolean, isTemporary: boolean): Directory {
@@ -26,11 +26,11 @@ class LegacyCordovaBridge {
         return `${directory}/${path}/${name}`
     }
 
-    writeFile(success: (res: WriteFileResult) => void, error: (err: PluginError) => void, data: string | Blob, path: string, isInternal: boolean, isTemporary: boolean,): void {
+    writeFile(success: (res: WriteFileResult) => void, error: (err: PluginError) => void, data: string | Blob, path: string, name: string, isInternal: boolean, isTemporary: boolean,): void {
 
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
         let options: WriteFileOptions = {
-            path: path,
+            path: `${path}/${name}`,
             data: data,
             directory: directory
         }
@@ -38,15 +38,26 @@ class LegacyCordovaBridge {
         CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
     }
 
-    readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean,): void {
+    readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, name: string, isInternal: boolean, isTemporary: boolean,): void {
 
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
         let options: ReadFileOptions = {
-            path: path,
+            path: `${path}/${name}`,
             directory: directory
         }
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
+    }
+
+    deleteFile(success: () => void, error: (err: PluginError) => void, path: string, name: string, isInternal: boolean, isTemporary: boolean,): void {
+
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+        let options: DeleteFileOptions = {
+            path: `${path}/${name}`,
+            directory: directory
+        }
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
     }
 
 }

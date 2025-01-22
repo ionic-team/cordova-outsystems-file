@@ -1,4 +1,4 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions} from "../../src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, ReadFileOptions, ReadFileResult} from "../../src/definitions";
 
 class LegacyCordovaBridge {
     createDirectory(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -48,6 +48,21 @@ class LegacyCordovaBridge {
 
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.readdir(synapseSuccess, error, options)
+    }
+
+    getFileData(success: (data: string | Blob) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
+        let options: ReadFileOptions = {
+            path: `${path}/${name}`,
+            directory: directory
+        }
+        
+        let synapseSuccess = (res: ReadFileResult) => {
+            success(res.data)
+        }
+
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.readFile(synapseSuccess, error, options)
     }
 
     writeFile(success: (fs: WriteFileResult) => void, error: (err: PluginError) => void, isInternal: boolean, isTemporary: boolean, data: string | Blob, path: string): void {

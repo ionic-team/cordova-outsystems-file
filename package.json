@@ -1,8 +1,8 @@
 {
-  "name": "com.outsystems.plugins.file",
-  "displayName": "FilePlugin",
+  "name": "com.outsystems.plugins.filesystem",
+  "displayName": "Filesystem",
   "version": "1.0.0",
-  "description": "FilePlugin plugin for Cordova",
+  "description": "Filesystem plugin for Cordova",
   "scripts": {
     "lint": "npm run eslint && npm run prettier -- --check",
     "eslint": "eslint . --ext ts",

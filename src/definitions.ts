@@ -30,7 +30,7 @@ export enum Directory {
    * On Android it's the directory holding application files.
    * Files will be deleted when the application is uninstalled.
    *
-   * @since 1.1.0
+   * @since 1.0.0
    */
   Library = 'LIBRARY',
 
@@ -408,14 +408,14 @@ export interface FileInfo {
   /**
    * Type of the file.
    *
-   * @since 4.0.0
+   * @since 1.0.0
    */
   type: 'directory' | 'file';
 
   /**
    * Size of the file in bytes.
    *
-   * @since 4.0.0
+   * @since 1.0.0
    */
   size: number;
 
@@ -424,21 +424,21 @@ export interface FileInfo {
    *
    * It's not available on Android 7 and older devices.
    *
-   * @since 4.0.0
+   * @since 1.0.0
    */
   creationTime?: number;
 
   /**
    * Time of last modification in milliseconds.
    *
-   * @since 4.0.0
+   * @since 1.0.0
    */
   modificationTime: number;
 
   /**
    * The uri of the file.
    *
-   * @since 4.0.0
+   * @since 1.0.0
    */
   uri: string;
 }

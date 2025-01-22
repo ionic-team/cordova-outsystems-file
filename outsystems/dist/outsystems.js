@@ -36,6 +36,15 @@
       };
       CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options);
     }
+    deleteDirectory(success, error, path, isInternal, isTemporary) {
+      let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+      let options = {
+        path,
+        directory,
+        recursive: true
+      };
+      CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options);
+    }
     listDirectory(success, error, path, isInternal, isTemporary) {
       let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
       let options = {

@@ -1,4 +1,4 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult} from "../../src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions} from "../../src/definitions";
 
 class LegacyCordovaBridge {
     createDirectory(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -18,6 +18,18 @@ class LegacyCordovaBridge {
         
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options)
+    }
+
+    deleteDirectory(success: () => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
+        let options: RmdirOptions = {
+            path: path,
+            directory: directory,
+            recursive: true
+        }
+
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
     }
 
     listDirectory(success: (directoryList: string[], fileList: string[]) => void, error: (error: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {

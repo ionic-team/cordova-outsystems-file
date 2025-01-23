@@ -10,9 +10,9 @@
     <br />
     <a href="https://github.com/ionic-team/repo_name">🔌 Capacitor Plugin</a>
     ·
-    <a href="https://github.com/ionic-team/cordova-outsystems-file">🤖 Android Library</a>
+    <a href="https://github.com/ionic-team/OSFilesystemLib-Android">🤖 Android Library</a>
     ·
-    <a href="https://github.com/github_username/repo_name">🍏 iOS Library</a>
+    <a href="https://github.com/ionic-team/OSFilesystemLib-iOS">🍏 iOS Library</a>
   </p>
   <p align="center">
     <a href="https://github.com/ionic-team/cordova-outsystems-file/issues/new?labels=bug&template=bug-report.md">🐛 Report Bug</a>
@@ -21,31 +21,7 @@
   </p>
 </div>
 
-*This plugin is SUPPORTED by OutSystems. Customers entitled to Support Services may obtain assistance through Support.*
+This project has two packages:
 
-## Installation
-
-```console
-cordova plugin add <path-to-repo-local-clone>
-```
-
-## API
-
-<docgen-index>
-
-* [`readFile(...)`](#readfile)
-* [`writeFile(...)`](#writefile)
-* [`appendFile(...)`](#appendfile)
-* [`deleteFile(...)`](#deletefile)
-* [`mkdir(...)`](#mkdir)
-* [`rmdir(...)`](#rmdir)
-* [`readdir(...)`](#readdir)
-* [`getUri(...)`](#geturi)
-* [`stat(...)`](#stat)
-* [`rename(...)`](#rename)
-* [`copy(...)`](#copy)
-* [Interfaces](#interfaces)
-* [Type Aliases](#type-aliases)
-* [Enums](#enums)
-
-</docgen-index>
+- the cordova plugin, `com.outsystems.plugins.filesystem`
+- a wrapper consumed by the OutSystems' low-code module, `outsystems-wrapper`

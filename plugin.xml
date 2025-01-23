@@ -4,7 +4,7 @@
     <description>OutSystems' cordova geolocation plugin</description>
     <author>OutSystems Inc</author>
 
-    <js-module name="FilePlugin" src="dist/plugin.js">
+    <js-module name="FilePlugin" src="packages/cordova-plugin/dist/plugin.js">
         <clobbers target="cordova.plugins.Filesystem" />
     </js-module>
     <platform name="android">
@@ -22,8 +22,8 @@
            
         </config-file>
 
-        <source-file src="android/OSFile.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <framework src="android/build.gradle" custom="true" type="gradleReference" />
+        <source-file src="packages/cordova-plugin/android/OSFile.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference" />
         
     </platform>
    <platform name="ios">
@@ -34,18 +34,11 @@
             <preference name="SwiftVersion" value="5" />
         </config-file>
 
-        <source-file src="ios/CordovaStructures+Extensions.swift" />
-        <source-file src="ios/OSDualPathFileOptions.swift" />
-        <source-file src="ios/OSFileConstants.swift" />
-        <source-file src="ios/OSFileError.swift" />
-        <source-file src="ios/OSFileLocationResolver.swift" />
-        <source-file src="ios/OSFileOperation.swift" />     
-        <source-file src="ios/OSFileOperationExecutor.swift" />
-        <source-file src="ios/OSFilePlugin.swift" />
-        <source-file src="ios/OSFILEStructures+Converters.swift" />
-        <source-file src="ios/OSSinglePathFileOptions.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSFilePlugin.swift" />
     
-        <framework src="ios/OSFilesystemLib.xcframework" embed="true" custom="true" />
+    <!--
+        <framework src="ios/OSFilePlugin.xcframework" embed="true" custom="true" />
+    -->
 
         <!--podspec>
             <config>

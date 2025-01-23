@@ -1,6 +1,6 @@
 import { require } from "cordova";
-import { AppendFileOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, StatResult, WriteFileResult } from "./definitions";
-import { CopyOptions, RmDirOptions, StatOptions, WriteFileOptions } from "fs";
+import { AppendFileOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, StatResult, WriteFileOptions, WriteFileResult, RmdirOptions, StatOptions, CopyOptions } from "./definitions";
+
 
 var exec = require('cordova/exec');
 
@@ -27,7 +27,7 @@ function mkdir(success: () => void, error: (error: PluginError) => void, options
   exec(success, error, 'OSFilePlugin', 'mkdir', [options]);
 }
 
-function rmdir(success: () => void, error: (error: PluginError) => void, options: RmDirOptions): void {
+function rmdir(success: () => void, error: (error: PluginError) => void, options: RmdirOptions): void {
   exec(success, error, 'OSFilePlugin', 'rmdir', [options]);
 }
 

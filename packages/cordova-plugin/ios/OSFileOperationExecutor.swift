@@ -16,8 +16,8 @@ struct OSFileOperationExecutor {
                 let data = try service.readFile(atURL: url, withEncoding: encoding)
                 resultData = [Constants.ResultDataKey.data: data]
             case .write(let url, let encodingMapper, let recursive):
-                let path = try service.saveFile(atURL: url, withEncodingAndData: encodingMapper, includeIntermediateDirectories: recursive)
-                resultData = [Constants.ResultDataKey.uri: path]
+                let resultURL = try service.saveFile(atURL: url, withEncodingAndData: encodingMapper, includeIntermediateDirectories: recursive)
+                resultData = [Constants.ResultDataKey.uri: resultURL.absoluteString]
             case .append(let url, let encodingMapper, let recursive):
                 try service.appendData(encodingMapper, atURL: url, includeIntermediateDirectories: recursive)
             case .delete(let url):

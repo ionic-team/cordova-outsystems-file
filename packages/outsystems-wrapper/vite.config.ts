@@ -9,12 +9,9 @@ export default defineConfig({
     target: 'es2020',
     lib: {
       entry: './src/index.ts',
-      name: 'OSGeolocation',
-      fileName: (format) => `plugin.${format === 'es' ? 'mjs' : format === 'cjs' ? 'cjs' : 'js'}`,
+      name: 'OSFilePluginWrapper',
+      fileName: (format) => `outsystems.${format === 'es' ? 'mjs' : format === 'cjs' ? 'cjs' : 'js'}`,
       formats: ['es', 'cjs', 'umd'],
-    },
-    rollupOptions: {
-      external: ['cordova'],
-    },
+    }
   },
 });

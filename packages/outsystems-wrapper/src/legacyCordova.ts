@@ -1,4 +1,4 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, ReadFileOptions, ReadFileResult} from "../../src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, ReadFileOptions, ReadFileResult} from "../../cordova-plugin/src/definitions";
 
 class LegacyCordovaBridge {
     createDirectory(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -51,15 +51,10 @@ class LegacyCordovaBridge {
     }
 
     getFileData(success: (data: string | Blob) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
-        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
-        let options: ReadFileOptions = {
-            path: `${path}/${name}`,
-            directory: directory
-        }
-        
         let synapseSuccess = (res: ReadFileResult) => {
             success(res.data)
         }
+        this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
 
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.readFile(synapseSuccess, error, options)
@@ -99,6 +94,16 @@ class LegacyCordovaBridge {
         }
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options)
+    }
+
+    private readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+        let options: ReadFileOptions = {
+            path: path,
+            directory: directory
+        }
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
     }
 }
 

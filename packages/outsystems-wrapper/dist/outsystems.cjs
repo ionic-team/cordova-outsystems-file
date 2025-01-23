@@ -1,11 +1,108 @@
 "use strict";
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
+var Directory = /* @__PURE__ */ ((Directory2) => {
+  Directory2["Documents"] = "DOCUMENTS";
+  Directory2["Data"] = "DATA";
+  Directory2["Library"] = "LIBRARY";
+  Directory2["Cache"] = "CACHE";
+  Directory2["External"] = "EXTERNAL";
+  Directory2["ExternalStorage"] = "EXTERNAL_STORAGE";
+  Directory2["ExternalCache"] = "EXTERNAL_CACHE";
+  Directory2["LibraryNoCloud"] = "LIBRARY_NO_CLOUD";
+  Directory2["Temporary"] = "TEMPORARY";
+  return Directory2;
+})(Directory || {});
 var Encoding = /* @__PURE__ */ ((Encoding2) => {
   Encoding2["UTF8"] = "utf8";
   Encoding2["ASCII"] = "ascii";
   Encoding2["UTF16"] = "utf16";
   return Encoding2;
 })(Encoding || {});
+class LegacyCordovaBridge {
+  createDirectory(success, error, name, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path: `${path}/${name}`,
+      directory,
+      recursive: true
+    };
+    let getUriSuccess = (uri) => {
+      success(uri);
+    };
+    let mkDirSuccess = () => {
+      this.getUri(getUriSuccess, error, name, path, isInternal, isTemporary);
+    };
+    CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options2);
+  }
+  deleteDirectory(success, error, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path,
+      directory,
+      recursive: true
+    };
+    CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options2);
+  }
+  listDirectory(success, error, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path,
+      directory
+    };
+    let synapseSuccess = (res) => {
+      success(
+        res.files.filter((fileInfo) => fileInfo.type == "directory").map((fileInfo) => fileInfo.name),
+        res.files.filter((fileInfo) => fileInfo.type == "file").map((fileInfo) => fileInfo.name)
+      );
+    };
+    CapacitorUtils.Synapse.Filesystem.readdir(synapseSuccess, error, options2);
+  }
+  getFileData(success, error, name, path, isInternal, isTemporary) {
+    let synapseSuccess = (res) => {
+      success(res.data);
+    };
+    this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary);
+    CapacitorUtils.Synapse.Filesystem.readFile(synapseSuccess, error, options);
+  }
+  writeFile(success, error, isInternal, isTemporary, data, path) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path,
+      data,
+      directory
+    };
+    CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options2);
+  }
+  getDirectoryTypeFrom(isInternal, isTemporary) {
+    if (cordova.platformId == "android") {
+      if (isInternal) {
+        return isTemporary ? Directory.Cache : Directory.Data;
+      }
+      return isTemporary ? Directory.ExternalCache : Directory.ExternalStorage;
+    }
+    return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
+  }
+  getUri(success, error, name, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path: `${path}/${name}`,
+      directory
+    };
+    let synapseSuccess = (res) => {
+      success(res.uri);
+    };
+    CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options2);
+  }
+  readFile(success, error, path, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path,
+      directory
+    };
+    CapacitorUtils.Synapse.Filesystem.readFile(success, error, options2);
+  }
+}
+const LegacyMigration = new LegacyCordovaBridge();
 function resolve(path) {
   const posix = path.split("/").filter((item) => item !== ".");
   const newPosix = [];
@@ -109,8 +206,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options options for the file read
    * @return a promise that resolves with the read file data result
    */
-  async readFile(options) {
-    const path = this.getPath(options.directory, options.path);
+  async readFile(options2) {
+    const path = this.getPath(options2.directory, options2.path);
     const entry = await this.dbRequest("get", [path]);
     if (entry === void 0) throw Error("File does not exist.");
     return { data: entry.content ? entry.content : "" };
@@ -120,11 +217,11 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options options for the file write
    * @return a promise that resolves with the file write result
    */
-  async writeFile(options) {
-    const path = this.getPath(options.directory, options.path);
-    let data = options.data;
-    const encoding = options.encoding;
-    const doRecursive = options.recursive;
+  async writeFile(options2) {
+    const path = this.getPath(options2.directory, options2.path);
+    let data = options2.data;
+    const encoding = options2.encoding;
+    const doRecursive = options2.recursive;
     const occupiedEntry = await this.dbRequest("get", [path]);
     if (occupiedEntry && occupiedEntry.type === "directory")
       throw Error("The supplied path is a directory.");
@@ -136,7 +233,7 @@ const _FilePluginWeb = class _FilePluginWeb {
         const parentArgPath = parentPath.substr(subDirIndex);
         await this.mkdir({
           path: parentArgPath,
-          directory: options.directory,
+          directory: options2.directory,
           recursive: doRecursive
         });
       }
@@ -166,10 +263,10 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options options for the file append
    * @return a promise that resolves with the file write result
    */
-  async appendFile(options) {
-    const path = this.getPath(options.directory, options.path);
-    let data = options.data;
-    const encoding = options.encoding;
+  async appendFile(options2) {
+    const path = this.getPath(options2.directory, options2.path);
+    let data = options2.data;
+    const encoding = options2.encoding;
     const parentPath = path.substr(0, path.lastIndexOf("/"));
     const now = Date.now();
     let ctime = now;
@@ -183,7 +280,7 @@ const _FilePluginWeb = class _FilePluginWeb {
         const parentArgPath = parentPath.substr(subDirIndex);
         await this.mkdir({
           path: parentArgPath,
-          directory: options.directory,
+          directory: options2.directory,
           recursive: true
         });
       }
@@ -219,8 +316,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options options for the file delete
    * @return a promise that resolves with the deleted file data result
    */
-  async deleteFile(options) {
-    const path = this.getPath(options.directory, options.path);
+  async deleteFile(options2) {
+    const path = this.getPath(options2.directory, options2.path);
     const entry = await this.dbRequest("get", [path]);
     if (entry === void 0) throw Error("File does not exist.");
     const entries = await this.dbIndexRequest("by_folder", "getAllKeys", [
@@ -234,9 +331,9 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options options for the mkdir
    * @return a promise that resolves with the mkdir result
    */
-  async mkdir(options) {
-    const path = this.getPath(options.directory, options.path);
-    const doRecursive = options.recursive;
+  async mkdir(options2) {
+    const path = this.getPath(options2.directory, options2.path);
+    const doRecursive = options2.recursive;
     const parentPath = path.substr(0, path.lastIndexOf("/"));
     const depth = (path.match(/\//g) || []).length;
     const parentEntry = await this.dbRequest("get", [parentPath]);
@@ -250,7 +347,7 @@ const _FilePluginWeb = class _FilePluginWeb {
       const parentArgPath = parentPath.substr(parentPath.indexOf("/", 1));
       await this.mkdir({
         path: parentArgPath,
-        directory: options.directory,
+        directory: options2.directory,
         recursive: doRecursive
       });
     }
@@ -269,8 +366,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * Remove a directory
    * @param options the options for the directory remove
    */
-  async rmdir(options) {
-    const { path, directory, recursive } = options;
+  async rmdir(options2) {
+    const { path, directory, recursive } = options2;
     const fullPath = this.getPath(directory, path);
     const entry = await this.dbRequest("get", [fullPath]);
     if (entry === void 0) throw Error("Folder does not exist.");
@@ -295,10 +392,10 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options the options for the readdir operation
    * @return a promise that resolves with the readdir directory listing result
    */
-  async readdir(options) {
-    const path = this.getPath(options.directory, options.path);
+  async readdir(options2) {
+    const path = this.getPath(options2.directory, options2.path);
     const entry = await this.dbRequest("get", [path]);
-    if (options.path !== "" && entry === void 0)
+    if (options2.path !== "" && entry === void 0)
       throw Error("Folder does not exist.");
     const entries = await this.dbIndexRequest(
       "by_folder",
@@ -328,8 +425,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options the options for the stat operation
    * @return a promise that resolves with the file stat result
    */
-  async getUri(options) {
-    const path = this.getPath(options.directory, options.path);
+  async getUri(options2) {
+    const path = this.getPath(options2.directory, options2.path);
     let entry = await this.dbRequest("get", [path]);
     if (entry === void 0) {
       entry = await this.dbRequest("get", [path + "/"]);
@@ -343,8 +440,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options the options for the stat operation
    * @return a promise that resolves with the file stat result
    */
-  async stat(options) {
-    const path = this.getPath(options.directory, options.path);
+  async stat(options2) {
+    const path = this.getPath(options2.directory, options2.path);
     let entry = await this.dbRequest("get", [path]);
     if (entry === void 0) {
       entry = await this.dbRequest("get", [path + "/"]);
@@ -363,8 +460,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options the options for the rename operation
    * @return a promise that resolves with the rename result
    */
-  async rename(options) {
-    await this._copy(options, true);
+  async rename(options2) {
+    await this._copy(options2, true);
     return;
   }
   /**
@@ -372,8 +469,8 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param options the options for the copy operation
    * @return a promise that resolves with the copy result
    */
-  async copy(options) {
-    return this._copy(options, false);
+  async copy(options2) {
+    return this._copy(options2, false);
   }
   /**
    * Function that can perform a copy or a rename
@@ -381,9 +478,9 @@ const _FilePluginWeb = class _FilePluginWeb {
    * @param doRename whether to perform a rename or copy operation
    * @return a promise that resolves with the result
    */
-  async _copy(options, doRename = false) {
-    let { toDirectory } = options;
-    const { to, from, directory: fromDirectory } = options;
+  async _copy(options2, doRename = false) {
+    let { toDirectory } = options2;
+    const { to, from, directory: fromDirectory } = options2;
     if (!to || !from) {
       throw Error("Both to and from must be provided");
     }
@@ -518,72 +615,73 @@ class OSFilePlugin {
   constructor() {
     this.webPlugin = new FilePluginWeb();
   }
-  readFile(success, error, options) {
+  readFile(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.readFile(options).then((file) => success(file)).catch((err) => error(err));
+      this.webPlugin.readFile(options2).then((file) => success(file)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.readFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.readFile(success, error, options2);
   }
-  writeFile(success, error, options) {
+  writeFile(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.writeFile(options).then((result) => success(result)).catch((err) => error(err));
+      this.webPlugin.writeFile(options2).then((result) => success(result)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options2);
   }
-  appendFile(success, error, options) {
+  appendFile(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.appendFile(options).then(() => success()).catch((err) => error(err));
+      this.webPlugin.appendFile(options2).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options2);
   }
-  deleteFile(success, error, options) {
+  deleteFile(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.deleteFile(options).then(() => success()).catch((err) => error(err));
+      this.webPlugin.deleteFile(options2).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options2);
   }
-  mkdir(success, error, options) {
+  mkdir(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.mkdir(options).then(() => success()).catch((err) => error(err));
+      this.webPlugin.mkdir(options2).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options2);
   }
-  rmdir(success, error, options) {
+  rmdir(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.rmdir(options).then(() => success()).catch((err) => error(err));
+      this.webPlugin.rmdir(options2).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options2);
   }
-  readdir(success, error, options) {
+  readdir(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.readdir(options).then((res) => success(res)).catch((err) => error(err));
+      this.webPlugin.readdir(options2).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.readdir(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.readdir(success, error, options2);
   }
-  getUri(success, error, options) {
+  getUri(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.getUri(options).then((res) => success(res)).catch((err) => error(err));
+      this.webPlugin.getUri(options2).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.getUri(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.getUri(success, error, options2);
   }
-  stat(success, error, options) {
+  stat(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.stat(options).then((res) => success(res)).catch((err) => error(err));
+      this.webPlugin.stat(options2).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.stat(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.stat(success, error, options2);
   }
-  rename(success, error, options) {
+  rename(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.rename(options).then(() => success()).catch((err) => error(err));
+      this.webPlugin.rename(options2).then(() => success()).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.rename(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.rename(success, error, options2);
   }
-  copy(success, error, options) {
+  copy(success, error, options2) {
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.copy(options).then((res) => success(res)).catch((err) => error(err));
+      this.webPlugin.copy(options2).then((res) => success(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.copy(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.copy(success, error, options2);
   }
 }
 const Instance = new OSFilePlugin();
 exports.Instance = Instance;
+exports.LegacyMigration = LegacyMigration;

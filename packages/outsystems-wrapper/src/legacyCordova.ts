@@ -1,4 +1,4 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, ReadFileOptions, ReadFileResult} from "../../cordova-plugin/src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, ReadFileOptions, ReadFileResult, DeleteFileOptions} from "../../cordova-plugin/src/definitions";
 
 class LegacyCordovaBridge {
     createDirectory(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -65,11 +65,24 @@ class LegacyCordovaBridge {
         let options: WriteFileOptions = {
             path: path,
             data: data,
-            directory: directory
+            directory: directory,
+            recursive: true
         }
+
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
     }
+
+    deleteFile(success: () => void, error: (err: PluginError) => void, path: string, name: string, isInternal: boolean, isTemporary: boolean): void {
+        let directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
+        let options: DeleteFileOptions = {
+          path: `${path}/${name}`,
+          directory
+        }
+
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
+      }
 
     private getDirectoryTypeFrom(isInternal: boolean, isTemporary: boolean): Directory {
         // @ts-ignore

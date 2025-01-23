@@ -67,9 +67,18 @@ class LegacyCordovaBridge {
     let options2 = {
       path,
       data,
-      directory
+      directory,
+      recursive: true
     };
     CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options2);
+  }
+  deleteFile(success, error, path, name, isInternal, isTemporary) {
+    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    let options2 = {
+      path: `${path}/${name}`,
+      directory
+    };
+    CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options2);
   }
   getDirectoryTypeFrom(isInternal, isTemporary) {
     if (cordova.platformId == "android") {

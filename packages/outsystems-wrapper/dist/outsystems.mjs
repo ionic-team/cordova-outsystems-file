@@ -23,7 +23,7 @@ function isPathParent(parent, children) {
   const pathsB = children.split("/");
   return parent !== children && pathsA.every((value, index) => value === pathsB[index]);
 }
-const _FilePluginWeb = class _FilePluginWeb {
+const _FilesystemWeb = class _FilesystemWeb {
   constructor() {
     this.DB_VERSION = 1;
     this.DB_NAME = "Disc";
@@ -38,7 +38,7 @@ const _FilePluginWeb = class _FilePluginWeb {
     }
     return new Promise((resolve2, reject) => {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-      request.onupgradeneeded = _FilePluginWeb.doUpgrade;
+      request.onupgradeneeded = FilePluginWeb.doUpgrade;
       request.onsuccess = () => {
         this._db = request.result;
         resolve2(request.result);
@@ -510,11 +510,11 @@ const _FilePluginWeb = class _FilePluginWeb {
     }
   }
 };
-_FilePluginWeb._debug = true;
-let FilePluginWeb = _FilePluginWeb;
+_FilesystemWeb._debug = true;
+let FilesystemWeb = _FilesystemWeb;
 class OSFilePlugin {
   constructor() {
-    this.webPlugin = new FilePluginWeb();
+    this.webPlugin = new FilesystemWeb();
   }
   readFile(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {

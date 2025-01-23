@@ -1,11 +1,11 @@
 import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
-import { FilePluginWeb } from "../../cordova-plugin/src/web";
+import { FilesystemWeb } from "../../cordova-plugin/src/web";
 
 class OSFilePlugin {
 
-    private webPlugin: FilePluginWeb
+    private webPlugin: FilesystemWeb
     constructor() {
-        this.webPlugin = new FilePluginWeb()
+        this.webPlugin = new FilesystemWeb()
     }
 
     readFile(success: (file: ReadFileResult) => void, error: (err: PluginError) => void, options: ReadFileOptions): void {

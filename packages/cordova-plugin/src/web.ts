@@ -3,7 +3,7 @@ import type {
   CopyOptions,
   CopyResult,
   DeleteFileOptions,
-  IFilePlugin,
+  IFilesystem,
   GetUriOptions,
   GetUriResult,
   MkdirOptions,
@@ -51,7 +51,7 @@ function isPathParent(parent: string, children: string): boolean {
   );
 }
 
-export class FilePluginWeb implements IFilePlugin {
+export class FilesystemWeb implements IFilesystem {
   DB_VERSION = 1;
   DB_NAME = 'Disc';
 

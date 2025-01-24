@@ -13,7 +13,7 @@ class LegacyCordovaBridge {
             success(uri)
         }
         let mkDirSuccess = () => {            
-            this.getUri(getUriSuccess, error, name, path, isInternal, isTemporary)
+            this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary)
         }
         
         // @ts-ignore
@@ -55,15 +55,49 @@ class LegacyCordovaBridge {
             success(res.data)
         }
         this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
-
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.readFile(synapseSuccess, error, options)
     }
 
-    writeFile(success: (fs: WriteFileResult) => void, error: (err: PluginError) => void, isInternal: boolean, isTemporary: boolean, data: string | Blob, path: string): void {
+    getFileDataFromUri(success: (data: string | Blob) => void, error: (err: PluginError) => void, path: string): void {
+        let synapseSuccess = (res: ReadFileResult) => {
+            success(res.data)
+        }
+        this.readFile(synapseSuccess, error, path, undefined, undefined)
+    }
+
+    getFileUrl(success: (url: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
+        let synapseSuccess = (res: ReadFileResult) => {
+            let blobUrl = this.dataToBlobUrl(res.data)
+            success(blobUrl)
+        }
+        this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
+    }
+
+    getFileUrlFromUri(success: (url: string) => void, error: (err: PluginError) => void, path: string): void {
+        let synapseSuccess = (res: ReadFileResult) => {
+            let blobUrl = this.dataToBlobUrl(res.data)
+            success(blobUrl)
+        }
+        this.readFile(synapseSuccess, error, path, undefined, undefined)
+    }
+    
+    getFileUri(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
+        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
+        let options: GetUriOptions = {
+            path: `${path}/${name}`,
+            directory: directory
+        }
+
+        let synapseSuccess = (res: GetUriResult) => {
+            success(res.uri)
+        }
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options)
+    }
+
+    writeFile(success: (fs: WriteFileResult) => void, error: (err: PluginError) => void, name: string, path: string, data: string | Blob, isInternal: boolean, isTemporary: boolean): void {
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
         let options: WriteFileOptions = {
-            path: path,
+            path: `${path}/${name}`,
             data: data,
             directory: directory,
             recursive: true
@@ -82,7 +116,16 @@ class LegacyCordovaBridge {
 
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
-      }
+    }
+
+    private getOptionalDirectoryTypeFrom(isInternal: boolean | undefined, isTemporary: boolean | undefined): Directory | undefined {
+        // Handle the case where both parameters are undefined
+        if (isInternal === undefined && isTemporary === undefined) {
+            return undefined
+        } else {
+            return this.getDirectoryTypeFrom(!!isInternal, !!isTemporary)
+        }
+    }
 
     private getDirectoryTypeFrom(isInternal: boolean, isTemporary: boolean): Directory {
         // @ts-ignore
@@ -95,28 +138,37 @@ class LegacyCordovaBridge {
         return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
     }
 
-    private getUri(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
-        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
-        let options: GetUriOptions = {
-            path: `${path}/${name}`,
-            directory: directory
-        }
-
-        let synapseSuccess = (res: GetUriResult) => {
-            success(res.uri)
-        }
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options)
-    }
-
-    private readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {
-        let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
+    private readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, isInternal: boolean | undefined, isTemporary: boolean | undefined): void {
+        let directory: Directory | undefined = this.getOptionalDirectoryTypeFrom(isInternal, isTemporary);
         let options: ReadFileOptions = {
             path: path,
             directory: directory
         }
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
+    }
+
+    private dataToBlobUrl(data: string | Blob): string {
+        let blob: Blob
+        if (data instanceof Blob) {
+            // If the input is already a Blob, simply create a Blob URL
+            blob = data
+        } else {
+            // Decode the Base64 data to binary
+            let binaryString = atob(data) // Decodes the Base64 string
+            let binaryLength = binaryString.length
+            let binaryArray = new Uint8Array(binaryLength)
+        
+            for (let i = 0; i < binaryLength; i++) {
+                binaryArray[i] = binaryString.charCodeAt(i)
+            }
+        
+            // Create a Blob object from the binary data
+            blob = new Blob([binaryArray], { type: "application/octet-stream" })
+        }
+
+        // Generate and return the Blob URL
+        return URL.createObjectURL(blob)
     }
 }
 

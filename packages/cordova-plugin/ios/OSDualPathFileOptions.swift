@@ -17,7 +17,7 @@ class OSDualPathFileOptions: Decodable {
 
         let fromPath = try container.decode(String.self, forKey: .from)
         let fromDirectoryText = try container.decodeIfPresent(String.self, forKey: .directory)
-        let fromDirectory = OSFILESearchPath.create(from: fromDirectoryText, withDefaultSearchPath: .raw, andDefaultDirectoryType: .document)
+        let fromDirectory = OSFILESearchPath.create(from: fromDirectoryText, withDefaultSearchPath: .raw)
         from = .init(path: fromPath, directory: fromDirectory)
 
         let toPath = try container.decode(String.self, forKey: .to)

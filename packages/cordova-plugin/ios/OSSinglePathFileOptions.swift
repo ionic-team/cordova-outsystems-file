@@ -19,7 +19,7 @@ class OSSinglePathFileOptions: Decodable {
 
         path = try container.decode(String.self, forKey: .path)
         let directoryText = try container.decodeIfPresent(String.self, forKey: .directory)
-        directory = .create(from: directoryText, withDefaultSearchPath: .raw, andDefaultDirectoryType: .document)
+        directory = .create(from: directoryText, withDefaultSearchPath: .raw)
     }
 }
 

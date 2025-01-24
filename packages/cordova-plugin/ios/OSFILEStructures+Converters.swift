@@ -25,8 +25,8 @@ extension OSFILEDirectoryType {
 }
 
 extension OSFILESearchPath {
-    static func create(from text: String?, withDefaultSearchPath defaultSearchPath: OSFILESearchPath, andDefaultDirectoryType defaultDirectoryType: OSFILEDirectoryType? = nil) -> Self {
-        if let type = OSFILEDirectoryType.create(from: text) ?? defaultDirectoryType {
+    static func create(from text: String?, withDefaultSearchPath defaultSearchPath: OSFILESearchPath) -> Self {
+        if let type = OSFILEDirectoryType.create(from: text) {
             .directory(type: type)
         } else {
             defaultSearchPath

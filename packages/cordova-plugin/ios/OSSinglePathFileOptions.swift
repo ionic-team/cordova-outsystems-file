@@ -56,6 +56,22 @@ class OSReadFileOptions: OSSinglePathFileOptions {
     }
 }
 
+class OSReadFileInChunksOptions: OSReadFileOptions {
+    let chunkSize: Int
+
+    enum CodingKeys: CodingKey {
+        case chunkSize
+    }
+
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        chunkSize = try container.decode(Int.self, forKey: .chunkSize)
+
+        try super.init(from: decoder)
+    }
+}
+
 class OSSinglePathRecursiveEncodingMapperFileOptions: OSSinglePathRecursiveFileOptions {
     let encodingMapper: OSFILEEncodingValueMapper?
 

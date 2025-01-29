@@ -474,6 +474,99 @@
       },
       {
         "kind": "Import",
+        "name": "Combine",
+        "printedName": "Combine",
+        "declKind": "Import",
+        "moduleName": "OSFilesystemLib"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "OSFilesystemLib"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "OSFILEChunkPublisher",
+        "printedName": "OSFILEChunkPublisher",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "receive",
+            "printedName": "receive(subscriber:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GenericTypeParam",
+                "printedName": "τ_0_0"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15OSFilesystemLib20OSFILEChunkPublisherC7receive10subscriberyx_t7Combine10SubscriberRzs5Error_p7FailureRtzSS5InputRtzlF",
+            "mangledName": "$s15OSFilesystemLib20OSFILEChunkPublisherC7receive10subscriberyx_t7Combine10SubscriberRzs5Error_p7FailureRtzSS5InputRtzlF",
+            "moduleName": "OSFilesystemLib",
+            "genericSig": "<τ_0_0 where τ_0_0 : Combine.Subscriber, τ_0_0.Failure == Swift.Error, τ_0_0.Input == Swift.String>",
+            "sugared_genericSig": "<S where S : Combine.Subscriber, S.Failure == Swift.Error, S.Input == Swift.String>",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:15OSFilesystemLib20OSFILEChunkPublisherC",
+        "mangledName": "$s15OSFilesystemLib20OSFILEChunkPublisherC",
+        "moduleName": "OSFilesystemLib",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "hasMissingDesignatedInitializers": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Publisher",
+            "printedName": "Publisher",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "Output",
+                "printedName": "Output",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ]
+              },
+              {
+                "kind": "TypeWitness",
+                "name": "Failure",
+                "printedName": "Failure",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Error",
+                    "printedName": "Swift.Error",
+                    "usr": "s:s5ErrorP"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:7Combine9PublisherP",
+            "mangledName": "$s7Combine9PublisherP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "Foundation",
         "printedName": "Foundation",
         "declKind": "Import",
@@ -605,8 +698,8 @@
         "children": [
           {
             "kind": "Function",
-            "name": "readFile",
-            "printedName": "readFile(atURL:withEncoding:)",
+            "name": "readEntireFile",
+            "printedName": "readEntireFile(atURL:withEncoding:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -628,8 +721,49 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:15OSFilesystemLib17OSFILEFileManagerP8readFile5atURL12withEncodingSS10Foundation0H0V_AA14OSFILEEncodingOtKF",
-            "mangledName": "$s15OSFilesystemLib17OSFILEFileManagerP8readFile5atURL12withEncodingSS10Foundation0H0V_AA14OSFILEEncodingOtKF",
+            "usr": "s:15OSFilesystemLib17OSFILEFileManagerP14readEntireFile5atURL12withEncodingSS10Foundation0I0V_AA14OSFILEEncodingOtKF",
+            "mangledName": "$s15OSFilesystemLib17OSFILEFileManagerP14readEntireFile5atURL12withEncodingSS10Foundation0I0V_AA14OSFILEEncodingOtKF",
+            "moduleName": "OSFilesystemLib",
+            "genericSig": "<τ_0_0 where τ_0_0 : OSFilesystemLib.OSFILEFileManager>",
+            "sugared_genericSig": "<Self where Self : OSFilesystemLib.OSFILEFileManager>",
+            "protocolReq": true,
+            "throwing": true,
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "readFileInChunks",
+            "printedName": "readFileInChunks(atURL:withEncoding:andChunkSize:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "OSFILEChunkPublisher",
+                "printedName": "OSFilesystemLib.OSFILEChunkPublisher",
+                "usr": "s:15OSFilesystemLib20OSFILEChunkPublisherC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "OSFILEEncoding",
+                "printedName": "OSFilesystemLib.OSFILEEncoding",
+                "usr": "s:15OSFilesystemLib14OSFILEEncodingO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15OSFilesystemLib17OSFILEFileManagerP16readFileInChunks5atURL12withEncoding12andChunkSizeAA20OSFILEChunkPublisherC10Foundation0J0V_AA14OSFILEEncodingOSitKF",
+            "mangledName": "$s15OSFilesystemLib17OSFILEFileManagerP16readFileInChunks5atURL12withEncoding12andChunkSizeAA20OSFILEChunkPublisherC10Foundation0J0V_AA14OSFILEEncodingOSitKF",
             "moduleName": "OSFilesystemLib",
             "genericSig": "<τ_0_0 where τ_0_0 : OSFilesystemLib.OSFILEFileManager>",
             "sugared_genericSig": "<Self where Self : OSFilesystemLib.OSFILEFileManager>",
@@ -993,6 +1127,38 @@
             "usr": "s:15OSFilesystemLib14OSFILEEncodingO6stringyAcA20OSFILEStringEncodingO_tcACmF",
             "mangledName": "$s15OSFilesystemLib14OSFILEEncodingO6stringyAcA20OSFILEStringEncodingO_tcACmF",
             "moduleName": "OSFilesystemLib"
+          },
+          {
+            "kind": "Function",
+            "name": "==",
+            "printedName": "==(_:_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "OSFILEEncoding",
+                "printedName": "OSFilesystemLib.OSFILEEncoding",
+                "usr": "s:15OSFilesystemLib14OSFILEEncodingO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "OSFILEEncoding",
+                "printedName": "OSFilesystemLib.OSFILEEncoding",
+                "usr": "s:15OSFilesystemLib14OSFILEEncodingO"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15OSFilesystemLib14OSFILEEncodingO2eeoiySbAC_ACtFZ",
+            "mangledName": "$s15OSFilesystemLib14OSFILEEncodingO2eeoiySbAC_ACtFZ",
+            "moduleName": "OSFilesystemLib",
+            "static": true,
+            "implicit": true,
+            "funcSelfKind": "NonMutating"
           }
         ],
         "declKind": "Enum",
@@ -1001,6 +1167,15 @@
         "moduleName": "OSFilesystemLib",
         "declAttributes": [
           "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          }
         ]
       },
       {
@@ -1940,8 +2115,8 @@
           },
           {
             "kind": "Function",
-            "name": "readFile",
-            "printedName": "readFile(atURL:withEncoding:)",
+            "name": "readEntireFile",
+            "printedName": "readEntireFile(atURL:withEncoding:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -1963,8 +2138,49 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:15OSFilesystemLib13OSFILEManagerV8readFile5atURL12withEncodingSS10Foundation0G0V_AA14OSFILEEncodingOtKF",
-            "mangledName": "$s15OSFilesystemLib13OSFILEManagerV8readFile5atURL12withEncodingSS10Foundation0G0V_AA14OSFILEEncodingOtKF",
+            "usr": "s:15OSFilesystemLib13OSFILEManagerV14readEntireFile5atURL12withEncodingSS10Foundation0H0V_AA14OSFILEEncodingOtKF",
+            "mangledName": "$s15OSFilesystemLib13OSFILEManagerV14readEntireFile5atURL12withEncodingSS10Foundation0H0V_AA14OSFILEEncodingOtKF",
+            "moduleName": "OSFilesystemLib",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "readFileInChunks",
+            "printedName": "readFileInChunks(atURL:withEncoding:andChunkSize:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "OSFILEChunkPublisher",
+                "printedName": "OSFilesystemLib.OSFILEChunkPublisher",
+                "usr": "s:15OSFilesystemLib20OSFILEChunkPublisherC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "OSFILEEncoding",
+                "printedName": "OSFilesystemLib.OSFILEEncoding",
+                "usr": "s:15OSFilesystemLib14OSFILEEncodingO"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:15OSFilesystemLib13OSFILEManagerV16readFileInChunks5atURL12withEncoding12andChunkSizeAA20OSFILEChunkPublisherC10Foundation0I0V_AA14OSFILEEncodingOSitKF",
+            "mangledName": "$s15OSFilesystemLib13OSFILEManagerV16readFileInChunks5atURL12withEncoding12andChunkSizeAA20OSFILEChunkPublisherC10Foundation0I0V_AA14OSFILEEncodingOSitKF",
             "moduleName": "OSFilesystemLib",
             "declAttributes": [
               "AccessControl"
@@ -2460,37 +2676,65 @@
       "value": "\"NSFileTypeDirectory\""
     },
     {
-      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
       "kind": "BooleanLiteral",
-      "offset": 2859,
+      "offset": 964,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2641,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2645,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2756,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 3186,
+      "offset": 2808,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3135,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 6055,
+      "offset": 6552,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "StringLiteral",
-      "offset": 6406,
+      "offset": 6903,
       "length": 9,
       "value": "\"NoCloud\""
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 7474,
+      "offset": 7971,
       "length": 4,
       "value": "true"
     },

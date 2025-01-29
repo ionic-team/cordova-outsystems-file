@@ -1,16 +1,21 @@
 typealias PluginResultData = [String: Any]
 
 enum PluginStatus {
-    case success(PluginResultData?)
+    case success(shouldKeepCallback: Bool = false, data: PluginResultData?)
     case failure(OSFileError)
 
     var pluginResult: CDVPluginResult {
+        let result: CDVPluginResult
+
         switch self {
-        case .success(let data):
-            return CDVPluginResult(status: .ok, messageAs: data)
+        case .success(let shouldKeepCallback, let data):
+            result = CDVPluginResult(status: .ok, messageAs: data)
+            result.keepCallback = NSNumber(booleanLiteral: shouldKeepCallback)
         case .failure(let error):
-            return CDVPluginResult(status: .error, messageAs: error.toDictionary())
+            result = CDVPluginResult(status: .error, messageAs: error.toDictionary())
         }
+
+        return result
     }
 }
 

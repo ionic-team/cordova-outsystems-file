@@ -3,7 +3,8 @@ import OSFilesystemLib
 
 enum OSFileOperation {
     // Read Operations
-    case read(url: URL, encoding: OSFILEEncoding)
+    case readEntireFile(url: URL, encoding: OSFILEEncoding)
+    case readFileInChunks(url: URL, encoding: OSFILEEncoding, chunkSize: Int)
     case readdir(url: URL)
     case stat(url: URL)
     case getUri(url: URL)

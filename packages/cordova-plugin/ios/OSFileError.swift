@@ -1,5 +1,6 @@
 enum OSFileMethod: String {
-    case readFile
+    case readEntireFile
+    case readFileInChunks
     case writeFile
     case appendFile
     case deleteFile

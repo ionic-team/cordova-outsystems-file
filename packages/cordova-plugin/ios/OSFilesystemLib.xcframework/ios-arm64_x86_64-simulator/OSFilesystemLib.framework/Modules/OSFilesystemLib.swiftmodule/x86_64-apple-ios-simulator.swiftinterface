@@ -2,6 +2,7 @@
 // swift-compiler-version: Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)
 // swift-module-flags: -target x86_64-apple-ios14.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name OSFilesystemLib
 // swift-module-flags-ignorable: -enable-bare-slash-regex
+import Combine
 import Foundation
 import Swift
 import _Concurrency
@@ -34,13 +35,20 @@ public struct OSFILEItemAttributeModel {
 extension OSFilesystemLib.OSFILEItemAttributeModel {
   public static func create(from attributeDictionary: [Foundation.FileAttributeKey : Any]) -> OSFilesystemLib.OSFILEItemAttributeModel
 }
+@_hasMissingDesignatedInitializers public class OSFILEChunkPublisher : Combine.Publisher {
+  public typealias Output = Swift.String
+  public typealias Failure = Swift.Error
+  public func receive<S>(subscriber: S) where S : Combine.Subscriber, S.Failure == any Swift.Error, S.Input == Swift.String
+  @objc deinit
+}
 public protocol OSFILEDirectoryManager {
   func createDirectory(atURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
   func removeDirectory(atURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
   func listDirectory(atURL: Foundation.URL) throws -> [Foundation.URL]
 }
 public protocol OSFILEFileManager {
-  func readFile(atURL: Foundation.URL, withEncoding: OSFilesystemLib.OSFILEEncoding) throws -> Swift.String
+  func readEntireFile(atURL: Foundation.URL, withEncoding: OSFilesystemLib.OSFILEEncoding) throws -> Swift.String
+  func readFileInChunks(atURL: Foundation.URL, withEncoding: OSFilesystemLib.OSFILEEncoding, andChunkSize: Swift.Int) throws -> OSFilesystemLib.OSFILEChunkPublisher
   func getFileURL(atPath: Swift.String, withSearchPath: OSFilesystemLib.OSFILESearchPath) throws -> Foundation.URL
   func deleteFile(atURL: Foundation.URL) throws
   func saveFile(atURL: Foundation.URL, withEncodingAndData: OSFilesystemLib.OSFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws -> Foundation.URL
@@ -49,9 +57,10 @@ public protocol OSFILEFileManager {
   func renameItem(fromURL: Foundation.URL, toURL: Foundation.URL) throws
   func copyItem(fromURL: Foundation.URL, toURL: Foundation.URL) throws
 }
-public enum OSFILEEncoding {
+public enum OSFILEEncoding : Swift.Equatable {
   case byteBuffer
   case string(encoding: OSFilesystemLib.OSFILEStringEncoding)
+  public static func == (a: OSFilesystemLib.OSFILEEncoding, b: OSFilesystemLib.OSFILEEncoding) -> Swift.Bool
 }
 public enum OSFILEEncodingValueMapper {
   case byteBuffer(value: Foundation.Data)
@@ -92,7 +101,8 @@ extension OSFilesystemLib.OSFILEManager : OSFilesystemLib.OSFILEDirectoryManager
   public func listDirectory(atURL pathURL: Foundation.URL) throws -> [Foundation.URL]
 }
 extension OSFilesystemLib.OSFILEManager : OSFilesystemLib.OSFILEFileManager {
-  public func readFile(atURL fileURL: Foundation.URL, withEncoding encoding: OSFilesystemLib.OSFILEEncoding) throws -> Swift.String
+  public func readEntireFile(atURL fileURL: Foundation.URL, withEncoding encoding: OSFilesystemLib.OSFILEEncoding) throws -> Swift.String
+  public func readFileInChunks(atURL fileURL: Foundation.URL, withEncoding encoding: OSFilesystemLib.OSFILEEncoding, andChunkSize chunkSize: Swift.Int) throws -> OSFilesystemLib.OSFILEChunkPublisher
   public func getFileURL(atPath path: Swift.String, withSearchPath searchPath: OSFilesystemLib.OSFILESearchPath) throws -> Foundation.URL
   public func deleteFile(atURL url: Foundation.URL) throws
   @discardableResult

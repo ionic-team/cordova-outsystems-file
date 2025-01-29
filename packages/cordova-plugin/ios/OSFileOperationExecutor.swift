@@ -1,9 +1,17 @@
+import Combine
 import Foundation
 import OSFilesystemLib
+import UniformTypeIdentifiers
 
-struct OSFileOperationExecutor {
+class OSFileOperationExecutor {
     let service: FileService
     let commandDelegate: CDVCommandDelegate
+    private var cancellables = Set<AnyCancellable>()
+
+    init(service: FileService, commandDelegate: CDVCommandDelegate) {
+        self.service = service
+        self.commandDelegate = commandDelegate
+    }
 
     func execute(_ operation: OSFileOperation, _ command: CDVInvokedUrlCommand) {
         let status: PluginStatus
@@ -12,9 +20,12 @@ struct OSFileOperationExecutor {
             var resultData: PluginResultData?
 
             switch operation {
-            case .read(let url, let encoding):
-                let data = try service.readFile(atURL: url, withEncoding: encoding)
-                resultData = [Constants.ResultDataKey.data: data]
+            case .readEntireFile(let url, let encoding):
+                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding)
+                resultData = [Constants.ResultDataKey.data: fullData]
+            case .readFileInChunks(let url, let encoding, let chunkSize):
+                try processFileInChunks(at: url, withEncoding: encoding, chunkSize: chunkSize, for: operation, command)
+                return
             case .write(let url, let encodingMapper, let recursive):
                 let resultURL = try service.saveFile(atURL: url, withEncodingAndData: encodingMapper, includeIntermediateDirectories: recursive)
                 resultData = [Constants.ResultDataKey.uri: resultURL.absoluteString]
@@ -41,17 +52,35 @@ struct OSFileOperationExecutor {
                 resultData = [Constants.ResultDataKey.uri: destination.absoluteString]
             }
 
-            status = .success(resultData)
+            status = .success(data: resultData)
         } catch {
             status = .failure(mapError(error, for: operation))
         }
 
         commandDelegate.handle(command, status: status)
     }
+}
 
-    private func mapError(_ error: Error, for operation: OSFileOperation) -> OSFileError {
+private extension OSFileOperationExecutor {
+    func processFileInChunks(at url: URL, withEncoding encoding: OSFILEEncoding, chunkSize: Int, for operation: OSFileOperation, _ command: CDVInvokedUrlCommand) throws {
+        try service.readFileInChunks(atURL: url, withEncoding: encoding, andChunkSize: chunkSize)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    self.commandDelegate.handle(command, status: .success(data: nil))
+                case .failure(let error):
+                    self.commandDelegate.handle(command, status: .failure(self.mapError(error, for: operation)))
+                }
+            }, receiveValue: { value in
+                self.commandDelegate.handle(command, status: .success(shouldKeepCallback: true, data: [Constants.ResultDataKey.data: value]))
+            })
+            .store(in: &cancellables)
+    }
+
+    func mapError(_ error: Error, for operation: OSFileOperation) -> OSFileError {
         return switch operation {
-        case .read: .operationFailed(method: .readFile, error)
+        case .readEntireFile: .operationFailed(method: .readEntireFile, error)
+        case .readFileInChunks: .operationFailed(method: .readFileInChunks, error)
         case .write: .operationFailed(method: .writeFile, error)
         case .append: .operationFailed(method: .appendFile, error)
         case .delete: .operationFailed(method: .deleteFile, error)
@@ -65,7 +94,7 @@ struct OSFileOperationExecutor {
         }
     }
 
-    private func fetchItemAttributesJSObject(using service: FileService, atURL url: URL, isDirectory: Bool = false) throws -> OSFILEItemAttributeModel.JSResult {
+    func fetchItemAttributesJSObject(using service: FileService, atURL url: URL, isDirectory: Bool = false) throws -> OSFILEItemAttributeModel.JSResult {
         let attributes = try service.getItemAttributes(atPath: url.urlPath)
         let conversionMethod = isDirectory ? attributes.toDirectoryJSResult : attributes.toStatsJSResult
         return conversionMethod(url)

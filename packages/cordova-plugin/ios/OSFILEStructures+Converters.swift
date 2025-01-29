@@ -3,9 +3,9 @@ import OSFilesystemLib
 extension OSFILEStringEncoding {
     static func create(from text: String?) -> Self? {
         switch text {
-        case "ascii": .ascii
-        case "utf16": .utf16
-        case "utf8": .utf8
+        case Constants.StringEncodingValue.ascii: .ascii
+        case Constants.StringEncodingValue.utf16: .utf16
+        case Constants.StringEncodingValue.utf8: .utf8
         default: nil
         }
     }
@@ -14,11 +14,11 @@ extension OSFILEStringEncoding {
 extension OSFILEDirectoryType {
     static func create(from text: String?) -> Self? {
         switch text {
-        case "CACHE": .cache
-        case "DATA", "DOCUMENTS", "EXTERNAL", "EXTERNAL_CACHE", "EXTERNAL_STORAGE": .document
-        case "LIBRARY": .library
-        case "LIBRARY_NO_CLOUD": .notSyncedLibrary
-        case "TEMPORARY_IOS": .temporary
+        case Constants.DirectoryTypeValue.cache: .cache
+        case Constants.DirectoryTypeValue.data, Constants.DirectoryTypeValue.documents, Constants.DirectoryTypeValue.external, Constants.DirectoryTypeValue.externalCache, Constants.DirectoryTypeValue.externalStorage: .document
+        case Constants.DirectoryTypeValue.library: .library
+        case Constants.DirectoryTypeValue.libraryNoCloud: .notSyncedLibrary
+        case Constants.DirectoryTypeValue.temporary: .temporary
         default: nil
         }
     }

@@ -20,11 +20,22 @@ private extension OSFilePlugin {
     @objc(readFile:)
     func readFile(command: CDVInvokedUrlCommand) {
         guard let options: OSReadFileOptions = command.createModel() else {
-            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readFile)))
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readEntireFile)))
         }
 
         performSinglePathOperation(command, options) {
-            .read(url: $0, encoding: options.encoding)
+            .readEntireFile(url: $0, encoding: options.encoding)
+        }
+    }
+
+    @objc(readFileInChunks:)
+    func readFileInChunks(command: CDVInvokedUrlCommand) {
+        guard let options: OSReadFileInChunksOptions = command.createModel() else {
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readFileInChunks)))
+        }
+
+        performSinglePathOperation(command, options) {
+            .readFileInChunks(url: $0, encoding: options.encoding, chunkSize: options.chunkSize)
         }
     }
 

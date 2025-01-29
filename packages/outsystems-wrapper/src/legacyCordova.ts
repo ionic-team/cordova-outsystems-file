@@ -1,4 +1,4 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, ReadFileOptions, ReadFileResult, DeleteFileOptions} from "../../cordova-plugin/src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, DeleteFileOptions, ReadFileInChunksOptions, ReadFileResult} from "../../cordova-plugin/src/definitions";
 
 class LegacyCordovaBridge {
     createDirectory(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -51,30 +51,24 @@ class LegacyCordovaBridge {
     }
 
     getFileData(success: (data: string | Blob) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
-        let synapseSuccess = (res: ReadFileResult) => {
-            success(res.data)
-        }
-        this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
+        this.readFile(success, error, `${path}/${name}`, isInternal, isTemporary)
     }
 
     getFileDataFromUri(success: (data: string | Blob) => void, error: (err: PluginError) => void, path: string): void {
-        let synapseSuccess = (res: ReadFileResult) => {
-            success(res.data)
-        }
-        this.readFile(synapseSuccess, error, path, undefined, undefined)
+        this.readFile(success, error, path, undefined, undefined)
     }
 
     getFileUrl(success: (url: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
-        let synapseSuccess = (res: ReadFileResult) => {
-            let blobUrl = this.dataToBlobUrl(res.data)
+        let synapseSuccess = (res: string | Blob) => {
+            let blobUrl = this.dataToBlobUrl(res)
             success(blobUrl)
         }
         this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
     }
 
     getFileUrlFromUri(success: (url: string) => void, error: (err: PluginError) => void, path: string): void {
-        let synapseSuccess = (res: ReadFileResult) => {
-            let blobUrl = this.dataToBlobUrl(res.data)
+        let synapseSuccess = (res: string | Blob) => {
+            let blobUrl = this.dataToBlobUrl(res)
             success(blobUrl)
         }
         this.readFile(synapseSuccess, error, path, undefined, undefined)
@@ -90,6 +84,7 @@ class LegacyCordovaBridge {
         let synapseSuccess = (res: GetUriResult) => {
             success(res.uri)
         }
+
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options)
     }
@@ -120,7 +115,7 @@ class LegacyCordovaBridge {
 
     private getOptionalDirectoryTypeFrom(isInternal: boolean | undefined, isTemporary: boolean | undefined): Directory | undefined {
         // Handle the case where both parameters are undefined
-        if (isInternal === undefined && isTemporary === undefined) {
+        if (isInternal === undefined || isTemporary === undefined) {
             return undefined
         } else {
             return this.getDirectoryTypeFrom(!!isInternal, !!isTemporary)
@@ -138,14 +133,27 @@ class LegacyCordovaBridge {
         return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
     }
 
-    private readFile(success: (res: ReadFileResult) => void, error: (err: PluginError) => void, path: string, isInternal: boolean | undefined, isTemporary: boolean | undefined): void {
+    private readFile(success: (res: string | Blob) => void, error: (err: PluginError) => void, path: string, isInternal: boolean | undefined, isTemporary: boolean | undefined): void {
         let directory: Directory | undefined = this.getOptionalDirectoryTypeFrom(isInternal, isTemporary);
-        let options: ReadFileOptions = {
+        let options: ReadFileInChunksOptions = {
             path: path,
-            directory: directory
+            directory: directory,
+            chunkSize: 256 * 1024
         }
+
+        let chunks: string[] = []        
+        let synapseSuccess = (res: ReadFileResult) => {
+            if (res.data === "") {
+                success(chunks.join(''))
+            } else if (typeof res.data === 'string') {
+                chunks.push(res.data)
+            } else {
+                chunks.push(res.data.toString())
+            }
+        }
+
         // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.readFileInChunks(synapseSuccess, error, options)
     }
 
     private dataToBlobUrl(data: string | Blob): string {

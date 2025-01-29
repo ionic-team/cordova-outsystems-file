@@ -226,6 +226,15 @@ export interface ReadFileOptions {
   encoding?: Encoding;
 }
 
+export interface ReadFileInChunksOptions extends ReadFileOptions {
+  /**
+   * Size of the chunks in bytes.
+   *
+   * @since 1.0.0
+   */
+  chunkSize: number;
+}
+
 export interface DeleteFileOptions {
   /**
    * The path of the file to delete

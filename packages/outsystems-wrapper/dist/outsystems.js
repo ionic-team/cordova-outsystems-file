@@ -60,27 +60,21 @@
       CapacitorUtils.Synapse.Filesystem.readdir(synapseSuccess, error, options);
     }
     getFileData(success, error, name, path, isInternal, isTemporary) {
-      let synapseSuccess = (res) => {
-        success(res.data);
-      };
-      this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary);
+      this.readFile(success, error, `${path}/${name}`, isInternal, isTemporary);
     }
     getFileDataFromUri(success, error, path) {
-      let synapseSuccess = (res) => {
-        success(res.data);
-      };
-      this.readFile(synapseSuccess, error, path, void 0, void 0);
+      this.readFile(success, error, path, void 0, void 0);
     }
     getFileUrl(success, error, name, path, isInternal, isTemporary) {
       let synapseSuccess = (res) => {
-        let blobUrl = this.dataToBlobUrl(res.data);
+        let blobUrl = this.dataToBlobUrl(res);
         success(blobUrl);
       };
       this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary);
     }
     getFileUrlFromUri(success, error, path) {
       let synapseSuccess = (res) => {
-        let blobUrl = this.dataToBlobUrl(res.data);
+        let blobUrl = this.dataToBlobUrl(res);
         success(blobUrl);
       };
       this.readFile(synapseSuccess, error, path, void 0, void 0);
@@ -115,7 +109,7 @@
       CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options);
     }
     getOptionalDirectoryTypeFrom(isInternal, isTemporary) {
-      if (isInternal === void 0 && isTemporary === void 0) {
+      if (isInternal === void 0 || isTemporary === void 0) {
         return void 0;
       } else {
         return this.getDirectoryTypeFrom(!!isInternal, !!isTemporary);
@@ -134,9 +128,20 @@
       let directory = this.getOptionalDirectoryTypeFrom(isInternal, isTemporary);
       let options = {
         path,
-        directory
+        directory,
+        chunkSize: 256 * 1024
       };
-      CapacitorUtils.Synapse.Filesystem.readFile(success, error, options);
+      let chunks = [];
+      let synapseSuccess = (res) => {
+        if (res.data === "") {
+          success(chunks.join(""));
+        } else if (typeof res.data === "string") {
+          chunks.push(res.data);
+        } else {
+          chunks.push(res.data.toString());
+        }
+      };
+      CapacitorUtils.Synapse.Filesystem.readFileInChunks(synapseSuccess, error, options);
     }
     dataToBlobUrl(data) {
       let blob;

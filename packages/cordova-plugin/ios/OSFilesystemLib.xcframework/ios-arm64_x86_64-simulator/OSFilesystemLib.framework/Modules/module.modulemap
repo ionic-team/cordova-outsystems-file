@@ -1,4 +1,0 @@
-framework module OSFilesystemLib {
-  header "OSFilesystemLib-Swift.h"
-  requires objc
-}

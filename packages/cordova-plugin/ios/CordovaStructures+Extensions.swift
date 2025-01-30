@@ -5,16 +5,18 @@ enum PluginStatus {
     case failure(OSFileError)
 
     var pluginResult: CDVPluginResult {
+        var keepCallback = false
         let result: CDVPluginResult
 
         switch self {
         case .success(let shouldKeepCallback, let data):
+            keepCallback = shouldKeepCallback
             result = CDVPluginResult(status: .ok, messageAs: data)
-            result.keepCallback = NSNumber(booleanLiteral: shouldKeepCallback)
         case .failure(let error):
             result = CDVPluginResult(status: .error, messageAs: error.toDictionary())
         }
-
+        result.keepCallback = NSNumber(booleanLiteral: keepCallback)
+        
         return result
     }
 }

@@ -2685,21 +2685,21 @@
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
       "kind": "IntegerLiteral",
-      "offset": 2641,
+      "offset": 2747,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
       "kind": "IntegerLiteral",
-      "offset": 2645,
+      "offset": 2751,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/OSFilesystemLib\/OSFILEChunkPublisher.swift",
       "kind": "BooleanLiteral",
-      "offset": 2756,
+      "offset": 2862,
       "length": 4,
       "value": "true"
     },

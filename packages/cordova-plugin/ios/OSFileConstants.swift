@@ -1,4 +1,8 @@
 struct Constants {
+    struct ConfigurationValue {
+        static let endOfFile = ""
+    }
+
     struct DirectoryTypeValue {
         static let cache = "CACHE"
         static let data = "DATA"

@@ -162,19 +162,24 @@ private extension OSFilePlugin {
 
 // MARK: - Operation Execution
 private extension OSFilePlugin {
-    func performSinglePathOperation(_ command: CDVInvokedUrlCommand, _ options: OSSinglePathFileOptions, operationBuilder: (URL) -> OSFileOperation) {
-        executeOperation(command) { service in
-            OSFileLocationResolver(service: service)
-                .resolveSinglePath(from: options)
-                .map { operationBuilder($0) }
+    func performSinglePathOperation(_ command: CDVInvokedUrlCommand, _ options: OSSinglePathFileOptions, operationBuilder: @escaping (URL) -> OSFileOperation) {
+        commandDelegate.run { [weak self] in
+            self?.executeOperation(command) { service in
+                OSFileLocationResolver(service: service)
+                    .resolveSinglePath(from: options)
+                    .map { operationBuilder($0) }
+            }
         }
+
     }
 
-    func performDualPathOperation(_ command: CDVInvokedUrlCommand, _ options: OSDualPathFileOptions, operationBuilder: (URL, URL) -> OSFileOperation) {
-        executeOperation(command) { service in
-            OSFileLocationResolver(service: service)
-                .resolveDualPaths(from: options)
-                .map { operationBuilder($0.source, $0.destination) }
+    func performDualPathOperation(_ command: CDVInvokedUrlCommand, _ options: OSDualPathFileOptions, operationBuilder: @escaping (URL, URL) -> OSFileOperation) {
+        commandDelegate.run { [weak self] in
+            self?.executeOperation(command) { service in
+                OSFileLocationResolver(service: service)
+                    .resolveDualPaths(from: options)
+                    .map { operationBuilder($0.source, $0.destination) }
+            }
         }
     }
 

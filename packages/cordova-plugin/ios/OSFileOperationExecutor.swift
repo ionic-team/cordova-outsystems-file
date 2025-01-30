@@ -1,7 +1,6 @@
 import Combine
 import Foundation
 import OSFilesystemLib
-import UniformTypeIdentifiers
 
 class OSFileOperationExecutor {
     let service: FileService
@@ -67,7 +66,7 @@ private extension OSFileOperationExecutor {
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    self.commandDelegate.handle(command, status: .success(data: nil))
+                    self.commandDelegate.handle(command, status: .success(data: [Constants.ResultDataKey.data: Constants.ConfigurationValue.endOfFile]))
                 case .failure(let error):
                     self.commandDelegate.handle(command, status: .failure(self.mapError(error, for: operation)))
                 }

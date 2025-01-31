@@ -20,7 +20,7 @@ class IONFileOperationExecutor {
 
             switch operation {
             case .readEntireFile(let url, let encoding):
-                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding)
+                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding).description
                 resultData = [Constants.ResultDataKey.data: fullData]
             case .readFileInChunks(let url, let encoding, let chunkSize):
                 try processFileInChunks(at: url, withEncoding: encoding, chunkSize: chunkSize, for: operation, command)
@@ -70,8 +70,8 @@ private extension IONFileOperationExecutor {
                 case .failure(let error):
                     self.commandDelegate.handle(command, status: .failure(self.mapError(error, for: operation)))
                 }
-            }, receiveValue: { value in
-                self.commandDelegate.handle(command, status: .success(shouldKeepCallback: true, data: [Constants.ResultDataKey.data: value]))
+            }, receiveValue: {
+                self.commandDelegate.handle(command, status: .success(shouldKeepCallback: true, data: [Constants.ResultDataKey.data: $0.description]))
             })
             .store(in: &cancellables)
     }

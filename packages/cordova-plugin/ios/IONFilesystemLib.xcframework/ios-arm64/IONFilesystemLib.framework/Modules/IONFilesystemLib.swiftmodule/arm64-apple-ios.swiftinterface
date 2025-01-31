@@ -36,9 +36,9 @@ extension IONFilesystemLib.IONFILEItemAttributeModel {
   public static func create(from attributeDictionary: [Foundation.FileAttributeKey : Any]) -> IONFilesystemLib.IONFILEItemAttributeModel
 }
 @_hasMissingDesignatedInitializers public class IONFILEChunkPublisher : Combine.Publisher {
-  public typealias Output = Swift.String
+  public typealias Output = IONFilesystemLib.IONFILEEncodingValueMapper
   public typealias Failure = Swift.Error
-  public func receive<S>(subscriber: S) where S : Combine.Subscriber, S.Failure == any Swift.Error, S.Input == Swift.String
+  public func receive<S>(subscriber: S) where S : Combine.Subscriber, S.Failure == any Swift.Error, S.Input == IONFilesystemLib.IONFILEEncodingValueMapper
   @objc deinit
 }
 public protocol IONFILEDirectoryManager {
@@ -47,7 +47,7 @@ public protocol IONFILEDirectoryManager {
   func listDirectory(atURL: Foundation.URL) throws -> [Foundation.URL]
 }
 public protocol IONFILEFileManager {
-  func readEntireFile(atURL: Foundation.URL, withEncoding: IONFilesystemLib.IONFILEEncoding) throws -> Swift.String
+  func readEntireFile(atURL: Foundation.URL, withEncoding: IONFilesystemLib.IONFILEEncoding) throws -> IONFilesystemLib.IONFILEEncodingValueMapper
   func readFileInChunks(atURL: Foundation.URL, withEncoding: IONFilesystemLib.IONFILEEncoding, andChunkSize: Swift.Int) throws -> IONFilesystemLib.IONFILEChunkPublisher
   func getFileURL(atPath: Swift.String, withSearchPath: IONFilesystemLib.IONFILESearchPath) throws -> Foundation.URL
   func deleteFile(atURL: Foundation.URL) throws
@@ -101,7 +101,7 @@ extension IONFilesystemLib.IONFILEManager : IONFilesystemLib.IONFILEDirectoryMan
   public func listDirectory(atURL pathURL: Foundation.URL) throws -> [Foundation.URL]
 }
 extension IONFilesystemLib.IONFILEManager : IONFilesystemLib.IONFILEFileManager {
-  public func readEntireFile(atURL fileURL: Foundation.URL, withEncoding encoding: IONFilesystemLib.IONFILEEncoding) throws -> Swift.String
+  public func readEntireFile(atURL fileURL: Foundation.URL, withEncoding encoding: IONFilesystemLib.IONFILEEncoding) throws -> IONFilesystemLib.IONFILEEncodingValueMapper
   public func readFileInChunks(atURL fileURL: Foundation.URL, withEncoding encoding: IONFilesystemLib.IONFILEEncoding, andChunkSize chunkSize: Swift.Int) throws -> IONFilesystemLib.IONFILEChunkPublisher
   public func getFileURL(atPath path: Swift.String, withSearchPath searchPath: IONFilesystemLib.IONFILESearchPath) throws -> Foundation.URL
   public func deleteFile(atURL url: Foundation.URL) throws

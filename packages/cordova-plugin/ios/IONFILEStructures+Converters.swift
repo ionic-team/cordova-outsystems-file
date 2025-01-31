@@ -61,6 +61,16 @@ extension IONFILEEncodingValueMapper {
     }
 }
 
+extension IONFILEEncodingValueMapper: @retroactive CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .byteBuffer(let data): data.base64EncodedString()
+        case .string(_, let text): text
+        @unknown default: ""
+        }
+    }
+}
+
 extension IONFILEItemAttributeModel {
     typealias JSResult = [String: Any]
     func toDirectoryJSResult(with url: URL) -> JSResult {

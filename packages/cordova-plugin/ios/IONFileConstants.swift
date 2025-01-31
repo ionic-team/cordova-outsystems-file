@@ -15,6 +15,11 @@ struct Constants {
         static let temporary = "TEMPORARY"
     }
 
+    struct ErrorKey {
+        static let code = "code"
+        static let message = "message"
+    }
+
     struct FileItemTypeValue {
         static let directory = "directory"
         static let file = "file"

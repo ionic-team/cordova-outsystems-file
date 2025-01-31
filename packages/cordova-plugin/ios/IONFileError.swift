@@ -21,8 +21,8 @@ enum IONFileError: Error {
 
     func toDictionary() -> [String: String] {
             [
-                "code": "OS-PLUG-FILE-\(String(format: "%04d", code))",
-                "message": description
+                Constants.ErrorKey.code: "OS-PLUG-FILE-\(String(format: "%04d", code))",
+                Constants.ErrorKey.message: description
             ]
         }
 }

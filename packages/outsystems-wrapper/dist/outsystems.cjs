@@ -1,163 +1,11 @@
 "use strict";
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-var Directory = /* @__PURE__ */ ((Directory2) => {
-  Directory2["Documents"] = "DOCUMENTS";
-  Directory2["Data"] = "DATA";
-  Directory2["Library"] = "LIBRARY";
-  Directory2["Cache"] = "CACHE";
-  Directory2["External"] = "EXTERNAL";
-  Directory2["ExternalStorage"] = "EXTERNAL_STORAGE";
-  Directory2["ExternalCache"] = "EXTERNAL_CACHE";
-  Directory2["LibraryNoCloud"] = "LIBRARY_NO_CLOUD";
-  Directory2["Temporary"] = "TEMPORARY";
-  return Directory2;
-})(Directory || {});
 var Encoding = /* @__PURE__ */ ((Encoding2) => {
   Encoding2["UTF8"] = "utf8";
   Encoding2["ASCII"] = "ascii";
   Encoding2["UTF16"] = "utf16";
   return Encoding2;
 })(Encoding || {});
-class LegacyCordovaBridge {
-  createDirectory(success, error, name, path, isInternal, isTemporary) {
-    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path: `${path}/${name}`,
-      directory,
-      recursive: true
-    };
-    let getUriSuccess = (uri) => {
-      success(uri);
-    };
-    let mkDirSuccess = () => {
-      this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary);
-    };
-    CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options);
-  }
-  deleteDirectory(success, error, path, isInternal, isTemporary) {
-    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path,
-      directory,
-      recursive: true
-    };
-    CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options);
-  }
-  listDirectory(success, error, path, isInternal, isTemporary) {
-    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path,
-      directory
-    };
-    let synapseSuccess = (res) => {
-      success(
-        res.files.filter((fileInfo) => fileInfo.type == "directory").map((fileInfo) => fileInfo.name),
-        res.files.filter((fileInfo) => fileInfo.type == "file").map((fileInfo) => fileInfo.name)
-      );
-    };
-    CapacitorUtils.Synapse.Filesystem.readdir(synapseSuccess, error, options);
-  }
-  getFileData(success, error, name, path, isInternal, isTemporary) {
-    this.readFile(success, error, `${path}/${name}`, isInternal, isTemporary);
-  }
-  getFileDataFromUri(success, error, path) {
-    this.readFile(success, error, path, void 0, void 0);
-  }
-  getFileUrl(success, error, name, path, isInternal, isTemporary) {
-    let synapseSuccess = (res) => {
-      let blobUrl = this.dataToBlobUrl(res);
-      success(blobUrl);
-    };
-    this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary);
-  }
-  getFileUrlFromUri(success, error, path) {
-    let synapseSuccess = (res) => {
-      let blobUrl = this.dataToBlobUrl(res);
-      success(blobUrl);
-    };
-    this.readFile(synapseSuccess, error, path, void 0, void 0);
-  }
-  getFileUri(success, error, name, path, isInternal, isTemporary) {
-    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path: `${path}/${name}`,
-      directory
-    };
-    let synapseSuccess = (res) => {
-      success(res.uri);
-    };
-    CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options);
-  }
-  writeFile(success, error, name, path, data, isInternal, isTemporary) {
-    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path: `${path}/${name}`,
-      data,
-      directory,
-      recursive: true
-    };
-    CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
-  }
-  deleteFile(success, error, path, name, isInternal, isTemporary) {
-    let directory = this.getDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path: `${path}/${name}`,
-      directory
-    };
-    CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options);
-  }
-  getOptionalDirectoryTypeFrom(isInternal, isTemporary) {
-    if (isInternal === void 0 || isTemporary === void 0) {
-      return void 0;
-    } else {
-      return this.getDirectoryTypeFrom(!!isInternal, !!isTemporary);
-    }
-  }
-  getDirectoryTypeFrom(isInternal, isTemporary) {
-    if (cordova.platformId == "android") {
-      if (isInternal) {
-        return isTemporary ? Directory.Cache : Directory.Data;
-      }
-      return isTemporary ? Directory.ExternalCache : Directory.ExternalStorage;
-    }
-    return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
-  }
-  readFile(success, error, path, isInternal, isTemporary) {
-    let directory = this.getOptionalDirectoryTypeFrom(isInternal, isTemporary);
-    let options = {
-      path,
-      directory,
-      chunkSize: 256 * 1024
-    };
-    let chunks = [];
-    let synapseSuccess = (res) => {
-      if (res.data === "") {
-        success(chunks.join(""));
-      } else if (typeof res.data === "string") {
-        chunks.push(res.data);
-      } else {
-        chunks.push(res.data.toString());
-      }
-    };
-    CapacitorUtils.Synapse.Filesystem.readFileInChunks(synapseSuccess, error, options);
-  }
-  dataToBlobUrl(data) {
-    let blob;
-    if (data instanceof Blob) {
-      blob = data;
-    } else {
-      let binaryString = atob(data);
-      let binaryLength = binaryString.length;
-      let binaryArray = new Uint8Array(binaryLength);
-      for (let i = 0; i < binaryLength; i++) {
-        binaryArray[i] = binaryString.charCodeAt(i);
-      }
-      blob = new Blob([binaryArray], { type: "application/octet-stream" });
-    }
-    return URL.createObjectURL(blob);
-  }
-}
-const LegacyMigration = new LegacyCordovaBridge();
 function resolve(path) {
   const posix = path.split("/").filter((item) => item !== ".");
   const newPosix = [];
@@ -177,7 +25,7 @@ function isPathParent(parent, children) {
   const pathsB = children.split("/");
   return parent !== children && pathsA.every((value, index) => value === pathsB[index]);
 }
-const _FilePluginWeb = class _FilePluginWeb {
+const _FilesystemWeb = class _FilesystemWeb {
   constructor() {
     this.DB_VERSION = 1;
     this.DB_NAME = "Disc";
@@ -192,7 +40,7 @@ const _FilePluginWeb = class _FilePluginWeb {
     }
     return new Promise((resolve2, reject) => {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-      request.onupgradeneeded = _FilePluginWeb.doUpgrade;
+      request.onupgradeneeded = FilePluginWeb.doUpgrade;
       request.onsuccess = () => {
         this._db = request.result;
         resolve2(request.result);
@@ -664,11 +512,11 @@ const _FilePluginWeb = class _FilePluginWeb {
     }
   }
 };
-_FilePluginWeb._debug = true;
-let FilePluginWeb = _FilePluginWeb;
+_FilesystemWeb._debug = true;
+let FilesystemWeb = _FilesystemWeb;
 class OSFilePlugin {
   constructor() {
-    this.webPlugin = new FilePluginWeb();
+    this.webPlugin = new FilesystemWeb();
   }
   readFile(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {
@@ -739,4 +587,3 @@ class OSFilePlugin {
 }
 const Instance = new OSFilePlugin();
 exports.Instance = Instance;
-exports.LegacyMigration = LegacyMigration;

@@ -10,9 +10,9 @@
     <br />
     <a href="https://github.com/ionic-team/repo_name">🔌 Capacitor Plugin</a>
     ·
-    <a href="https://github.com/ionic-team/OSFilesystemLib-Android">🤖 Android Library</a>
+    <a href="https://github.com/ionic-team/ion-android-filesystem">🤖 Android Library</a>
     ·
-    <a href="https://github.com/ionic-team/OSFilesystemLib-iOS">🍏 iOS Library</a>
+    <a href="https://github.com/ionic-team/ion-ios-filesystem">🍏 iOS Library</a>
   </p>
   <p align="center">
     <a href="https://github.com/ionic-team/cordova-outsystems-file/issues/new?labels=bug&template=bug-report.md">🐛 Report Bug</a>

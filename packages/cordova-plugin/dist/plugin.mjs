@@ -48,9 +48,6 @@ var exec = require2("cordova/exec");
 function readFile(success, error, options) {
   exec(success, error, "OSFilePlugin", "readFile", [options]);
 }
-function readFileInChunks(success, error, options) {
-  exec(success, error, "OSFilePlugin", "readFileInChunks", [options]);
-}
 function writeFile(success, error, options) {
   exec(success, error, "OSFilePlugin", "writeFile", [options]);
 }
@@ -83,7 +80,6 @@ function copy(success, error, options) {
 }
 module.exports = {
   readFile,
-  readFileInChunks,
   writeFile,
   appendFile,
   deleteFile,

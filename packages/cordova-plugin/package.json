@@ -7,7 +7,7 @@
     "lint": "npm run eslint && npm run prettier -- --check",
     "eslint": "eslint . --ext ts",
     "prettier": "prettier \"**/*.{css,html,ts,js}\"",
-    "docgen": "docgen --api IFilePlugin --output-readme README.md --output-json ./dist/docs.json",
+    "docgen": "docgen --api IFilesystem --output-readme README.md --output-json ./dist/docs.json",
     "build": "rimraf ./dist && npm run docgen && vite build",
     "update:tag": "node ./scripts/change-extensibility.js",
     "update:version": "node ./scripts/tag-applications-o11.js",

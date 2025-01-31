@@ -40,10 +40,19 @@ class LegacyCordovaBridge {
         }
 
         let synapseSuccess = (res: ReaddirResult) => {
-            success(
-                res.files.filter(fileInfo => fileInfo.type == 'directory').map(fileInfo => fileInfo.name), 
-                res.files.filter(fileInfo => fileInfo.type == 'file').map(fileInfo => fileInfo.name)
-            )
+            let { directories, files } = res.files.reduce(
+                (acc, fileInfo) => {
+                    if (fileInfo.type === 'directory') {
+                        acc.directories.push(fileInfo.name);
+                    } else if (fileInfo.type === 'file') {
+                        acc.files.push(fileInfo.name);
+                    }
+                    return acc;
+                },
+                { directories: [] as string[], files: [] as string[] }
+            );
+
+            success(directories, files);
         }
 
         // @ts-ignore

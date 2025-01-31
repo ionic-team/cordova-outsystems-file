@@ -1,4 +1,4 @@
-import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
+import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, FileInfo, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
 import { FilesystemWeb } from "../../cordova-plugin/src/web";
 
 class OSFilePlugin {
@@ -90,15 +90,22 @@ class OSFilePlugin {
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.getUri(success, error, options)
     }
-    stat(success: (res: StatResult) => void, error: (err: PluginError) => void, options: StatOptions): void {
+    stat(success: (res: FileInfo) => void, error: (err: PluginError) => void, options: StatOptions): void {
+        const statSuccess = (res: StatResult) => {
+            let fileInfo: FileInfo = {
+                name: res.uri.substring(res.uri.lastIndexOf('/')+1),
+                ...res
+            }
+            success(fileInfo)
+        } 
         // @ts-ignore
         if (typeof (CapacitorUtils) === 'undefined') {
             this.webPlugin.stat(options)
-                .then((res) => success(res))
+                .then((res) => statSuccess(res))
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.stat(success, error, options)
+        CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, options)
     }
     rename(success: () => void, error: (err: PluginError) => void, options: RenameOptions): void {
         // @ts-ignore

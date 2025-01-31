@@ -727,10 +727,17 @@ class OSFilePlugin {
     CapacitorUtils.Synapse.Filesystem.getUri(success, error, options);
   }
   stat(success, error, options) {
+    const statSuccess = (res) => {
+      let fileInfo = {
+        name: res.uri.substring(res.uri.lastIndexOf("/") + 1),
+        ...res
+      };
+      success(fileInfo);
+    };
     if (typeof CapacitorUtils === "undefined") {
-      this.webPlugin.stat(options).then((res) => success(res)).catch((err) => error(err));
+      this.webPlugin.stat(options).then((res) => statSuccess(res)).catch((err) => error(err));
     }
-    CapacitorUtils.Synapse.Filesystem.stat(success, error, options);
+    CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, options);
   }
   rename(success, error, options) {
     if (typeof CapacitorUtils === "undefined") {

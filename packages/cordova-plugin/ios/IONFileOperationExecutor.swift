@@ -26,8 +26,8 @@ class IONFileOperationExecutor {
                 try processFileInChunks(at: url, withEncoding: encoding, chunkSize: chunkSize, for: operation, command)
                 return
             case .write(let url, let encodingMapper, let recursive):
-                let resultURL = try service.saveFile(atURL: url, withEncodingAndData: encodingMapper, includeIntermediateDirectories: recursive)
-                resultData = [Constants.ResultDataKey.uri: resultURL.absoluteString]
+                try service.saveFile(atURL: url, withEncodingAndData: encodingMapper, includeIntermediateDirectories: recursive)
+                resultData = [Constants.ResultDataKey.uri: url.absoluteString]
             case .append(let url, let encodingMapper, let recursive):
                 try service.appendData(encodingMapper, atURL: url, includeIntermediateDirectories: recursive)
             case .delete(let url):
@@ -62,7 +62,8 @@ class IONFileOperationExecutor {
 
 private extension IONFileOperationExecutor {
     func processFileInChunks(at url: URL, withEncoding encoding: IONFILEEncoding, chunkSize: Int, for operation: IONFileOperation, _ command: CDVInvokedUrlCommand) throws {
-        try service.readFileInChunks(atURL: url, withEncoding: encoding, andChunkSize: chunkSize)
+        let chunkSizeToUse = chunkSizeToUse(basedOn: chunkSize, and: encoding)
+        try service.readFileInChunks(atURL: url, withEncoding: encoding, andChunkSize: chunkSizeToUse)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -74,6 +75,12 @@ private extension IONFileOperationExecutor {
                 self.commandDelegate.handle(command, status: .success(shouldKeepCallback: true, data: [Constants.ResultDataKey.data: $0.description]))
             })
             .store(in: &cancellables)
+    }
+
+    private func chunkSizeToUse(basedOn chunkSize: Int, and encoding: IONFILEEncoding) -> Int {
+        // When dealing with byte buffers, we need chunk size that are multiply of 3
+        // This is a requirement since we're treating byte buffers as base64 data.
+        encoding == .byteBuffer ? chunkSize - chunkSize % 3 + 3 : chunkSize
     }
 
     func mapError(_ error: Error, for operation: IONFileOperation) -> IONFileError {
@@ -94,7 +101,7 @@ private extension IONFileOperationExecutor {
     }
 
     func fetchItemAttributesJSObject(using service: FileService, atURL url: URL, isDirectory: Bool = false) throws -> IONFILEItemAttributeModel.JSResult {
-        let attributes = try service.getItemAttributes(atPath: url.urlPath)
+        let attributes = try service.getItemAttributes(atURL: url)
         let conversionMethod = isDirectory ? attributes.toDirectoryJSResult : attributes.toStatsJSResult
         return conversionMethod(url)
     }

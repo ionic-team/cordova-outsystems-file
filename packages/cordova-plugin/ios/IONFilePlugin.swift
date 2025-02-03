@@ -2,7 +2,7 @@ import IONFilesystemLib
 
 typealias FileService = any IONFILEDirectoryManager & IONFILEFileManager
 
-@objc(OSFilePlugin)
+@objc(IONFilePlugin)
 final class IONFilePlugin: CDVPlugin {
     private var fileService: FileService?
 

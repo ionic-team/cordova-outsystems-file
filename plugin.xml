@@ -29,7 +29,7 @@
    <platform name="ios">
         <config-file parent="/*" target="config.xml">
             <feature name="OSFilePlugin">
-                <param name="ios-package" value="OSFilePlugin" />
+                <param name="ios-package" value="IONFilePlugin" />
             </feature>
             <preference name="SwiftVersion" value="5" />
         </config-file>

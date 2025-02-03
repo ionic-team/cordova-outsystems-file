@@ -842,9 +842,8 @@
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "URL",
-                "printedName": "Foundation.URL",
-                "usr": "s:10Foundation3URLV"
+                "name": "Void",
+                "printedName": "()"
               },
               {
                 "kind": "TypeNominal",
@@ -866,8 +865,8 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:16IONFilesystemLib18IONFILEFileManagerP8saveFile5atURL19withEncodingAndData30includeIntermediateDirectories10Foundation0H0VAJ_AA26IONFILEEncodingValueMapperOSbtKF",
-            "mangledName": "$s16IONFilesystemLib18IONFILEFileManagerP8saveFile5atURL19withEncodingAndData30includeIntermediateDirectories10Foundation0H0VAJ_AA26IONFILEEncodingValueMapperOSbtKF",
+            "usr": "s:16IONFilesystemLib18IONFILEFileManagerP8saveFile5atURL19withEncodingAndData30includeIntermediateDirectoriesy10Foundation0H0V_AA26IONFILEEncodingValueMapperOSbtKF",
+            "mangledName": "$s16IONFilesystemLib18IONFILEFileManagerP8saveFile5atURL19withEncodingAndData30includeIntermediateDirectoriesy10Foundation0H0V_AA26IONFILEEncodingValueMapperOSbtKF",
             "moduleName": "IONFilesystemLib",
             "genericSig": "<τ_0_0 where τ_0_0 : IONFilesystemLib.IONFILEFileManager>",
             "sugared_genericSig": "<Self where Self : IONFilesystemLib.IONFILEFileManager>",
@@ -919,7 +918,7 @@
           {
             "kind": "Function",
             "name": "getItemAttributes",
-            "printedName": "getItemAttributes(atPath:)",
+            "printedName": "getItemAttributes(atURL:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -929,14 +928,14 @@
               },
               {
                 "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
               }
             ],
             "declKind": "Func",
-            "usr": "s:16IONFilesystemLib18IONFILEFileManagerP17getItemAttributes6atPathAA25IONFILEItemAttributeModelVSS_tKF",
-            "mangledName": "$s16IONFilesystemLib18IONFILEFileManagerP17getItemAttributes6atPathAA25IONFILEItemAttributeModelVSS_tKF",
+            "usr": "s:16IONFilesystemLib18IONFILEFileManagerP17getItemAttributes5atURLAA25IONFILEItemAttributeModelV10Foundation0I0V_tKF",
+            "mangledName": "$s16IONFilesystemLib18IONFILEFileManagerP17getItemAttributes5atURLAA25IONFILEItemAttributeModelV10Foundation0I0V_tKF",
             "moduleName": "IONFilesystemLib",
             "genericSig": "<τ_0_0 where τ_0_0 : IONFilesystemLib.IONFILEFileManager>",
             "sugared_genericSig": "<Self where Self : IONFilesystemLib.IONFILEFileManager>",
@@ -2259,9 +2258,8 @@
             "children": [
               {
                 "kind": "TypeNominal",
-                "name": "URL",
-                "printedName": "Foundation.URL",
-                "usr": "s:10Foundation3URLV"
+                "name": "Void",
+                "printedName": "()"
               },
               {
                 "kind": "TypeNominal",
@@ -2283,12 +2281,11 @@
               }
             ],
             "declKind": "Func",
-            "usr": "s:16IONFilesystemLib14IONFILEManagerV8saveFile5atURL19withEncodingAndData30includeIntermediateDirectories10Foundation0G0VAJ_AA26IONFILEEncodingValueMapperOSbtKF",
-            "mangledName": "$s16IONFilesystemLib14IONFILEManagerV8saveFile5atURL19withEncodingAndData30includeIntermediateDirectories10Foundation0G0VAJ_AA26IONFILEEncodingValueMapperOSbtKF",
+            "usr": "s:16IONFilesystemLib14IONFILEManagerV8saveFile5atURL19withEncodingAndData30includeIntermediateDirectoriesy10Foundation0G0V_AA26IONFILEEncodingValueMapperOSbtKF",
+            "mangledName": "$s16IONFilesystemLib14IONFILEManagerV8saveFile5atURL19withEncodingAndData30includeIntermediateDirectoriesy10Foundation0G0V_AA26IONFILEEncodingValueMapperOSbtKF",
             "moduleName": "IONFilesystemLib",
             "declAttributes": [
-              "AccessControl",
-              "DiscardableResult"
+              "AccessControl"
             ],
             "isFromExtension": true,
             "throwing": true,
@@ -2337,7 +2334,7 @@
           {
             "kind": "Function",
             "name": "getItemAttributes",
-            "printedName": "getItemAttributes(atPath:)",
+            "printedName": "getItemAttributes(atURL:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -2347,14 +2344,14 @@
               },
               {
                 "kind": "TypeNominal",
-                "name": "String",
-                "printedName": "Swift.String",
-                "usr": "s:SS"
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
               }
             ],
             "declKind": "Func",
-            "usr": "s:16IONFilesystemLib14IONFILEManagerV17getItemAttributes6atPathAA25IONFILEItemAttributeModelVSS_tKF",
-            "mangledName": "$s16IONFilesystemLib14IONFILEManagerV17getItemAttributes6atPathAA25IONFILEItemAttributeModelVSS_tKF",
+            "usr": "s:16IONFilesystemLib14IONFILEManagerV17getItemAttributes5atURLAA25IONFILEItemAttributeModelV10Foundation0H0V_tKF",
+            "mangledName": "$s16IONFilesystemLib14IONFILEManagerV17getItemAttributes5atURLAA25IONFILEItemAttributeModelV10Foundation0H0V_tKF",
             "moduleName": "IONFilesystemLib",
             "declAttributes": [
               "AccessControl"
@@ -2684,57 +2681,43 @@
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEChunkPublisher.swift",
-      "kind": "IntegerLiteral",
-      "offset": 2852,
-      "length": 1,
-      "value": "3"
-    },
-    {
-      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEChunkPublisher.swift",
-      "kind": "IntegerLiteral",
-      "offset": 2856,
-      "length": 1,
-      "value": "3"
-    },
-    {
-      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEChunkPublisher.swift",
       "kind": "BooleanLiteral",
-      "offset": 2967,
+      "offset": 2705,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 3069,
+      "offset": 3403,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 3397,
+      "offset": 3767,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 6788,
+      "offset": 7709,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "StringLiteral",
-      "offset": 7140,
+      "offset": 8029,
       "length": 9,
       "value": "\"NoCloud\""
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 8208,
+      "offset": 9097,
       "length": 4,
       "value": "true"
     },

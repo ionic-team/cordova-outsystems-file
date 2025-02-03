@@ -51,9 +51,9 @@ public protocol IONFILEFileManager {
   func readFileInChunks(atURL: Foundation.URL, withEncoding: IONFilesystemLib.IONFILEEncoding, andChunkSize: Swift.Int) throws -> IONFilesystemLib.IONFILEChunkPublisher
   func getFileURL(atPath: Swift.String, withSearchPath: IONFilesystemLib.IONFILESearchPath) throws -> Foundation.URL
   func deleteFile(atURL: Foundation.URL) throws
-  func saveFile(atURL: Foundation.URL, withEncodingAndData: IONFilesystemLib.IONFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws -> Foundation.URL
+  func saveFile(atURL: Foundation.URL, withEncodingAndData: IONFilesystemLib.IONFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws
   func appendData(_ data: IONFilesystemLib.IONFILEEncodingValueMapper, atURL: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
-  func getItemAttributes(atPath: Swift.String) throws -> IONFilesystemLib.IONFILEItemAttributeModel
+  func getItemAttributes(atURL: Foundation.URL) throws -> IONFilesystemLib.IONFILEItemAttributeModel
   func renameItem(fromURL: Foundation.URL, toURL: Foundation.URL) throws
   func copyItem(fromURL: Foundation.URL, toURL: Foundation.URL) throws
 }
@@ -105,10 +105,9 @@ extension IONFilesystemLib.IONFILEManager : IONFilesystemLib.IONFILEFileManager 
   public func readFileInChunks(atURL fileURL: Foundation.URL, withEncoding encoding: IONFilesystemLib.IONFILEEncoding, andChunkSize chunkSize: Swift.Int) throws -> IONFilesystemLib.IONFILEChunkPublisher
   public func getFileURL(atPath path: Swift.String, withSearchPath searchPath: IONFilesystemLib.IONFILESearchPath) throws -> Foundation.URL
   public func deleteFile(atURL url: Foundation.URL) throws
-  @discardableResult
-  public func saveFile(atURL fileURL: Foundation.URL, withEncodingAndData encodingMapper: IONFilesystemLib.IONFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws -> Foundation.URL
+  public func saveFile(atURL fileURL: Foundation.URL, withEncodingAndData encodingMapper: IONFilesystemLib.IONFILEEncodingValueMapper, includeIntermediateDirectories: Swift.Bool) throws
   public func appendData(_ encodingMapper: IONFilesystemLib.IONFILEEncodingValueMapper, atURL url: Foundation.URL, includeIntermediateDirectories: Swift.Bool) throws
-  public func getItemAttributes(atPath path: Swift.String) throws -> IONFilesystemLib.IONFILEItemAttributeModel
+  public func getItemAttributes(atURL url: Foundation.URL) throws -> IONFilesystemLib.IONFILEItemAttributeModel
   public func renameItem(fromURL originURL: Foundation.URL, toURL destinationURL: Foundation.URL) throws
   public func copyItem(fromURL originURL: Foundation.URL, toURL destinationURL: Foundation.URL) throws
 }

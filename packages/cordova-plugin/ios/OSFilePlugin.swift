@@ -2,21 +2,21 @@ import IONFilesystemLib
 
 typealias FileService = any IONFILEDirectoryManager & IONFILEFileManager
 
-@objc(IONFilePlugin)
-final class IONFilePlugin: CDVPlugin {
+@objc(OSFilePlugin)
+final class OSFilePlugin: CDVPlugin {
     private var fileService: FileService?
 
     override func pluginInitialize() {
         fileService = IONFILEManager()
     }
 
-    func getService() -> Result<FileService, IONFileError> {
+    func getService() -> Result<FileService, OSFileError> {
         fileService.map(Result.success) ?? .failure(.bridgeNotInitialised)
     }
 }
 
 // MARK: - Public API Methods
-private extension IONFilePlugin {
+private extension OSFilePlugin {
     @objc(readFile:)
     func readFile(command: CDVInvokedUrlCommand) {
         guard let options: IONReadFileOptions = command.createModel() else {
@@ -45,12 +45,8 @@ private extension IONFilePlugin {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .writeFile)))
         }
 
-        guard let encodingMapper = options.encodingMapper else {
-            return commandDelegate.handle(command, status: .failure(.operationFailed(method: .writeFile, nil)))
-        }
-
         performSinglePathOperation(command, options) {
-            .write(url: $0, encodingMapper: encodingMapper, recursive: options.recursive)
+            .write(url: $0, encodingMapper: options.encodingMapper, recursive: options.recursive)
         }
     }
 
@@ -60,18 +56,14 @@ private extension IONFilePlugin {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .appendFile)))
         }
 
-        guard let encodingMapper = options.encodingMapper else {
-            return commandDelegate.handle(command, status: .failure(.operationFailed(method: .appendFile, nil)))
-        }
-
         performSinglePathOperation(command, options) {
-            .append(url: $0, encodingMapper: encodingMapper, recursive: options.recursive)
+            .append(url: $0, encodingMapper: options.encodingMapper, recursive: options.recursive)
         }
     }
 
     @objc(deleteFile:)
     func deleteFile(command: CDVInvokedUrlCommand) {
-        guard let options: IONSinglePathFileOptions = command.createModel() else {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .deleteFile)))
         }
 
@@ -106,7 +98,7 @@ private extension IONFilePlugin {
 
     @objc(readdir:)
     func readdir(command: CDVInvokedUrlCommand) {
-        guard let options: IONSinglePathFileOptions = command.createModel() else {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readdir)))
         }
 
@@ -117,7 +109,7 @@ private extension IONFilePlugin {
 
     @objc(stat:)
     func stat(command: CDVInvokedUrlCommand) {
-        guard let options: IONSinglePathFileOptions = command.createModel() else {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .stat)))
         }
 
@@ -128,7 +120,7 @@ private extension IONFilePlugin {
 
     @objc(getUri:)
     func getUri(command: CDVInvokedUrlCommand) {
-        guard let options: IONSinglePathFileOptions = command.createModel() else {
+        guard let options: OSSinglePathFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .getUri)))
         }
 
@@ -139,7 +131,7 @@ private extension IONFilePlugin {
 
     @objc(rename:)
     func rename(command: CDVInvokedUrlCommand) {
-        guard let options: IONDualPathFileOptions = command.createModel() else {
+        guard let options: OSDualPathFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .rename)))
         }
 
@@ -150,7 +142,7 @@ private extension IONFilePlugin {
 
     @objc(copy:)
     func copy(command: CDVInvokedUrlCommand) {
-        guard let options: IONDualPathFileOptions = command.createModel() else {
+        guard let options: OSDualPathFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .copy)))
         }
 
@@ -161,11 +153,11 @@ private extension IONFilePlugin {
 }
 
 // MARK: - Operation Execution
-private extension IONFilePlugin {
-    func performSinglePathOperation(_ command: CDVInvokedUrlCommand, _ options: IONSinglePathFileOptions, operationBuilder: @escaping (URL) -> IONFileOperation) {
+private extension OSFilePlugin {
+    func performSinglePathOperation(_ command: CDVInvokedUrlCommand, _ options: OSSinglePathFileOptions, operationBuilder: @escaping (URL) -> OSFileOperation) {
         commandDelegate.run { [weak self] in
             self?.executeOperation(command) { service in
-                IONFileLocationResolver(service: service)
+                OSFileLocationResolver(service: service)
                     .resolveSinglePath(from: options)
                     .map { operationBuilder($0) }
             }
@@ -173,22 +165,22 @@ private extension IONFilePlugin {
 
     }
 
-    func performDualPathOperation(_ command: CDVInvokedUrlCommand, _ options: IONDualPathFileOptions, operationBuilder: @escaping (URL, URL) -> IONFileOperation) {
+    func performDualPathOperation(_ command: CDVInvokedUrlCommand, _ options: OSDualPathFileOptions, operationBuilder: @escaping (URL, URL) -> OSFileOperation) {
         commandDelegate.run { [weak self] in
             self?.executeOperation(command) { service in
-                IONFileLocationResolver(service: service)
+                OSFileLocationResolver(service: service)
                     .resolveDualPaths(from: options)
                     .map { operationBuilder($0.source, $0.destination) }
             }
         }
     }
 
-    func executeOperation(_ command: CDVInvokedUrlCommand, operationProvider: (FileService) -> Result<IONFileOperation, IONFileError>) {
+    func executeOperation(_ command: CDVInvokedUrlCommand, operationProvider: (FileService) -> Result<OSFileOperation, OSFileError>) {
         switch getService() {
         case .success(let service):
             switch operationProvider(service) {
             case .success(let operation):
-                let executor = IONFileOperationExecutor(service: service, commandDelegate: commandDelegate)
+                let executor = OSFileOperationExecutor(service: service, commandDelegate: commandDelegate)
                 executor.execute(operation, command)
             case .failure(let error):
                 commandDelegate.handle(command, status: .failure(error))

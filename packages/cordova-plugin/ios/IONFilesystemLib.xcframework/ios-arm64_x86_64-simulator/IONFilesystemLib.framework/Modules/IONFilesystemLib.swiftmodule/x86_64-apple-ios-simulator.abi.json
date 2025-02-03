@@ -2703,21 +2703,35 @@
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 7709,
+      "offset": 7746,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 7799,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8034,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "StringLiteral",
-      "offset": 8029,
+      "offset": 8140,
       "length": 9,
       "value": "\"NoCloud\""
     },
     {
       "filePath": "\/Users\/rcj\/Documents\/Projects\/OSFilesystemsLib-iOS\/IONFilesystemLib\/IONFILEManager.swift",
       "kind": "BooleanLiteral",
-      "offset": 9097,
+      "offset": 9208,
       "length": 4,
       "value": "true"
     },

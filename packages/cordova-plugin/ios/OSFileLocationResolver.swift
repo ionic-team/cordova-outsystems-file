@@ -1,14 +1,14 @@
 import Foundation
 import IONFilesystemLib
 
-struct IONFileLocationResolver {
+struct OSFileLocationResolver {
     let service: FileService
 
-    func resolveSinglePath(from options: IONSinglePathFileOptions) -> Result<URL, IONFileError> {
+    func resolveSinglePath(from options: OSSinglePathFileOptions) -> Result<URL, OSFileError> {
         resolveURL(path: options.path, directory: options.directory)
     }
 
-    func resolveDualPaths(from options: IONDualPathFileOptions) -> Result<(source: URL, destination: URL), IONFileError> {
+    func resolveDualPaths(from options: OSDualPathFileOptions) -> Result<(source: URL, destination: URL), OSFileError> {
         resolveURL(path: options.from.path, directory: options.from.directory)
             .flatMap { sourceURL in
                 resolveURL(path: options.to.path, directory: options.to.directory)
@@ -16,7 +16,7 @@ struct IONFileLocationResolver {
             }
     }
 
-    private func resolveURL(path: String, directory: IONFILESearchPath) -> Result<URL, IONFileError> {
+    private func resolveURL(path: String, directory: IONFILESearchPath) -> Result<URL, OSFileError> {
         return if let url = try? service.getFileURL(atPath: path, withSearchPath: directory) {
             .success(url)
         } else {

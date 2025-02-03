@@ -2,7 +2,7 @@ typealias PluginResultData = [String: Any]
 
 enum PluginStatus {
     case success(shouldKeepCallback: Bool = false, data: PluginResultData?)
-    case failure(IONFileError)
+    case failure(OSFileError)
 
     var pluginResult: CDVPluginResult {
         var keepCallback = false

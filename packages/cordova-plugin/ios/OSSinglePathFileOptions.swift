@@ -1,6 +1,6 @@
 import IONFilesystemLib
 
-class IONSinglePathFileOptions: Decodable {
+class OSSinglePathFileOptions: Decodable {
     let path: String
     let directory: IONFILESearchPath
 
@@ -23,7 +23,7 @@ class IONSinglePathFileOptions: Decodable {
     }
 }
 
-class IONSinglePathRecursiveFileOptions: IONSinglePathFileOptions {
+class IONSinglePathRecursiveFileOptions: OSSinglePathFileOptions {
     let recursive: Bool
 
     enum CodingKeys: CodingKey {
@@ -39,7 +39,7 @@ class IONSinglePathRecursiveFileOptions: IONSinglePathFileOptions {
     }
 }
 
-class IONReadFileOptions: IONSinglePathFileOptions {
+class IONReadFileOptions: OSSinglePathFileOptions {
     let encoding: IONFILEEncoding
 
     enum CodingKeys: CodingKey {
@@ -73,7 +73,7 @@ class IONReadFileInChunksOptions: IONReadFileOptions {
 }
 
 class IONSinglePathRecursiveEncodingMapperFileOptions: IONSinglePathRecursiveFileOptions {
-    let encodingMapper: IONFILEEncodingValueMapper?
+    let encodingMapper: IONFILEEncodingValueMapper
 
     enum CodingKeys: CodingKey {
         case data
@@ -85,8 +85,15 @@ class IONSinglePathRecursiveEncodingMapperFileOptions: IONSinglePathRecursiveFil
 
         let dataText = try container.decode(String.self, forKey: .data)
         let encodingText = try container.decodeIfPresent(String.self, forKey: .encoding)
-        encodingMapper = .create(from: encodingText, usingValue: dataText)
+        guard let mapper = IONFILEEncodingValueMapper.create(from: encodingText, usingValue: dataText) else {
+            throw IONFILEEncodingValueMapperError.cantDecode
+        }
+        encodingMapper = mapper
 
         try super.init(from: decoder)
     }
+}
+
+private enum IONFILEEncodingValueMapperError: Error {
+    case cantDecode
 }

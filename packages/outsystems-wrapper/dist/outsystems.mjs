@@ -124,7 +124,7 @@ class LegacyCordovaBridge {
       if (isInternal) {
         return isTemporary ? Directory.Cache : Directory.Data;
       }
-      return isTemporary ? Directory.ExternalCache : Directory.ExternalStorage;
+      return isTemporary ? Directory.ExternalCache : Directory.External;
     }
     return isTemporary ? Directory.Temporary : Directory.LibraryNoCloud;
   }

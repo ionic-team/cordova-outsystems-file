@@ -1,4 +1,4 @@
-enum IONFileMethod: String {
+enum OSFileMethod: String {
     case readEntireFile
     case readFileInChunks
     case writeFile
@@ -13,11 +13,11 @@ enum IONFileMethod: String {
     case copy
 }
 
-enum IONFileError: Error {
+enum OSFileError: Error {
     case bridgeNotInitialised
-    case invalidInput(method: IONFileMethod)
+    case invalidInput(method: OSFileMethod)
     case invalidPath(_ path: String)
-    case operationFailed(method: IONFileMethod, _ error: Error?)
+    case operationFailed(method: OSFileMethod, _ error: Error)
 
     func toDictionary() -> [String: String] {
             [
@@ -27,7 +27,7 @@ enum IONFileError: Error {
         }
 }
 
-private extension IONFileError {
+private extension OSFileError {
     var code: Int {
         switch self {
         case .bridgeNotInitialised: 0
@@ -42,7 +42,7 @@ private extension IONFileError {
         case .bridgeNotInitialised: "Capacitor bridge isn't initialized."
         case .invalidInput(let method): "The '\(method.rawValue)' input parameters aren't valid."
         case .invalidPath(let path): "Invalid \(!path.isEmpty ? "'" + path + "' " : "")path."
-        case .operationFailed(let method, let error): "'\(method.rawValue) failed: \(error?.localizedDescription ?? "couldn't create byte buffer")."
+        case .operationFailed(let method, let error): "'\(method.rawValue) failed: \(error.localizedDescription)."
         }
     }
 }

@@ -1,8 +1,8 @@
 import IONFilesystemLib
 
-class IONDualPathFileOptions: Decodable {
-    let from: IONSinglePathFileOptions
-    let to: IONSinglePathFileOptions
+class OSDualPathFileOptions: Decodable {
+    let from: OSSinglePathFileOptions
+    let to: OSSinglePathFileOptions
 
     enum CodingKeys: CodingKey {
         case from

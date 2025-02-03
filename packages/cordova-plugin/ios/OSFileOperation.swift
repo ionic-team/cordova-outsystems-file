@@ -1,7 +1,7 @@
 import Foundation
 import IONFilesystemLib
 
-enum IONFileOperation {
+enum OSFileOperation {
     // Read Operations
     case readEntireFile(url: URL, encoding: IONFILEEncoding)
     case readFileInChunks(url: URL, encoding: IONFILEEncoding, chunkSize: Int)

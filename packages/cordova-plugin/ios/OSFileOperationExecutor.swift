@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import IONFilesystemLib
 
-class IONFileOperationExecutor {
+class OSFileOperationExecutor {
     let service: FileService
     let commandDelegate: CDVCommandDelegate
     private var cancellables = Set<AnyCancellable>()
@@ -12,7 +12,7 @@ class IONFileOperationExecutor {
         self.commandDelegate = commandDelegate
     }
 
-    func execute(_ operation: IONFileOperation, _ command: CDVInvokedUrlCommand) {
+    func execute(_ operation: OSFileOperation, _ command: CDVInvokedUrlCommand) {
         let status: PluginStatus
 
         do {
@@ -60,8 +60,8 @@ class IONFileOperationExecutor {
     }
 }
 
-private extension IONFileOperationExecutor {
-    func processFileInChunks(at url: URL, withEncoding encoding: IONFILEEncoding, chunkSize: Int, for operation: IONFileOperation, _ command: CDVInvokedUrlCommand) throws {
+private extension OSFileOperationExecutor {
+    func processFileInChunks(at url: URL, withEncoding encoding: IONFILEEncoding, chunkSize: Int, for operation: OSFileOperation, _ command: CDVInvokedUrlCommand) throws {
         let chunkSizeToUse = chunkSizeToUse(basedOn: chunkSize, and: encoding)
         try service.readFileInChunks(atURL: url, withEncoding: encoding, andChunkSize: chunkSizeToUse)
             .sink(receiveCompletion: { completion in
@@ -83,7 +83,7 @@ private extension IONFileOperationExecutor {
         encoding == .byteBuffer ? chunkSize - chunkSize % 3 + 3 : chunkSize
     }
 
-    func mapError(_ error: Error, for operation: IONFileOperation) -> IONFileError {
+    func mapError(_ error: Error, for operation: OSFileOperation) -> OSFileError {
         return switch operation {
         case .readEntireFile: .operationFailed(method: .readEntireFile, error)
         case .readFileInChunks: .operationFailed(method: .readFileInChunks, error)

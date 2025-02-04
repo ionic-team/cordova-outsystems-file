@@ -66,13 +66,13 @@ public enum IONFILEEncodingValueMapper {
   case byteBuffer(value: Foundation.Data)
   case string(encoding: IONFilesystemLib.IONFILEStringEncoding, value: Swift.String)
 }
-public enum IONFILEStringEncoding {
+public enum IONFILEStringEncoding : Swift.String {
   case ascii
   case utf8
   case utf16
-  public static func == (a: IONFilesystemLib.IONFILEStringEncoding, b: IONFilesystemLib.IONFILEStringEncoding) -> Swift.Bool
-  public func hash(into hasher: inout Swift.Hasher)
-  public var hashValue: Swift.Int {
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
     get
   }
 }
@@ -120,5 +120,6 @@ extension IONFilesystemLib.IONFILEItemType : Swift.Equatable {}
 extension IONFilesystemLib.IONFILEItemType : Swift.Hashable {}
 extension IONFilesystemLib.IONFILEStringEncoding : Swift.Equatable {}
 extension IONFilesystemLib.IONFILEStringEncoding : Swift.Hashable {}
+extension IONFilesystemLib.IONFILEStringEncoding : Swift.RawRepresentable {}
 extension IONFilesystemLib.IONFILEDirectoryType : Swift.Equatable {}
 extension IONFilesystemLib.IONFILEDirectoryType : Swift.Hashable {}

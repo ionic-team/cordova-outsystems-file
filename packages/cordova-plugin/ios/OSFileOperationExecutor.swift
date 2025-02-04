@@ -38,7 +38,7 @@ class OSFileOperationExecutor {
                 try service.removeDirectory(atURL: url, includeIntermediateDirectories: recursive)
             case .readdir(let url):
                 let directoryAttributes = try service.listDirectory(atURL: url)
-                    .map { try fetchItemAttributesJSObject(using: service, atURL: $0, isDirectory: true) }
+                    .map { try fetchItemAttributesJSObject(using: service, atURL: $0) }
                 resultData = [Constants.ResultDataKey.files: directoryAttributes]
             case .stat(let url):
                 resultData = try fetchItemAttributesJSObject(using: service, atURL: url)
@@ -100,9 +100,8 @@ private extension OSFileOperationExecutor {
         }
     }
 
-    func fetchItemAttributesJSObject(using service: FileService, atURL url: URL, isDirectory: Bool = false) throws -> IONFILEItemAttributeModel.JSResult {
+    func fetchItemAttributesJSObject(using service: FileService, atURL url: URL) throws -> IONFILEItemAttributeModel.JSResult {
         let attributes = try service.getItemAttributes(atURL: url)
-        let conversionMethod = isDirectory ? attributes.toDirectoryJSResult : attributes.toStatsJSResult
-        return conversionMethod(url)
+        return attributes.toJSResult(with: url)
     }
 }

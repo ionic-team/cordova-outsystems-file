@@ -71,12 +71,9 @@ extension IONFILEEncodingValueMapper {
 
 extension IONFILEItemAttributeModel {
     typealias JSResult = [String: Any]
-    func toDirectoryJSResult(with url: URL) -> JSResult {
-        toStatsJSResult(with: url).merging([Constants.ItemAttributeJSONKey.name: url.lastPathComponent]) { current, _ in current }
-    }
-
-    func toStatsJSResult(with url: URL) -> JSResult {
+    func toJSResult(with url: URL) -> JSResult {
         [
+            Constants.ItemAttributeJSONKey.name: url.lastPathComponent,
             Constants.ItemAttributeJSONKey.type: type.description,
             Constants.ItemAttributeJSONKey.size: size,
             Constants.ItemAttributeJSONKey.ctime: UInt64(creationDateTimestamp.rounded()),

@@ -20,7 +20,7 @@ class OSFileOperationExecutor {
 
             switch operation {
             case .readEntireFile(let url, let encoding):
-                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding).description
+                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding).textValue
                 resultData = [Constants.ResultDataKey.data: fullData]
             case .readFileInChunks(let url, let encoding, let chunkSize):
                 try processFileInChunks(at: url, withEncoding: encoding, chunkSize: chunkSize, for: operation, command)
@@ -72,7 +72,7 @@ private extension OSFileOperationExecutor {
                     self.commandDelegate.handle(command, status: .failure(self.mapError(error, for: operation)))
                 }
             }, receiveValue: {
-                self.commandDelegate.handle(command, status: .success(shouldKeepCallback: true, data: [Constants.ResultDataKey.data: $0.description]))
+                self.commandDelegate.handle(command, status: .success(shouldKeepCallback: true, data: [Constants.ResultDataKey.data: $0.textValue]))
             })
             .store(in: &cancellables)
     }

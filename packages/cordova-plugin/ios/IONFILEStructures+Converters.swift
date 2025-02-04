@@ -59,10 +59,8 @@ extension IONFILEEncodingValueMapper {
             nil
         }
     }
-}
 
-extension IONFILEEncodingValueMapper: @retroactive CustomStringConvertible {
-    public var description: String {
+    var textValue: String {
         switch self {
         case .byteBuffer(let data): data.base64EncodedString()
         case .string(_, let text): text

@@ -91,21 +91,14 @@ class OSFilePlugin {
         CapacitorUtils.Synapse.Filesystem.getUri(success, error, options)
     }
     stat(success: (res: FileInfo) => void, error: (err: PluginError) => void, options: StatOptions): void {
-        const statSuccess = (res: StatResult) => {
-            let fileInfo: FileInfo = {
-                name: res.uri.substring(res.uri.lastIndexOf('/')+1),
-                ...res
-            }
-            success(fileInfo)
-        } 
         // @ts-ignore
         if (typeof (CapacitorUtils) === 'undefined') {
             this.webPlugin.stat(options)
-                .then((res) => statSuccess(res))
+                .then((res) => success(res))
                 .catch(err => error(err))
         }
         // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, options)
+        CapacitorUtils.Synapse.Filesystem.stat(success, error, options)
     }
     rename(success: () => void, error: (err: PluginError) => void, options: RenameOptions): void {
         // @ts-ignore

@@ -461,45 +461,7 @@ export interface GetUriResult {
   uri: string;
 }
 
-export interface StatResult {
-  /**
-   * Type of the file.
-   *
-   * @since 1.0.0
-   */
-  type: 'directory' | 'file';
-
-  /**
-   * Size of the file in bytes.
-   *
-   * @since 1.0.0
-   */
-  size: number;
-
-  /**
-   * Time of creation in milliseconds.
-   *
-   * It's not available on Android 7 and older devices.
-   *
-   * @since 1.0.0
-   */
-  creationTime?: number;
-
-  /**
-   * Time of last modification in milliseconds.
-   *
-   * @since 1.0.0
-   */
-  modificationTime: number;
-
-  /**
-   * The uri of the file
-   *
-   * @since 1.0.0
-   */
-  uri: string;
-}
-
+export type StatResult = FileInfo;
 export interface CopyResult {
   /**
    * The uri where the file was copied into

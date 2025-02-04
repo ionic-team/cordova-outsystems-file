@@ -1,10 +1,12 @@
-import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, DeleteFileOptions, ReadFileInChunksOptions, ReadFileResult} from "../../cordova-plugin/src/definitions";
+import { PluginError, Directory, WriteFileOptions, MkdirOptions, WriteFileResult, GetUriOptions, GetUriResult, ReaddirOptions, ReaddirResult, RmdirOptions, DeleteFileOptions, ReadFileInChunksOptions, ReadFileResult, StatResult} from "../../cordova-plugin/src/definitions";
+
 
 class LegacyCordovaBridge {
+
     createDirectory(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
         let options: MkdirOptions = {
-            path: `${path}/${name}`,
+            path: path != '' ? `${path}/${name}` : name,
             directory: directory,
             recursive: true
         }
@@ -21,6 +23,7 @@ class LegacyCordovaBridge {
     }
 
     deleteDirectory(success: () => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {
+        
         let directory: Directory = this.getDirectoryTypeFrom(isInternal, isTemporary)
         let options: RmdirOptions = {
             path: path,
@@ -68,19 +71,28 @@ class LegacyCordovaBridge {
     }
 
     getFileUrl(success: (url: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
+        let type = this.getMimeType(name)
         let synapseSuccess = (res: string | Blob) => {
-            let blobUrl = this.dataToBlobUrl(res)
+            let blobUrl = this.dataToBlobUrl(res, type)
             success(blobUrl)
         }
         this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
     }
 
     getFileUrlFromUri(success: (url: string) => void, error: (err: PluginError) => void, path: string): void {
+        let type: string;
+
         let synapseSuccess = (res: string | Blob) => {
-            let blobUrl = this.dataToBlobUrl(res)
+            let blobUrl = this.dataToBlobUrl(res, type)
             success(blobUrl)
         }
-        this.readFile(synapseSuccess, error, path, undefined, undefined)
+        let statSuccess = (res: StatResult) => {
+            type = this.getMimeType(res.name)
+            this.readFile(synapseSuccess, error, path, undefined, undefined)
+        }
+        
+        // @ts-ignore
+        CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, {path: path})
     }
     
     getFileUri(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -165,28 +177,62 @@ class LegacyCordovaBridge {
         CapacitorUtils.Synapse.Filesystem.readFileInChunks(synapseSuccess, error, options)
     }
 
-    private dataToBlobUrl(data: string | Blob): string {
+    private dataToBlobUrl(data: string | Blob, mimeType: string): string {
         let blob: Blob
         if (data instanceof Blob) {
             // If the input is already a Blob, simply create a Blob URL
             blob = data
         } else {
             // Decode the Base64 data to binary
-            let binaryString = atob(data) // Decodes the Base64 string
-            let binaryLength = binaryString.length
-            let binaryArray = new Uint8Array(binaryLength)
-        
-            for (let i = 0; i < binaryLength; i++) {
-                binaryArray[i] = binaryString.charCodeAt(i)
-            }
+            let binaryString = atob(data) // Decodes the Base64 string            
+            let binaryArray = new Uint8Array(
+                Array.from(binaryString, char => char.charCodeAt(0))
+            );
         
             // Create a Blob object from the binary data
-            blob = new Blob([binaryArray], { type: "application/octet-stream" })
+            blob = new Blob([binaryArray], { type: mimeType })
         }
 
         // Generate and return the Blob URL
         return URL.createObjectURL(blob)
     }
+
+    private getMimeType(fromName: string) {
+        const mimeTypes: {[id:string]:string} = {
+            'txt': 'text/plain',
+            'html': 'text/html',
+            'htm': 'text/html',
+            'css': 'text/css',
+            'js': 'application/javascript',
+            'json': 'application/json',
+            'png': 'image/png',
+            'jpg': 'image/jpeg',
+            'jpeg': 'image/jpeg',
+            'gif': 'image/gif',
+            'svg': 'image/svg+xml',
+            'pdf': 'application/pdf',
+            'doc': 'application/msword',
+            'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls': 'application/vnd.ms-excel',
+            'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ppt': 'application/vnd.ms-powerpoint',
+            'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'zip': 'application/zip',
+            'mp3': 'audio/mpeg',
+            'mp4': 'video/mp4',
+            'mov': 'video/quicktime',
+            'webm': 'video/webm',
+            'ogg': 'audio/ogg'
+        };
+    
+        // Extract the extension
+        const extension = fromName.split('.').pop()!.toLowerCase();
+    
+        // Return the MIME type or a default
+        return mimeTypes[extension] || 'application/octet-stream';  // Default for unknown files
+    }
+    
+    
 }
 
 export const LegacyMigration = new LegacyCordovaBridge()

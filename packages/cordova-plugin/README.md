@@ -188,7 +188,7 @@ Return data about a file
 | ------------- | --------------------------------------------------- |
 | **`options`** | <code><a href="#statoptions">StatOptions</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#statresult">StatResult</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#fileinfo">FileInfo</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -346,17 +346,6 @@ Copy a file or directory
 | **`directory`** | <code><a href="#directory">Directory</a></code> | The <a href="#directory">`Directory`</a> to get the file under | 1.0.0 |
 
 
-#### StatResult
-
-| Prop                   | Type                               | Description                                                                          | Since |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------------ | ----- |
-| **`type`**             | <code>'directory' \| 'file'</code> | Type of the file.                                                                    | 1.0.0 |
-| **`size`**             | <code>number</code>                | Size of the file in bytes.                                                           | 1.0.0 |
-| **`creationTime`**     | <code>number</code>                | Time of creation in milliseconds. It's not available on Android 7 and older devices. | 1.0.0 |
-| **`modificationTime`** | <code>number</code>                | Time of last modification in milliseconds.                                           | 1.0.0 |
-| **`uri`**              | <code>string</code>                | The uri of the file                                                                  | 1.0.0 |
-
-
 #### StatOptions
 
 | Prop            | Type                                            | Description                                                    | Since |
@@ -383,6 +372,11 @@ Copy a file or directory
 
 
 ### Type Aliases
+
+
+#### StatResult
+
+<code><a href="#fileinfo">FileInfo</a></code>
 
 
 #### RenameOptions

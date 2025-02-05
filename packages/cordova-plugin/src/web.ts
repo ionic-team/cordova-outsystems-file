@@ -17,7 +17,8 @@ import type {
   StatResult,
   WriteFileOptions,
   WriteFileResult,
-  Directory
+  Directory,
+  ReadFileInChunksOptions
 } from './definitions';
 import { Encoding } from './definitions';
 
@@ -146,6 +147,14 @@ export class FilesystemWeb implements IFilesystem {
     const tx: IDBTransaction = conn.transaction(['FileStorage'], 'readwrite');
     const store: IDBObjectStore = tx.objectStore('FileStorage');
     store.clear();
+  }
+
+
+  /**
+   * Not available in web
+   */
+  readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult> {
+    throw new Error('Method not implemented.');
   }
 
   /**

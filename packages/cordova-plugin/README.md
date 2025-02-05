@@ -13,6 +13,7 @@ cordova plugin add <path-to-repo-local-clone>
 <docgen-index>
 
 * [`readFile(...)`](#readfile)
+* [`readFileInChunks(...)`](#readfileinchunks)
 * [`writeFile(...)`](#writefile)
 * [`appendFile(...)`](#appendfile)
 * [`deleteFile(...)`](#deletefile)
@@ -43,6 +44,26 @@ Read a file from disk
 | Param         | Type                                                        |
 | ------------- | ----------------------------------------------------------- |
 | **`options`** | <code><a href="#readfileoptions">ReadFileOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#readfileresult">ReadFileResult</a>&gt;</code>
+
+**Since:** 1.0.0
+
+--------------------
+
+
+### readFileInChunks(...)
+
+```typescript
+readFileInChunks(options: ReadFileInChunksOptions) => Promise<ReadFileResult>
+```
+
+Read a file from disk, in chunks
+Native only (not available in web)
+
+| Param         | Type                                                                        |
+| ------------- | --------------------------------------------------------------------------- |
+| **`options`** | <code><a href="#readfileinchunksoptions">ReadFileInChunksOptions</a></code> |
 
 **Returns:** <code>Promise&lt;<a href="#readfileresult">ReadFileResult</a>&gt;</code>
 
@@ -248,6 +269,13 @@ Copy a file or directory
 | **`path`**      | <code>string</code>                             | The path of the file to read                                                                                                                                                | 1.0.0 |
 | **`directory`** | <code><a href="#directory">Directory</a></code> | The <a href="#directory">`Directory`</a> to read the file from                                                                                                              | 1.0.0 |
 | **`encoding`**  | <code><a href="#encoding">Encoding</a></code>   | The encoding to read the file in, if not provided, data is read as binary and returned as base64 encoded. Pass <a href="#encoding">Encoding.UTF8</a> to read data as string | 1.0.0 |
+
+
+#### ReadFileInChunksOptions
+
+| Prop            | Type                | Description                  | Since |
+| --------------- | ------------------- | ---------------------------- | ----- |
+| **`chunkSize`** | <code>number</code> | Size of the chunks in bytes. | 1.0.0 |
 
 
 #### WriteFileResult

@@ -174,7 +174,7 @@ class LegacyCordovaBridge {
       "html": "text/html",
       "htm": "text/html",
       "css": "text/css",
-      "js": "application/javascript",
+      "js": "text/javascript",
       "json": "application/json",
       "png": "image/png",
       "jpg": "image/jpeg",
@@ -297,6 +297,12 @@ const _FilesystemWeb = class _FilesystemWeb {
     const tx = conn.transaction(["FileStorage"], "readwrite");
     const store = tx.objectStore("FileStorage");
     store.clear();
+  }
+  /**
+   * Not available in web
+   */
+  readFileInChunks(options) {
+    throw new Error("Method not implemented.");
   }
   /**
    * Read a file from disk

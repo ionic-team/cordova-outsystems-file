@@ -424,6 +424,13 @@ export interface IFilesystem {
      */
     readFile(options: ReadFileOptions): Promise<ReadFileResult>;
     /**
+     * Read a file from disk, in chunks
+     * Native only (not available in web)
+     *
+     * @since 1.0.0
+     */
+    readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult>;
+    /**
      * Write a file to disk in the specified location on device
      *
      * @since 1.0.0

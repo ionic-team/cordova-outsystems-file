@@ -23,6 +23,8 @@
         </config-file>
 
         <source-file src="packages/cordova-plugin/android/OSFilePlugin.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <!-- TODO Will be removed once lib is published on maven -->
+        <source-file src="packages/cordova-plugin/android/libs/IONFilesystemLib-debug.aar" target-dir="app/libs" />
         <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference" />
         
     </platform>

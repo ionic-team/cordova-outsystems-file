@@ -1,6 +1,5 @@
-package com.outsystems.plugins.osgeolocation
+package com.outsystems.plugins.file
 
-import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +15,6 @@ import org.json.JSONObject
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
-import com.outsystems.plugins.osgeolocation.controller.OSGLOCController
-import com.outsystems.plugins.osgeolocation.model.OSGLOCException
-import com.outsystems.plugins.osgeolocation.model.OSGLOCLocationOptions
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 

@@ -226,6 +226,15 @@ export interface ReadFileOptions {
   encoding?: Encoding;
 }
 
+export interface ReadFileInChunksOptions extends ReadFileOptions {
+  /**
+   * Size of the chunks in bytes.
+   *
+   * @since 1.0.0
+   */
+  chunkSize: number;
+}
+
 export interface DeleteFileOptions {
   /**
    * The path of the file to delete
@@ -452,45 +461,7 @@ export interface GetUriResult {
   uri: string;
 }
 
-export interface StatResult {
-  /**
-   * Type of the file.
-   *
-   * @since 1.0.0
-   */
-  type: 'directory' | 'file';
-
-  /**
-   * Size of the file in bytes.
-   *
-   * @since 1.0.0
-   */
-  size: number;
-
-  /**
-   * Time of creation in milliseconds.
-   *
-   * It's not available on Android 7 and older devices.
-   *
-   * @since 1.0.0
-   */
-  creationTime?: number;
-
-  /**
-   * Time of last modification in milliseconds.
-   *
-   * @since 1.0.0
-   */
-  modificationTime: number;
-
-  /**
-   * The uri of the file
-   *
-   * @since 1.0.0
-   */
-  uri: string;
-}
-
+export type StatResult = FileInfo;
 export interface CopyResult {
   /**
    * The uri where the file was copied into
@@ -507,6 +478,14 @@ export interface IFilesystem {
    * @since 1.0.0
    */
   readFile(options: ReadFileOptions): Promise<ReadFileResult>;
+
+  /**
+   * Read a file from disk, in chunks
+   * Native only (not available in web)
+   * 
+   * @since 1.0.0
+   */
+  readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult>;
 
   /**
    * Write a file to disk in the specified location on device

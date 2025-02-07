@@ -17,7 +17,8 @@ import type {
   StatResult,
   WriteFileOptions,
   WriteFileResult,
-  Directory
+  Directory,
+  ReadFileInChunksOptions
 } from './definitions';
 import { Encoding } from './definitions';
 
@@ -68,7 +69,7 @@ export class FilesystemWeb implements IFilesystem {
 
     return new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-      request.onupgradeneeded = FilePluginWeb.doUpgrade;
+      request.onupgradeneeded = FilesystemWeb.doUpgrade;
       request.onsuccess = () => {
         this._db = request.result;
         resolve(request.result);
@@ -148,6 +149,14 @@ export class FilesystemWeb implements IFilesystem {
     store.clear();
   }
 
+
+  /**
+   * Not available in web
+   */
+  readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult> {
+    throw new Error('Method not implemented.');
+  }
+
   /**
    * Read a file from disk
    * @param options options for the file read
@@ -155,7 +164,6 @@ export class FilesystemWeb implements IFilesystem {
    */
   async readFile(options: ReadFileOptions): Promise<ReadFileResult> {
     const path: string = this.getPath(options.directory, options.path);
-    // const encoding = options.encoding;
 
     const entry = (await this.dbRequest('get', [path])) as EntryObj;
     if (entry === undefined) throw Error('File does not exist.');
@@ -177,13 +185,13 @@ export class FilesystemWeb implements IFilesystem {
     if (occupiedEntry && occupiedEntry.type === 'directory')
       throw Error('The supplied path is a directory.');
 
-    const parentPath = path.substr(0, path.lastIndexOf('/'));
+    const parentPath = path.substring(0, path.lastIndexOf('/'));
 
     const parentEntry = (await this.dbRequest('get', [parentPath])) as EntryObj;
     if (parentEntry === undefined) {
       const subDirIndex = parentPath.indexOf('/', 1);
       if (subDirIndex !== -1) {
-        const parentArgPath = parentPath.substr(subDirIndex);
+        const parentArgPath = parentPath.substring(subDirIndex);
         await this.mkdir({
           path: parentArgPath,
           directory: options.directory,
@@ -432,6 +440,7 @@ export class FilesystemWeb implements IFilesystem {
     if (entry === undefined) throw Error('Entry does not exist.');
 
     return {
+      name: entry.path.substring(entry.path.lastIndexOf("/") + 1),
       type: entry.type,
       size: entry.size,
       creationTime: entry.ctime,

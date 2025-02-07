@@ -1,4 +1,4 @@
-import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
+import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, FileInfo, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
 import { FilesystemWeb } from "../../cordova-plugin/src/web";
 
 class OSFilePlugin {
@@ -90,7 +90,7 @@ class OSFilePlugin {
         // @ts-ignore
         CapacitorUtils.Synapse.Filesystem.getUri(success, error, options)
     }
-    stat(success: (res: StatResult) => void, error: (err: PluginError) => void, options: StatOptions): void {
+    stat(success: (res: FileInfo) => void, error: (err: PluginError) => void, options: StatOptions): void {
         // @ts-ignore
         if (typeof (CapacitorUtils) === 'undefined') {
             this.webPlugin.stat(options)

@@ -1,5 +1,5 @@
 import { require } from "cordova";
-import { AppendFileOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, StatResult, WriteFileOptions, WriteFileResult, RmdirOptions, StatOptions, CopyOptions } from "./definitions";
+import { AppendFileOptions, CopyResult, DeleteFileOptions, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, StatResult, WriteFileOptions, WriteFileResult, RmdirOptions, StatOptions, CopyOptions, ReadFileInChunksOptions } from "./definitions";
 
 
 var exec = require('cordova/exec');
@@ -7,6 +7,10 @@ var exec = require('cordova/exec');
 /** FILE API */
 function readFile(success: (output: ReadFileResult) => void, error: (error: PluginError) => void, options: ReadFileOptions): void {
   exec(success, error, 'OSFilePlugin', 'readFile', [options]);
+}
+
+function readFileInChunks(success: (output: ReadFileResult) => void, error: (error: PluginError) => void, options: ReadFileInChunksOptions): void {
+  exec(success, error, 'OSFilePlugin', 'readFileInChunks', [options])
 }
 
 function writeFile(success: (output: WriteFileResult) => void, error: (error: PluginError) => void, options: WriteFileOptions): void {
@@ -55,6 +59,7 @@ function copy(success: (output: CopyResult) => void, error: (error: PluginError)
 
 module.exports = {
   readFile,
+  readFileInChunks,
   writeFile,
   appendFile,
   deleteFile,

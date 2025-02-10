@@ -52,7 +52,7 @@ internal data class OSFileDoubleUri(
 internal fun JSONObject.getReadFileOptions(): OSFileReadOptions? {
     try {
         val uri = getSingleIONFILEUri() ?: return null
-        val encodingName = getString(INPUT_ENCODING)
+        val encodingName = optString(INPUT_ENCODING)
         return OSFileReadOptions(
             uri = uri,
             options = IONFILEReadOptions(IONFILEEncoding.fromEncodingName(encodingName))
@@ -68,7 +68,7 @@ internal fun JSONObject.getReadFileOptions(): OSFileReadOptions? {
 internal fun JSONObject.getReadFileInChunksOptions(): OSFileReadInChunksOptions? {
     try {
         val uri = getSingleIONFILEUri() ?: return null
-        val encodingName = getString(INPUT_ENCODING)
+        val encodingName = optString(INPUT_ENCODING)
         val chunkSize = getInt(INPUT_CHUNK_SIZE).takeIf { it > 0 } ?: return null
         return OSFileReadInChunksOptions(
             uri = uri,
@@ -89,8 +89,8 @@ internal fun JSONObject.getWriteFileOptions(append: Boolean): OSFileWriteOptions
     try {
         val uri = getSingleIONFILEUri() ?: return null
         val data = getString(INPUT_DATA) ?: return null
-        val recursive = getBoolean(INPUT_RECURSIVE)
-        val encodingName = getString(INPUT_ENCODING)
+        val recursive = optBoolean(INPUT_RECURSIVE, true)
+        val encodingName = optString(INPUT_ENCODING)
         return OSFileWriteOptions(
             uri = uri,
             options = IONFILESaveOptions(
@@ -111,7 +111,7 @@ internal fun JSONObject.getWriteFileOptions(append: Boolean): OSFileWriteOptions
 internal fun JSONObject.getSingleUriWithRecursiveOptions(): OSFileSingleUriWithRecursiveOptions? {
     try {
         val uri = getSingleIONFILEUri() ?: return null
-        val recursive = getBoolean(INPUT_RECURSIVE) ?: false
+        val recursive = optBoolean(INPUT_RECURSIVE, true)
         return OSFileSingleUriWithRecursiveOptions(uri = uri, recursive = recursive)
     } catch (ex: JSONException) {
         return null
@@ -124,9 +124,9 @@ internal fun JSONObject.getSingleUriWithRecursiveOptions(): OSFileSingleUriWithR
 internal fun JSONObject.getDoubleIONFILEUri(): OSFileDoubleUri? {
     try {
         val fromPath = getString(INPUT_FROM) ?: return null
-        val fromFolder = IONFILEFolderType.fromStringAlias(getString(INPUT_FROM_DIRECTORY))
+        val fromFolder = IONFILEFolderType.fromStringAlias(optString(INPUT_FROM_DIRECTORY))
         val toPath = getString(INPUT_TO) ?: return null
-        val toFolder = getString(INPUT_TO_DIRECTORY).let { toDirectory ->
+        val toFolder = optString(INPUT_TO_DIRECTORY).let { toDirectory ->
             IONFILEFolderType.fromStringAlias(toDirectory)
         } ?: fromFolder
         return OSFileDoubleUri(
@@ -144,7 +144,7 @@ internal fun JSONObject.getDoubleIONFILEUri(): OSFileDoubleUri? {
 internal fun JSONObject.getSingleIONFILEUri(): IONFILEUri.Unresolved? {
     try {
         val path = getString(INPUT_PATH) ?: return null
-        val directoryAlias = getString(INPUT_DIRECTORY)
+        val directoryAlias = optString(INPUT_DIRECTORY)
         return unresolvedUri(path, directoryAlias)
     } catch (ex: JSONException) {
         return null

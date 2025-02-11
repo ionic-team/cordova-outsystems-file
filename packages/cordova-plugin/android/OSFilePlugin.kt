@@ -206,8 +206,8 @@ class OSFilePlugin : CordovaPlugin() {
             return
         }
         runWithPermission(input, OSFileMethod.STAT, callbackContext) { uri ->
-            controller.listDirectory(uri)
-                .onSuccess { callbackContext.sendSuccess(result = createReadDirResultObject(it)) }
+            controller.getMetadata(uri)
+                .onSuccess { callbackContext.sendSuccess(result = it.toResultObject()) }
                 .onFailure { callbackContext.sendError(it.toFilesystemError(OSFileMethod.STAT)) }
         }
     }
@@ -240,8 +240,8 @@ class OSFilePlugin : CordovaPlugin() {
             OSFileMethod.COPY,
             callbackContext
         ) { source, destination ->
-            controller.move(source, destination)
-                .onSuccess { callbackContext.sendSuccess() }
+            controller.copy(source, destination)
+                .onSuccess { callbackContext.sendSuccess(createUriResultObject(it)) }
                 .onFailure { callbackContext.sendError(it.toFilesystemError(OSFileMethod.COPY)) }
         }
     }

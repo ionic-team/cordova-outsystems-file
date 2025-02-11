@@ -114,8 +114,12 @@ class OSFilePlugin : CordovaPlugin() {
                         keepCallback = true
                     )
                 }
-                .onCompletion { callbackContext.sendSuccess(result = createReadResultObject("")) }
-                .catch { callbackContext.sendError(it.toFilesystemError(OSFileMethod.READ_IN_CHUNKS)) }
+                .onCompletion {
+                    callbackContext.sendSuccess(result = createReadResultObject(""))
+                }
+                .catch {
+                    callbackContext.sendError(it.toFilesystemError(OSFileMethod.READ_IN_CHUNKS))
+                }
                 .launchIn(coroutineScope)
         }
     }

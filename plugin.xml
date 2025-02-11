@@ -36,11 +36,18 @@
             <preference name="SwiftVersion" value="5" />
         </config-file>
 
+        <source-file src="packages/cordova-plugin/ios/CordovaStructures+Extensions.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSDualPathFileOptions.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSFileConstants.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSFileError.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSFileLocationResolver.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSFileOperation.swift" />     
+        <source-file src="packages/cordova-plugin/ios/OSFileOperationExecutor.swift" />
         <source-file src="packages/cordova-plugin/ios/OSFilePlugin.swift" />
+        <source-file src="packages/cordova-plugin/ios/IONFILEStructures+Converters.swift" />
+        <source-file src="packages/cordova-plugin/ios/OSSinglePathFileOptions.swift" />
     
-    <!--
-        <framework src="ios/OSFilePlugin.xcframework" embed="true" custom="true" />
-    -->
+        <framework src="packages/cordova-plugin/ios/IONFilesystemLib.xcframework" embed="true" custom="true" />
 
         <!--podspec>
             <config>

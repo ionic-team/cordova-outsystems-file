@@ -34,7 +34,10 @@ class OSFilePlugin : CordovaPlugin() {
     override fun initialize(cordova: CordovaInterface, webView: CordovaWebView) {
         super.initialize(cordova, webView)
         controller = IONFILEController(context = cordova.context.applicationContext)
-        coroutineScope = CoroutineScope(Dispatchers.Main)
+        // coroutines will not be launched from Main thread
+        //  This is particularly relevant for readFile and readFileInChunks
+        // because returning a large string result (several MB) for cordova may block the thread for hundreds of milliseconds
+        coroutineScope = CoroutineScope(Dispatchers.Default)
     }
 
     override fun onDestroy() {

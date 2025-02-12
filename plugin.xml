@@ -9,7 +9,7 @@
     </js-module>
     <platform name="android">
         <hook type="before_plugin_install" src="packages/cordova-plugin/android/hooks/installDependencies.js" />
-        <hook type="before_compile" src="packages/cordova-plugin/android/hooks/androidSetRequestLegacyStorage.js" />
+        <hook type="after_prepare" src="packages/cordova-plugin/android/hooks/androidSetRequestLegacyStorage.js" />
 
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="OSFilePlugin">

@@ -25,8 +25,14 @@
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
         </config-file>
 
+        <source-file src="packages/cordova-plugin/android/CallbackContextExtensions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileErrors.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileMethod.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileOptions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFilePermissionsHelper.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
         <source-file src="packages/cordova-plugin/android/OSFilePlugin.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <!-- TODO Will be removed once lib is published on maven -->
+        <source-file src="packages/cordova-plugin/android/OSFileResults.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <!-- TODO the .aar be removed once native Android lib is published on maven -->
         <source-file src="packages/cordova-plugin/android/libs/IONFilesystemLib-debug.aar" target-dir="app/libs" />
         <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference" />
         

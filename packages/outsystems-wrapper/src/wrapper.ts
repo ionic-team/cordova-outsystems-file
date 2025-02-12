@@ -1,4 +1,4 @@
-import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, FileInfo, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, StatResult, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
+import { AppendFileOptions, CopyOptions, CopyResult, DeleteFileOptions, FileInfo, GetUriOptions, GetUriResult, MkdirOptions, PluginError, ReaddirOptions, ReaddirResult, ReadFileOptions, ReadFileResult, RenameOptions, RmdirOptions, StatOptions, WriteFileOptions, WriteFileResult } from "../../cordova-plugin/src/definitions";
 import { FilesystemWeb } from "../../cordova-plugin/src/web";
 
 class OSFilePlugin {

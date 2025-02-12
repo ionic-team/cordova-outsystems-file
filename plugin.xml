@@ -9,7 +9,7 @@
     </js-module>
     <platform name="android">
         <hook type="before_plugin_install" src="src/android/hooks/installDependencies.js" />
-        <hook type="after_prepare" src="src/android/hooks/androidSetRequestLegacyStorage.js" />
+        <hook type="before_compile" src="src/android/hooks/androidSetRequestLegacyStorage.js" />
 
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="OSFilePlugin">

@@ -8,7 +8,8 @@
         <clobbers target="cordova.plugins.Filesystem" />
     </js-module>
     <platform name="android">
-        <!--<hook type="after_prepare" src="src/android/hooks/androidSetRequestLegacyStorage.js" />-->
+        <hook type="before_plugin_install" src="src/android/hooks/installDependencies.js" />
+        <hook type="after_prepare" src="src/android/hooks/androidSetRequestLegacyStorage.js" />
 
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="OSFilePlugin">
@@ -24,10 +25,6 @@
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
         </config-file>
-
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:requestLegacyExternalStorage="true"/>
-        </edit-config>
 
         <source-file src="packages/cordova-plugin/android/CallbackContextExtensions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
         <source-file src="packages/cordova-plugin/android/OSFileErrors.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />

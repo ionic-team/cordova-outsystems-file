@@ -41,8 +41,8 @@ function u(t) {
     }
   );
 }
-function y() {
-  window.CapacitorUtils = window.CapacitorUtils || {}, window.Capacitor !== void 0 ? s(window) : window.cordova !== void 0 && u(window);
+function y(t = false) {
+  window.CapacitorUtils = window.CapacitorUtils || {}, window.Capacitor !== void 0 && !t ? s(window) : window.cordova !== void 0 && u(window);
 }
 var exec = require2("cordova/exec");
 function readFile(success, error, options) {
@@ -113,7 +113,7 @@ var Encoding = /* @__PURE__ */ ((Encoding2) => {
   Encoding2["UTF16"] = "utf16";
   return Encoding2;
 })(Encoding || {});
-y();
+y(true);
 export {
   Directory,
   Encoding

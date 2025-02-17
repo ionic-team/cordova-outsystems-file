@@ -517,8 +517,8 @@
             name: e.substring(path.length + 1),
             type: subEntry.type,
             size: subEntry.size,
-            creationTime: subEntry.ctime,
-            modificationTime: subEntry.mtime,
+            ctime: subEntry.ctime,
+            mtime: subEntry.mtime,
             uri: subEntry.path
           };
         })
@@ -556,8 +556,8 @@
         name: entry.path.substring(entry.path.lastIndexOf("/") + 1),
         type: entry.type,
         size: entry.size,
-        creationTime: entry.ctime,
-        modificationTime: entry.mtime,
+        ctime: entry.ctime,
+        mtime: entry.mtime,
         uri: entry.path
       };
     }
@@ -637,7 +637,7 @@
         entry.mtime = mtime;
         await this.dbRequest("put", [entry]);
       };
-      const ctime = fromObj.creationTime ? fromObj.creationTime : Date.now();
+      const ctime = fromObj.ctime ? fromObj.ctime : Date.now();
       switch (fromObj.type) {
         case "file": {
           const file = await this.readFile({
@@ -661,7 +661,7 @@
             encoding
           });
           if (doRename) {
-            await updateTime(to, ctime, fromObj.modificationTime);
+            await updateTime(to, ctime, fromObj.mtime);
           }
           return writeResult;
         }
@@ -676,7 +676,7 @@
               recursive: false
             });
             if (doRename) {
-              await updateTime(to, ctime, fromObj.modificationTime);
+              await updateTime(to, ctime, fromObj.mtime);
             }
           } catch (e) {
           }

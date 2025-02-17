@@ -513,8 +513,8 @@ const _FilesystemWeb = class _FilesystemWeb {
           name: e.substring(path.length + 1),
           type: subEntry.type,
           size: subEntry.size,
-          creationTime: subEntry.ctime,
-          modificationTime: subEntry.mtime,
+          ctime: subEntry.ctime,
+          mtime: subEntry.mtime,
           uri: subEntry.path
         };
       })
@@ -552,8 +552,8 @@ const _FilesystemWeb = class _FilesystemWeb {
       name: entry.path.substring(entry.path.lastIndexOf("/") + 1),
       type: entry.type,
       size: entry.size,
-      creationTime: entry.ctime,
-      modificationTime: entry.mtime,
+      ctime: entry.ctime,
+      mtime: entry.mtime,
       uri: entry.path
     };
   }
@@ -633,7 +633,7 @@ const _FilesystemWeb = class _FilesystemWeb {
       entry.mtime = mtime;
       await this.dbRequest("put", [entry]);
     };
-    const ctime = fromObj.creationTime ? fromObj.creationTime : Date.now();
+    const ctime = fromObj.ctime ? fromObj.ctime : Date.now();
     switch (fromObj.type) {
       case "file": {
         const file = await this.readFile({
@@ -657,7 +657,7 @@ const _FilesystemWeb = class _FilesystemWeb {
           encoding
         });
         if (doRename) {
-          await updateTime(to, ctime, fromObj.modificationTime);
+          await updateTime(to, ctime, fromObj.mtime);
         }
         return writeResult;
       }
@@ -672,7 +672,7 @@ const _FilesystemWeb = class _FilesystemWeb {
             recursive: false
           });
           if (doRename) {
-            await updateTime(to, ctime, fromObj.modificationTime);
+            await updateTime(to, ctime, fromObj.mtime);
           }
         } catch (e) {
         }

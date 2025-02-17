@@ -341,14 +341,14 @@ Copy a file or directory
 
 #### FileInfo
 
-| Prop                   | Type                               | Description                                                                          | Since |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------------ | ----- |
-| **`name`**             | <code>string</code>                | Name of the file or directory.                                                       |       |
-| **`type`**             | <code>'directory' \| 'file'</code> | Type of the file.                                                                    | 1.0.0 |
-| **`size`**             | <code>number</code>                | Size of the file in bytes.                                                           | 1.0.0 |
-| **`creationTime`**     | <code>number</code>                | Time of creation in milliseconds. It's not available on Android 7 and older devices. | 1.0.0 |
-| **`modificationTime`** | <code>number</code>                | Time of last modification in milliseconds.                                           | 1.0.0 |
-| **`uri`**              | <code>string</code>                | The uri of the file.                                                                 | 1.0.0 |
+| Prop        | Type                               | Description                                                                          | Since |
+| ----------- | ---------------------------------- | ------------------------------------------------------------------------------------ | ----- |
+| **`name`**  | <code>string</code>                | Name of the file or directory.                                                       |       |
+| **`type`**  | <code>'directory' \| 'file'</code> | Type of the file.                                                                    | 1.0.0 |
+| **`size`**  | <code>number</code>                | Size of the file in bytes.                                                           | 1.0.0 |
+| **`ctime`** | <code>number</code>                | Time of creation in milliseconds. It's not available on Android 7 and older devices. | 1.0.0 |
+| **`mtime`** | <code>number</code>                | Time of last modification in milliseconds.                                           | 1.0.0 |
+| **`uri`**   | <code>string</code>                | The uri of the file.                                                                 | 1.0.0 |
 
 
 #### ReaddirOptions

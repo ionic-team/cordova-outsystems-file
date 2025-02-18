@@ -84,19 +84,34 @@ private extension OSFileOperationExecutor {
     }
 
     func mapError(_ error: Error, for operation: OSFileOperation) -> OSFileError {
-        return switch operation {
-        case .readEntireFile: .operationFailed(method: .readEntireFile, error)
-        case .readFileInChunks: .operationFailed(method: .readFileInChunks, error)
-        case .write: .operationFailed(method: .writeFile, error)
-        case .append: .operationFailed(method: .appendFile, error)
-        case .delete: .operationFailed(method: .deleteFile, error)
-        case .mkdir: .operationFailed(method: .mkdir, error)
-        case .rmdir: .operationFailed(method: .rmdir, error)
-        case .readdir: .operationFailed(method: .readdir, error)
-        case .stat: .operationFailed(method: .stat, error)
-        case .getUri: .invalidPath("")
-        case .rename: .operationFailed(method: .rename, error)
-        case .copy: .operationFailed(method: .copy, error)
+        var path = ""
+        var method: OSFileMethod = OSFileMethod.getUri
+        switch operation {
+        case .readEntireFile(let url, _): path = url.absoluteString; method = .readEntireFile
+        case .readFileInChunks(let url, _, _): path = url.absoluteString; method = .readFileInChunks
+        case .write(let url, _, _): path = url.absoluteString; method = .writeFile
+        case .append(let url, _, _): path = url.absoluteString; method = .appendFile
+        case .delete(let url): path = url.absoluteString; method = .deleteFile
+        case .mkdir(let url, _): path = url.absoluteString; method = .mkdir
+        case .rmdir(let url, _): path = url.absoluteString; method = .rmdir
+        case .readdir(let url): path = url.absoluteString; method = .readdir
+        case .stat(let url): path = url.absoluteString; method = .stat
+        case .getUri(let url): return OSFileError.invalidPath(url.absoluteString)
+        case .rename(let sourceUrl, _): path = sourceUrl.absoluteString; method = .rename
+        case .copy(let sourceUrl, _): path = sourceUrl.absoluteString; method = .copy
+        }
+        
+        return mapError(error, withPath: path, andMethod: method)
+    }
+    
+    private func mapError(_ error: Error, withPath path: String, andMethod method: OSFileMethod) -> OSFileError {
+        return switch error {
+        case IONFILEDirectoryManagerError.notEmpty: .cannotDeleteChildren
+        case IONFILEDirectoryManagerError.alreadyExists: .directoryAlreadyExists(path)
+        case IONFILEFileManagerError.missingParentFolder: .parentDirectoryMissing
+        case IONFILEFileManagerError.directoryNotFound: .directoryNotFound(method: method, path)
+        case IONFILEFileManagerError.fileNotFound: .fileNotFound(method: method, path)
+        default: .operationFailed(method: method, error)
         }
     }
 

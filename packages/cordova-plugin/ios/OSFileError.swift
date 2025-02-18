@@ -17,6 +17,11 @@ enum OSFileError: Error {
     case bridgeNotInitialised
     case invalidInput(method: OSFileMethod)
     case invalidPath(_ path: String)
+    case directoryNotFound(method: OSFileMethod, _ path: String)
+    case fileNotFound(method: OSFileMethod, _ path: String)
+    case directoryAlreadyExists(_ path: String)
+    case parentDirectoryMissing
+    case cannotDeleteChildren
     case operationFailed(method: OSFileMethod, _ error: Error)
 
     func toDictionary() -> [String: String] {
@@ -30,10 +35,15 @@ enum OSFileError: Error {
 private extension OSFileError {
     var code: Int {
         switch self {
-        case .bridgeNotInitialised: 0
-        case .invalidInput: 0
-        case .invalidPath: 0
-        case .operationFailed: 0
+        case .bridgeNotInitialised: 4
+        case .invalidInput: 5
+        case .invalidPath: 6
+        case .directoryNotFound: 8
+        case .fileNotFound: 9
+        case .directoryAlreadyExists: 11
+        case .parentDirectoryMissing: 12
+        case .cannotDeleteChildren: 13
+        case .operationFailed: 14
         }
     }
 
@@ -42,7 +52,12 @@ private extension OSFileError {
         case .bridgeNotInitialised: "Capacitor bridge isn't initialized."
         case .invalidInput(let method): "The '\(method.rawValue)' input parameters aren't valid."
         case .invalidPath(let path): "Invalid \(!path.isEmpty ? "'" + path + "' " : "")path."
-        case .operationFailed(let method, let error): "'\(method.rawValue) failed: \(error.localizedDescription)."
+        case .directoryNotFound(let method, let path): "'\(method.rawValue)' failed because directory\(!path.isEmpty ? " at '" + path + "' " : "") does not exist."
+        case .fileNotFound(let method, let path): "'\(method.rawValue)' failed because file\(!path.isEmpty ? " at '" + path + "' " : "") does not exist."
+        case .directoryAlreadyExists(let path): "Directory\(!path.isEmpty ? " at '" + path + "' " : "") already exists, cannot be overwritten."
+        case .parentDirectoryMissing: "Missing parent directory - possibly recursive=false was passed or parent directory creation failed."
+        case .cannotDeleteChildren: "Cannot delete directory with children; received recursive=false but directory has contents."
+        case .operationFailed(let method, let error): "'\(method.rawValue)' failed with: \(error.localizedDescription)"
         }
     }
 }

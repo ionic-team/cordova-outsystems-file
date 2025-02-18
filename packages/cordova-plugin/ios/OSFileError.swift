@@ -17,7 +17,6 @@ enum OSFileError: Error {
     case bridgeNotInitialised
     case invalidInput(method: OSFileMethod)
     case invalidPath(_ path: String)
-    case directoryNotFound(method: OSFileMethod, _ path: String)
     case fileNotFound(method: OSFileMethod, _ path: String)
     case directoryAlreadyExists(_ path: String)
     case parentDirectoryMissing
@@ -38,12 +37,11 @@ private extension OSFileError {
         case .bridgeNotInitialised: 4
         case .invalidInput: 5
         case .invalidPath: 6
-        case .directoryNotFound: 8
-        case .fileNotFound: 9
-        case .directoryAlreadyExists: 11
-        case .parentDirectoryMissing: 12
-        case .cannotDeleteChildren: 13
-        case .operationFailed: 14
+        case .fileNotFound: 8
+        case .directoryAlreadyExists: 10
+        case .parentDirectoryMissing: 11
+        case .cannotDeleteChildren: 12
+        case .operationFailed: 13
         }
     }
 
@@ -52,7 +50,6 @@ private extension OSFileError {
         case .bridgeNotInitialised: "Capacitor bridge isn't initialized."
         case .invalidInput(let method): "The '\(method.rawValue)' input parameters aren't valid."
         case .invalidPath(let path): "Invalid \(!path.isEmpty ? "'" + path + "' " : "")path."
-        case .directoryNotFound(let method, let path): "'\(method.rawValue)' failed because directory\(!path.isEmpty ? " at '" + path + "' " : "") does not exist."
         case .fileNotFound(let method, let path): "'\(method.rawValue)' failed because file\(!path.isEmpty ? " at '" + path + "' " : "") does not exist."
         case .directoryAlreadyExists(let path): "Directory\(!path.isEmpty ? " at '" + path + "' " : "") already exists, cannot be overwritten."
         case .parentDirectoryMissing: "Missing parent directory - possibly recursive=false was passed or parent directory creation failed."

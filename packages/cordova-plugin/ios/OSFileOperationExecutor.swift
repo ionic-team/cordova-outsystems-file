@@ -109,7 +109,6 @@ private extension OSFileOperationExecutor {
         case IONFILEDirectoryManagerError.notEmpty: .cannotDeleteChildren
         case IONFILEDirectoryManagerError.alreadyExists: .directoryAlreadyExists(path)
         case IONFILEFileManagerError.missingParentFolder: .parentDirectoryMissing
-        case IONFILEFileManagerError.directoryNotFound: .directoryNotFound(method: method, path)
         case IONFILEFileManagerError.fileNotFound: .fileNotFound(method: method, path)
         default: .operationFailed(method: method, error)
         }

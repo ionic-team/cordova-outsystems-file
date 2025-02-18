@@ -19,7 +19,7 @@ class OSFileOperationExecutor {
             var resultData: PluginResultData?
 
             switch operation {
-            case .readEntireFile(let url, let encoding):
+            case .readFile(let url, let encoding):
                 let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding).textValue
                 resultData = [Constants.ResultDataKey.data: fullData]
             case .readFileInChunks(let url, let encoding, let chunkSize):
@@ -87,7 +87,7 @@ private extension OSFileOperationExecutor {
         var path = ""
         var method: OSFileMethod = OSFileMethod.getUri
         switch operation {
-        case .readEntireFile(let url, _): path = url.absoluteString; method = .readEntireFile
+        case .readFile(let url, _): path = url.absoluteString; method = .readFile
         case .readFileInChunks(let url, _, _): path = url.absoluteString; method = .readFileInChunks
         case .write(let url, _, _): path = url.absoluteString; method = .writeFile
         case .append(let url, _, _): path = url.absoluteString; method = .appendFile

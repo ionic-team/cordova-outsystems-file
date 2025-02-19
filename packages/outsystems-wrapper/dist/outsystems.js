@@ -872,6 +872,7 @@
     copy(success, error, options) {
       if (this.shouldUseCordovaWebImplementation()) {
         this.webPlugin.copy(options).then((res) => success(res)).catch((err) => error(err));
+        return;
       }
       if (this.isSynapseDefined()) {
         CapacitorUtils.Synapse.Filesystem.copy(success, error, options);

@@ -47,7 +47,7 @@ private extension OSFileError {
 
     var description: String {
         switch self {
-        case .bridgeNotInitialised: "Capacitor bridge isn't initialized."
+        case .bridgeNotInitialised: "Cordova bridge isn't initialized."
         case .invalidInput(let method): "The '\(method.rawValue)' input parameters aren't valid."
         case .invalidPath(let path): "Invalid \(!path.isEmpty ? "'" + path + "' " : "")path."
         case .fileNotFound(let method, let path): "'\(method.rawValue)' failed because file\(!path.isEmpty ? " at '" + path + "' " : "") does not exist."

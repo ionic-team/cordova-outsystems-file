@@ -471,6 +471,13 @@ export interface CopyResult {
   uri: string;
 }
 
+/**
+ * Callback for receiving chunks read from a file, or error if something went wrong.
+ * 
+ * @since 1.0.0
+ */
+export type ReadFileInChunksCallback = (chunkRead: ReadFileResult | null, err?: any) => void;
+
 export interface IFilesystem {
   /**
    * Read a file from disk
@@ -480,12 +487,14 @@ export interface IFilesystem {
   readFile(options: ReadFileOptions): Promise<ReadFileResult>;
 
   /**
-   * Read a file from disk, in chunks
-   * Native only (not available in web)
-   * 
+   * Read a file from disk, in chunks.
+   * Native only (not available in web).
+   * Use the callback to receive each read chunk.
+   * If empty chunk is returned, it means file has been completely read.
+   *
    * @since 1.0.0
    */
-  readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult>;
+  readFileInChunks(options: ReadFileInChunksOptions, callback: ReadFileInChunksCallback): Promise<void>;
 
   /**
    * Write a file to disk in the specified location on device

@@ -43,8 +43,8 @@ function u(t) {
     }
   );
 }
-function y() {
-  window.CapacitorUtils = window.CapacitorUtils || {}, window.Capacitor !== void 0 ? s(window) : window.cordova !== void 0 && u(window);
+function y(t = false) {
+  window.CapacitorUtils = window.CapacitorUtils || {}, window.Capacitor !== void 0 && !t ? s(window) : window.cordova !== void 0 && u(window);
 }
 var exec = cordova.require("cordova/exec");
 function readFile(success, error, options) {

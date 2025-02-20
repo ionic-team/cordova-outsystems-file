@@ -55,17 +55,18 @@ Read a file from disk
 ### readFileInChunks(...)
 
 ```typescript
-readFileInChunks(options: ReadFileInChunksOptions) => Promise<ReadFileResult>
+readFileInChunks(options: ReadFileInChunksOptions, callback: ReadFileInChunksCallback) => Promise<void>
 ```
 
-Read a file from disk, in chunks
-Native only (not available in web)
+Read a file from disk, in chunks.
+Native only (not available in web).
+Use the callback to receive each read chunk.
+If empty chunk is returned, it means file has been completely read.
 
-| Param         | Type                                                                        |
-| ------------- | --------------------------------------------------------------------------- |
-| **`options`** | <code><a href="#readfileinchunksoptions">ReadFileInChunksOptions</a></code> |
-
-**Returns:** <code>Promise&lt;<a href="#readfileresult">ReadFileResult</a>&gt;</code>
+| Param          | Type                                                                          |
+| -------------- | ----------------------------------------------------------------------------- |
+| **`options`**  | <code><a href="#readfileinchunksoptions">ReadFileInChunksOptions</a></code>   |
+| **`callback`** | <code><a href="#readfileinchunkscallback">ReadFileInChunksCallback</a></code> |
 
 **Since:** 1.0.0
 
@@ -400,6 +401,13 @@ Copy a file or directory
 
 
 ### Type Aliases
+
+
+#### ReadFileInChunksCallback
+
+Callback for receiving chunks read from a file, or error if something went wrong.
+
+<code>(chunkRead: <a href="#readfileresult">ReadFileResult</a> | null, err?: any): void</code>
 
 
 #### StatResult

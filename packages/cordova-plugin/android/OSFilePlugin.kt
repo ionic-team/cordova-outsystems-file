@@ -110,7 +110,7 @@ class OSFilePlugin : CordovaPlugin() {
             return
         }
         runWithPermission(input.uri, OSFileMethod.READ_IN_CHUNKS, callbackContext) { uri ->
-            controller.readFileByChunks(uri, input.options)
+            controller.readFileInChunks(uri, input.options)
                 .onEach { chunk ->
                     callbackContext.sendSuccess(
                         result = createReadResultObject(chunk),

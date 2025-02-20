@@ -2,7 +2,7 @@ package com.outsystems.plugins.file
 
 import io.ionic.libs.ionfilesystemlib.model.IONFILEEncoding
 import io.ionic.libs.ionfilesystemlib.model.IONFILEFolderType
-import io.ionic.libs.ionfilesystemlib.model.IONFILEReadByChunksOptions
+import io.ionic.libs.ionfilesystemlib.model.IONFILEReadInChunksOptions
 import io.ionic.libs.ionfilesystemlib.model.IONFILEReadOptions
 import io.ionic.libs.ionfilesystemlib.model.IONFILESaveMode
 import io.ionic.libs.ionfilesystemlib.model.IONFILESaveOptions
@@ -28,7 +28,7 @@ internal data class OSFileReadOptions(
 
 internal data class OSFileReadInChunksOptions(
     val uri: IONFILEUri.Unresolved,
-    val options: IONFILEReadByChunksOptions
+    val options: IONFILEReadInChunksOptions
 )
 
 internal data class OSFileWriteOptions(
@@ -72,7 +72,7 @@ internal fun JSONObject.getReadFileInChunksOptions(): OSFileReadInChunksOptions?
         val chunkSize = getInt(INPUT_CHUNK_SIZE).takeIf { it > 0 } ?: return null
         return OSFileReadInChunksOptions(
             uri = uri,
-            options = IONFILEReadByChunksOptions(
+            options = IONFILEReadInChunksOptions(
                 IONFILEEncoding.fromEncodingName(encodingName),
                 chunkSize
             )

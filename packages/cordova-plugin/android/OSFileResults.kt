@@ -38,28 +38,23 @@ fun createWriteResultObject(uri: Uri, mode: IONFILESaveMode): JSONObject? =
  * @return a result [JSONObject] for the list of a directories contents
  */
 fun createReadDirResultObject(list: List<IONFILEMetadataResult>): JSONObject = JSONObject().also {
-    val outputArray = JSONArray()
-    list.forEach { child ->
-        val childJSONObject = child.toResultObject()
-        outputArray.put(childJSONObject)
-    }
-    it.put(OUTPUT_FILES, outputArray)
+    it.put(OUTPUT_FILES, JSONArray(list.map { child -> child.toResultObject() }))
 }
 
 /**
  * @return a result [JSONObject] for stat, from the [IONFILEMetadataResult] object
  */
-fun IONFILEMetadataResult.toResultObject(): JSONObject = JSONObject().also { data ->
-    data.put(OUTPUT_NAME, this.name)
-    data.put(OUTPUT_TYPE, if (this.type is IONFILEFileType.Directory) "directory" else "file")
-    data.put(OUTPUT_SIZE, this.size)
-    data.put(OUTPUT_MODIFIED_TIME, this.lastModifiedTimestamp)
-    if (this.createdTimestamp != null) {
-        data.put(OUTPUT_CREATED_TIME, this.createdTimestamp)
+fun IONFILEMetadataResult.toResultObject(): JSONObject = JSONObject().apply {
+    put(OUTPUT_NAME, name)
+    put(OUTPUT_TYPE, if (type is IONFILEFileType.Directory) "directory" else "file")
+    put(OUTPUT_SIZE, size)
+    put(OUTPUT_MODIFIED_TIME, lastModifiedTimestamp)
+    if (createdTimestamp != null) {
+        put(OUTPUT_CREATED_TIME, createdTimestamp)
     } else {
-        data.put(OUTPUT_CREATED_TIME, null)
+        put(OUTPUT_CREATED_TIME, null)
     }
-    data.put(OUTPUT_URI, this.uri)
+    put(OUTPUT_URI, uri)
 }
 
 /**

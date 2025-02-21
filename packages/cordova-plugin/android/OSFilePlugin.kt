@@ -204,7 +204,7 @@ class OSFilePlugin : CordovaPlugin() {
         }
         coroutineScope.launch {
             controller.getFileUri(input)
-                .onSuccess { callbackContext.sendSuccess(result = createUriResultObject(it.uri)) }
+                .onSuccess { callbackContext.sendSuccess(result = it.toResultObject()) }
                 .onFailure { callbackContext.sendError(it.toFilesystemError(OSFileMethod.GET_URI)) }
         }
     }

@@ -11,7 +11,7 @@ private val permissionList = listOf(
 )
 
 /**
- * Helper function to determine Location permission state
+ * Helper function to determine external storage permission state
  * @return Boolean indicating if permissions are granted or not
  */
 internal fun hasFilePermissions(plugin: CordovaPlugin): Boolean {
@@ -28,7 +28,7 @@ internal fun hasFilePermissions(plugin: CordovaPlugin): Boolean {
 }
 
 /**
- * Helper function to request location permissions
+ * Helper function to request external storage permissions
  */
 internal fun requestFilePermissions(plugin: CordovaPlugin, requestCode: Int) {
     PermissionHelper.requestPermissions(

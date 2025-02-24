@@ -18,8 +18,15 @@ class LegacyCordovaBridge {
             this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary)
         }
         
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.mkdir(options)
+                .then(mkDirSuccess)
+                .catch(error)
+        }
     }
 
     deleteDirectory(success: () => void, error: (err: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -31,8 +38,15 @@ class LegacyCordovaBridge {
             recursive: true
         }
 
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.rmdir(options)
+                .then(success)
+                .catch(error)
+        }
     }
 
     listDirectory(success: (directoryList: string[], fileList: string[]) => void, error: (error: PluginError) => void, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -42,7 +56,7 @@ class LegacyCordovaBridge {
             directory: directory
         }
 
-        let synapseSuccess = (res: ReaddirResult) => {
+        let readDirSuccess = (res: ReaddirResult) => {
             let { directories, files } = res.files.reduce(
                 (acc, fileInfo) => {
                     if (fileInfo.type === 'directory') {
@@ -58,8 +72,15 @@ class LegacyCordovaBridge {
             success(directories, files);
         }
 
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.readdir(synapseSuccess, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.readdir(readDirSuccess, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.readdir(options)
+                .then(readDirSuccess)
+                .catch(error)
+        }
     }
 
     getFileData(success: (data: string | Blob) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -72,27 +93,34 @@ class LegacyCordovaBridge {
 
     getFileUrl(success: (url: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
         let type = this.getMimeType(name)
-        let synapseSuccess = (res: string | Blob) => {
+        let readFileSuccess = (res: string | Blob) => {
             let blobUrl = this.dataToBlobUrl(res, type)
             success(blobUrl)
         }
-        this.readFile(synapseSuccess, error, `${path}/${name}`, isInternal, isTemporary)
+        this.readFile(readFileSuccess, error, `${path}/${name}`, isInternal, isTemporary)
     }
 
     getFileUrlFromUri(success: (url: string) => void, error: (err: PluginError) => void, path: string): void {
         let type: string;
 
-        let synapseSuccess = (res: string | Blob) => {
+        let readFileSuccess = (res: string | Blob) => {
             let blobUrl = this.dataToBlobUrl(res, type)
             success(blobUrl)
         }
         let statSuccess = (res: StatResult) => {
             type = this.getMimeType(res.name)
-            this.readFile(synapseSuccess, error, path, undefined, undefined)
+            this.readFile(readFileSuccess, error, path, undefined, undefined)
         }
         
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, {path: path})
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, {path: path})
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.stat({path: path})
+                .then(statSuccess)
+                .catch(error)
+        }
     }
     
     getFileUri(success: (uri: string) => void, error: (err: PluginError) => void, name: string, path: string, isInternal: boolean, isTemporary: boolean): void {
@@ -102,12 +130,19 @@ class LegacyCordovaBridge {
             directory: directory
         }
 
-        let synapseSuccess = (res: GetUriResult) => {
+        let getUriSuccess = (res: GetUriResult) => {
             success(res.uri)
         }
 
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.getUri(synapseSuccess, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.getUri(getUriSuccess, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.getUri(options)
+                .then(getUriSuccess)
+                .catch(error)
+        }
     }
 
     writeFile(success: (fs: WriteFileResult) => void, error: (err: PluginError) => void, name: string, path: string, data: string | Blob, isInternal: boolean, isTemporary: boolean): void {
@@ -119,8 +154,15 @@ class LegacyCordovaBridge {
             recursive: true
         }
 
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.writeFile(options)
+                .then(success)
+                .catch(error)
+        }
     }
 
     deleteFile(success: () => void, error: (err: PluginError) => void, path: string, name: string, isInternal: boolean, isTemporary: boolean): void {
@@ -130,8 +172,15 @@ class LegacyCordovaBridge {
           directory
         }
 
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.deleteFile(options)
+                .then(success)
+                .catch(error)
+        }
     }
 
     private getOptionalDirectoryTypeFrom(isInternal: boolean | undefined, isTemporary: boolean | undefined): Directory | undefined {
@@ -163,7 +212,7 @@ class LegacyCordovaBridge {
         }
 
         let chunks: string[] = []        
-        let synapseSuccess = (res: ReadFileResult) => {
+        let readInChunksSuccess = (res: ReadFileResult) => {
             if (res.data === "") {
                 success(chunks.join(''))
             } else if (typeof res.data === 'string') {
@@ -173,8 +222,15 @@ class LegacyCordovaBridge {
             }
         }
 
-        // @ts-ignore
-        CapacitorUtils.Synapse.Filesystem.readFileInChunks(synapseSuccess, error, options)
+        if (this.isSynapseDefined()) {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccess, error, options)
+        } else {
+            // @ts-ignore
+            Capacitor.Plugins.Filesystem.readFileInChunks(options)
+                .then(readInChunksSuccess)
+                .catch(error)
+        }
     }
 
     private dataToBlobUrl(data: string | Blob, mimeType: string): string {
@@ -232,7 +288,16 @@ class LegacyCordovaBridge {
         return mimeTypes[extension] || 'application/octet-stream';  // Default for unknown files
     }
     
-    
+    /**
+     * @returns true if synapse is defined, false otherwise
+     */
+    private isSynapseDefined(): boolean {
+        // currently Synapse doesn't work in MABS 12 builds with Capacitor npm package
+        //  But it works with cordova via Github repository
+        //  So we need to call the Capacitor plugin directly; hence the need for this method
+        // @ts-ignore
+        return typeof (CapacitorUtils) !== "undefined"
+    }
 }
 
 export const LegacyMigration = new LegacyCordovaBridge()

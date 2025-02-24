@@ -435,14 +435,14 @@ export interface FileInfo {
    *
    * @since 1.0.0
    */
-  creationTime?: number;
+  ctime?: number;
 
   /**
    * Time of last modification in milliseconds.
    *
    * @since 1.0.0
    */
-  modificationTime: number;
+  mtime: number;
 
   /**
    * The uri of the file.

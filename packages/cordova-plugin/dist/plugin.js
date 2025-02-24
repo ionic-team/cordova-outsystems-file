@@ -44,8 +44,8 @@
       }
     );
   }
-  function y() {
-    window.CapacitorUtils = window.CapacitorUtils || {}, window.Capacitor !== void 0 ? s(window) : window.cordova !== void 0 && u(window);
+  function y(t = false) {
+    window.CapacitorUtils = window.CapacitorUtils || {}, window.Capacitor !== void 0 && !t ? s(window) : window.cordova !== void 0 && u(window);
   }
   var exec = cordova.require("cordova/exec");
   function readFile(success, error, options) {
@@ -116,7 +116,7 @@
     Encoding2["UTF16"] = "utf16";
     return Encoding2;
   })(Encoding || {});
-  y();
+  y(true);
   exports2.Directory = Directory;
   exports2.Encoding = Encoding;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });

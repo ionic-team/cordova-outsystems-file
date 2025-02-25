@@ -92,7 +92,7 @@ export enum Directory {
 
   /**
    * A temporary directory for iOS.
-   * Om Android it's the directory holding the application cache.
+   * On Android it's the directory holding the application cache.
    *
    * @since 1.0.0
    */

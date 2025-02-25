@@ -18,7 +18,8 @@ allprojects {
 
 dependencies{
 
-    implementation "com.github.outsystems:osfilelib-android:1.0.0@aar"
+    // TODO to be replaced with io.ionic.libs:ionfilesystem-android@aar once it's published on maven
+    implementation(files("libs/IONFilesystemLib-debug.aar"))
 
     implementation("com.github.outsystems:oscore-android:1.2.0@aar")
     implementation("com.github.outsystems:oscordova-android:2.0.1@aar")

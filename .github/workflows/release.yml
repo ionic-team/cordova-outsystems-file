@@ -30,8 +30,8 @@ jobs:
     name: '✍🏻 Update O11 OML Extensibility'
     secrets: inherit
     with:
-      plugin: Location Plugin
-      configName: LocationPlugin
+      plugin: File Plugin
+      configName: FilePlugin
       tag: ${{ github.event.inputs.tag }}
       forgeVersion: ${{ github.event.inputs.forgeVersionO11 }}
       mabsMin: ${{ github.event.inputs.mabsMin }}
@@ -43,7 +43,7 @@ jobs:
       - change_extensibility
     secrets: inherit
     with:
-      plugin: LocationPlugin
+      plugin: FilePlugin
 
   deploy_odc:
     name: '🔌  Update ODC OML Extensibility & Tenant Release'
@@ -66,7 +66,7 @@ jobs:
     with:
       tag: ${{ github.event.inputs.tag }}
       environment: Production
-      plugin: Location Plugin
+      plugin: File Plugin
       notes: ${{ github.event.inputs.releaseNotes }}
       pipelineID: ${{ needs.deploy_odc.outputs.pipelineID }}
       forgeVersionO11: ${{ github.event.inputs.forgeVersionO11 }}

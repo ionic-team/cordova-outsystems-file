@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plugin id="com.outsystems.plugins.filesystem" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>OSGeolocationPlugin</name>
+    <name>OSFilePlugin</name>
     <description>OutSystems' cordova geolocation plugin</description>
     <author>OutSystems Inc</author>
 
@@ -8,6 +8,9 @@
         <clobbers target="cordova.plugins.Filesystem" />
     </js-module>
     <platform name="android">
+        <hook type="before_plugin_install" src="packages/cordova-plugin/android/hooks/installDependencies.js" />
+        <hook type="after_prepare" src="packages/cordova-plugin/android/hooks/androidSetRequestLegacyStorage.js" />
+        
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="OSFilePlugin">
                 <param name="android-package" value="com.outsystems.plugins.file.OSFilePlugin" />
@@ -22,7 +25,15 @@
            
         </config-file>
 
-        <source-file src="packages/cordova-plugin/android/OSFile.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileCallbackContextExtensions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileErrors.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileMethod.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileOptions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFilePermissionsHelper.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFilePlugin.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <source-file src="packages/cordova-plugin/android/OSFileResults.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
+        <!-- TODO the .aar be removed once native Android lib is published on maven -->
+        <source-file src="packages/cordova-plugin/android/libs/IONFilesystemLib-debug.aar" target-dir="app/libs" />
         <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference" />
         
     </platform>
@@ -52,7 +63,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="OSGeolocationLib" path="../../../ios-lib" />
+                <pod name="IONFilesystemLib" spec="1.0.0" />
             </pods>
         </podspec--> 
     </platform>

@@ -172,8 +172,8 @@ class LegacyCordovaBridge {
       chunkSize: 256 * 1024
     };
     let chunks = [];
-    let readInChunksSuccess = (res) => {
-      if (res.data === "") {
+    let readInChunksSuccessCallback = (res) => {
+      if (res === null || res.data === "") {
         success(chunks.join(""));
       } else if (typeof res.data === "string") {
         chunks.push(res.data);
@@ -181,10 +181,17 @@ class LegacyCordovaBridge {
         chunks.push(res.data.toString());
       }
     };
-    if (this.isSynapseDefined()) {
-      CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccess, error, options);
+    if (this.isCapacitorPluginDefined()) {
+      let readInChunksCapacitorCallback = (res, err) => {
+        if (err) {
+          error(err);
+        } else {
+          readInChunksSuccessCallback(res);
+        }
+      };
+      Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback);
     } else {
-      Capacitor.Plugins.Filesystem.readFileInChunks(options).then(readInChunksSuccess).catch(error);
+      CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options);
     }
   }
   dataToBlobUrl(data, mimeType) {
@@ -229,6 +236,12 @@ class LegacyCordovaBridge {
     };
     const extension = fromName.split(".").pop().toLowerCase();
     return mimeTypes[extension] || "application/octet-stream";
+  }
+  /**
+   * @returns true if filesystem capacitor plugin is available; false otherwise
+   */
+  isCapacitorPluginDefined() {
+    return typeof Capacitor !== "undefined" && typeof Capacitor.Plugins !== "undefined" && typeof Capacitor.Plugins.Filesystem !== "undefined";
   }
   /**
    * @returns true if synapse is defined, false otherwise
@@ -339,7 +352,7 @@ const _FilesystemWeb = class _FilesystemWeb {
   /**
    * Not available in web
    */
-  readFileInChunks(options) {
+  readFileInChunks(options, success, error) {
     throw new Error("Method not implemented.");
   }
   /**

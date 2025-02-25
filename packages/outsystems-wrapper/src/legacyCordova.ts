@@ -211,9 +211,9 @@ class LegacyCordovaBridge {
             chunkSize: 256 * 1024
         }
 
-        let chunks: string[] = []        
-        let readInChunksSuccess = (res: ReadFileResult) => {
-            if (res.data === "") {
+        let chunks: string[] = []
+        let readInChunksSuccessCallback  = (res: ReadFileResult | null) => {
+            if (res === null || res.data === "") {
                 success(chunks.join(''))
             } else if (typeof res.data === 'string') {
                 chunks.push(res.data)
@@ -222,14 +222,22 @@ class LegacyCordovaBridge {
             }
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCapacitorPluginDefined()) {
+            // The Cordova and Capacitor plugins have different signatures when it comes to readFileInChunks
+            //  due to how the frameworks handle returning results in callbacks.
+            //  So this means that this method can never fully benefit from Synapse.
+            let readInChunksCapacitorCallback = (res: ReadFileResult | null, err?: any) => {
+                if (err) {
+                    error(err)
+                } else {
+                    readInChunksSuccessCallback(res)
+                }
+            }
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccess, error, options)
+            Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readFileInChunks(options)
-                .then(readInChunksSuccess)
-                .catch(error)
+            CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options)
         }
     }
 
@@ -286,6 +294,14 @@ class LegacyCordovaBridge {
     
         // Return the MIME type or a default
         return mimeTypes[extension] || 'application/octet-stream';  // Default for unknown files
+    }
+
+    /**
+     * @returns true if filesystem capacitor plugin is available; false otherwise
+     */
+    private isCapacitorPluginDefined(): boolean {
+        // @ts-ignore
+        return (typeof(Capacitor) !== "undefined" && typeof(Capacitor.Plugins) !== "undefined" && typeof(Capacitor.Plugins.Filesystem) !== "undefined")
     }
     
     /**

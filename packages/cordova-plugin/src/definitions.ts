@@ -496,7 +496,7 @@ export interface IFilesystem {
    *
    * @since 1.0.0
    */
-  readFileInChunks(options: ReadFileInChunksOptions, callback: ReadFileInChunksCallback): Promise<void>;
+  readFileInChunks(options: ReadFileInChunksOptions, success: (chunkRead: ReadFileResult) => void, error: (error: PluginError) => void): Promise<void>;
 
   /**
    * Write a file to disk in the specified location on device

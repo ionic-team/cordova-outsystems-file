@@ -19,7 +19,7 @@ import type {
   WriteFileResult,
   Directory,
   ReadFileInChunksOptions,
-  ReadFileInChunksCallback
+  PluginError
 } from './definitions';
 import { Encoding } from './definitions';
 
@@ -154,7 +154,7 @@ export class FilesystemWeb implements IFilesystem {
   /**
    * Not available in web
    */
-  readFileInChunks(options: ReadFileInChunksOptions, callback: ReadFileInChunksCallback): Promise<void> {
+  readFileInChunks(options: ReadFileInChunksOptions, success: (chunkRead: ReadFileResult) => void, error: (error: PluginError) => void): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

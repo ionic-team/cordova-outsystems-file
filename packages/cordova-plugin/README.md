@@ -55,7 +55,7 @@ Read a file from disk
 ### readFileInChunks(...)
 
 ```typescript
-readFileInChunks(options: ReadFileInChunksOptions, callback: ReadFileInChunksCallback) => Promise<void>
+readFileInChunks(options: ReadFileInChunksOptions, success: (chunkRead: ReadFileResult) => void, error: (error: PluginError) => void) => Promise<void>
 ```
 
 Read a file from disk, in chunks.
@@ -63,10 +63,11 @@ Native only (not available in web).
 Use the callback to receive each read chunk.
 If empty chunk is returned, it means file has been completely read.
 
-| Param          | Type                                                                          |
-| -------------- | ----------------------------------------------------------------------------- |
-| **`options`**  | <code><a href="#readfileinchunksoptions">ReadFileInChunksOptions</a></code>   |
-| **`callback`** | <code><a href="#readfileinchunkscallback">ReadFileInChunksCallback</a></code> |
+| Param         | Type                                                                              |
+| ------------- | --------------------------------------------------------------------------------- |
+| **`options`** | <code><a href="#readfileinchunksoptions">ReadFileInChunksOptions</a></code>       |
+| **`success`** | <code>(chunkRead: <a href="#readfileresult">ReadFileResult</a>) =&gt; void</code> |
+| **`error`**   | <code>(error: <a href="#pluginerror">PluginError</a>) =&gt; void</code>           |
 
 **Since:** 1.0.0
 
@@ -403,11 +404,9 @@ Copy a file or directory
 ### Type Aliases
 
 
-#### ReadFileInChunksCallback
+#### PluginError
 
-Callback for receiving chunks read from a file, or error if something went wrong.
-
-<code>(chunkRead: <a href="#readfileresult">ReadFileResult</a> | null, err?: any): void</code>
+<code>{ code: string, message: string }</code>
 
 
 #### StatResult

@@ -18,7 +18,8 @@ import type {
   WriteFileOptions,
   WriteFileResult,
   Directory,
-  ReadFileInChunksOptions
+  ReadFileInChunksOptions,
+  ReadFileInChunksCallback
 } from './definitions';
 import { Encoding } from './definitions';
 
@@ -153,7 +154,7 @@ export class FilesystemWeb implements IFilesystem {
   /**
    * Not available in web
    */
-  readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult> {
+  readFileInChunks(options: ReadFileInChunksOptions, callback: ReadFileInChunksCallback): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

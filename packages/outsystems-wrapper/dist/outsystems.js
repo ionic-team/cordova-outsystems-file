@@ -174,8 +174,10 @@
         chunkSize: 256 * 1024
       };
       let chunks = [];
-      let readInChunksSuccess = (res) => {
-        if (res.data === "") {
+      let readInChunksCallback = (res, err) => {
+        if (err) {
+          error(err);
+        } else if (res === null || res.data === "") {
           success(chunks.join(""));
         } else if (typeof res.data === "string") {
           chunks.push(res.data);
@@ -184,9 +186,9 @@
         }
       };
       if (this.isSynapseDefined()) {
-        CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccess, error, options);
+        CapacitorUtils.Synapse.Filesystem.readFileInChunks(options, readInChunksCallback);
       } else {
-        Capacitor.Plugins.Filesystem.readFileInChunks(options).then(readInChunksSuccess).catch(error);
+        Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCallback);
       }
     }
     dataToBlobUrl(data, mimeType) {
@@ -341,7 +343,7 @@
     /**
      * Not available in web
      */
-    readFileInChunks(options) {
+    readFileInChunks(options, callback) {
       throw new Error("Method not implemented.");
     }
     /**

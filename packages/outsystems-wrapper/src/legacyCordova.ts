@@ -212,8 +212,10 @@ class LegacyCordovaBridge {
         }
 
         let chunks: string[] = []        
-        let readInChunksSuccess = (res: ReadFileResult) => {
-            if (res.data === "") {
+        let readInChunksCallback = (res: ReadFileResult | null, err?: any) => {
+            if (err) {
+                error(err)
+            } else if (res === null || res.data === "") {
                 success(chunks.join(''))
             } else if (typeof res.data === 'string') {
                 chunks.push(res.data)
@@ -224,12 +226,10 @@ class LegacyCordovaBridge {
 
         if (this.isSynapseDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccess, error, options)
+            CapacitorUtils.Synapse.Filesystem.readFileInChunks(options, readInChunksCallback)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readFileInChunks(options)
-                .then(readInChunksSuccess)
-                .catch(error)
+            Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCallback)
         }
     }
 

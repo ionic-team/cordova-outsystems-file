@@ -116,7 +116,7 @@
     Encoding2["UTF16"] = "utf16";
     return Encoding2;
   })(Encoding || {});
-  y();
+  y(true);
   exports2.Directory = Directory;
   exports2.Encoding = Encoding;
   Object.defineProperty(exports2, Symbol.toStringTag, { value: "Module" });

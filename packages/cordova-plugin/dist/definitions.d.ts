@@ -64,7 +64,7 @@ export declare enum Directory {
     ExternalStorage = "EXTERNAL_STORAGE",
     /**
      * The external cache directory.
-     * Android ONly
+     * On iOS it will use the Documents directory.
      * On Android it's the primary shared/external cache.
      * It's not accesible on Android 10 unless the app enables legacy External Storage
      * by adding `android:requestLegacyExternalStorage="true"` in the `application` tag
@@ -75,16 +75,18 @@ export declare enum Directory {
      */
     ExternalCache = "EXTERNAL_CACHE",
     /**
-     * iOS only
+     * The Library directory without cloud backup. Used in iOS
+     * On Android it's the directory holding application files.
      *
      * @since 1.0.0
      */
     LibraryNoCloud = "LIBRARY_NO_CLOUD",
     /**
-    * iOS only
-    *
-    * @since 1.0.0
-    */
+     * A temporary directory for iOS.
+     * Om Android it's the directory holding the application cache.
+     *
+     * @since 1.0.0
+     */
     Temporary = "TEMPORARY"
 }
 export declare enum Encoding {
@@ -203,7 +205,7 @@ export interface ReadFileOptions {
 }
 export interface ReadFileInChunksOptions extends ReadFileOptions {
     /**
-     * Size of the chunks in bytes.
+     * Size of the chunks to read at a time, in bytes.
      *
      * @since 1.0.0
      */
@@ -385,13 +387,13 @@ export interface FileInfo {
      *
      * @since 1.0.0
      */
-    creationTime?: number;
+    ctime?: number;
     /**
      * Time of last modification in milliseconds.
      *
      * @since 1.0.0
      */
-    modificationTime: number;
+    mtime: number;
     /**
      * The uri of the file.
      *

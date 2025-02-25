@@ -183,17 +183,17 @@
           chunks.push(res.data.toString());
         }
       };
-      let readInChunksCapacitorCallback = (res, err) => {
-        if (err) {
-          error(err);
-        } else {
-          readInChunksSuccessCallback(res);
-        }
-      };
-      if (this.isSynapseDefined()) {
-        CapacitorUtils.Synapse.Filesystem.readFileInChunks(options, readInChunksSuccessCallback, error);
-      } else {
+      if (this.isCapacitorPluginDefined()) {
+        let readInChunksCapacitorCallback = (res, err) => {
+          if (err) {
+            error(err);
+          } else {
+            readInChunksSuccessCallback(res);
+          }
+        };
         Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback);
+      } else {
+        CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options);
       }
     }
     dataToBlobUrl(data, mimeType) {
@@ -238,6 +238,12 @@
       };
       const extension = fromName.split(".").pop().toLowerCase();
       return mimeTypes[extension] || "application/octet-stream";
+    }
+    /**
+     * @returns true if filesystem capacitor plugin is available; false otherwise
+     */
+    isCapacitorPluginDefined() {
+      return typeof Capacitor !== "undefined" && typeof Capacitor.Plugins !== "undefined" && typeof Capacitor.Plugins.Filesystem !== "undefined";
     }
     /**
      * @returns true if synapse is defined, false otherwise

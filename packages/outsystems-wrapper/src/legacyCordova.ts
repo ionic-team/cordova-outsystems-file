@@ -221,20 +221,23 @@ class LegacyCordovaBridge {
                 chunks.push(res.data.toString())
             }
         }
-        let readInChunksCapacitorCallback = (res: ReadFileResult | null, err?: any) => {
-            if (err) {
-                error(err)
-            } else {
-                readInChunksSuccessCallback(res)
-            }
-        }
 
-        if (this.isSynapseDefined()) {
-            // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readFileInChunks(options, readInChunksSuccessCallback, error)
-        } else {
+        if (this.isCapacitorPluginDefined()) {
+            // The Cordova and Capacitor plugins have different signatures when it comes to readFileInChunks
+            //  due to how the frameworks handle returning results in callbacks.
+            //  So this means that this method can never fully benefit from Synapse.
+            let readInChunksCapacitorCallback = (res: ReadFileResult | null, err?: any) => {
+                if (err) {
+                    error(err)
+                } else {
+                    readInChunksSuccessCallback(res)
+                }
+            }
             // @ts-ignore
             Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback)
+        } else {
+            // @ts-ignore
+            CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options)
         }
     }
 
@@ -291,6 +294,14 @@ class LegacyCordovaBridge {
     
         // Return the MIME type or a default
         return mimeTypes[extension] || 'application/octet-stream';  // Default for unknown files
+    }
+
+    /**
+     * @returns true if filesystem capacitor plugin is available; false otherwise
+     */
+    private isCapacitorPluginDefined(): boolean {
+        // @ts-ignore
+        return (typeof(Capacitor) !== "undefined" && typeof(Capacitor.Plugins) !== "undefined" && typeof(Capacitor.Plugins.Filesystem) !== "undefined")
     }
     
     /**

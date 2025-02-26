@@ -5,7 +5,7 @@ export enum Directory {
    * On iOS it's the app's documents directory.
    * Use this directory to store user-generated content.
    * On Android it's the Public Documents folder, so it's accessible from other apps.
-   * It's not accesible on Android 10 unless the app enables legacy External Storage
+   * It's not accessible on Android 10 unless the app enables legacy External Storage
    * by adding `android:requestLegacyExternalStorage="true"` in the `application` tag
    * in the `AndroidManifest.xml`.
    * On Android 11 or newer the app can only access the files/folders the app created.
@@ -60,30 +60,26 @@ export enum Directory {
    * The external storage directory.
    * On iOS it will use the Documents directory.
    * On Android it's the primary shared/external storage directory.
-   * It's not accesible on Android 10 unless the app enables legacy External Storage
+   * It's not accessible on Android 10 unless the app enables legacy External Storage
    * by adding `android:requestLegacyExternalStorage="true"` in the `application` tag
    * in the `AndroidManifest.xml`.
-   * It's not accesible on Android 11 or newer.
+   * It's not accessible on Android 11 or newer.
    *
    * @since 1.0.0
    */
-  ExternalStorage = 'EXTERNAL_STORAGE',
 
+  ExternalStorage = 'EXTERNAL_STORAGE',
   /**
    * The external cache directory.
    * On iOS it will use the Documents directory.
    * On Android it's the primary shared/external cache.
-   * It's not accesible on Android 10 unless the app enables legacy External Storage
-   * by adding `android:requestLegacyExternalStorage="true"` in the `application` tag
-   * in the `AndroidManifest.xml`.
-   * It's not accesible on Android 11 or newer.
    *
    * @since 1.0.0
    */
   ExternalCache = 'EXTERNAL_CACHE',
 
   /**
-   * The Library directory without cloud backup. Used in iOS
+   * The Library directory without cloud backup. Used in iOS.
    * On Android it's the directory holding application files.
    *
    * @since 1.0.0
@@ -92,7 +88,7 @@ export enum Directory {
 
   /**
    * A temporary directory for iOS.
-   * Om Android it's the directory holding the application cache.
+   * On Android it's the directory holding the application cache.
    *
    * @since 1.0.0
    */
@@ -473,6 +469,13 @@ export interface CopyResult {
   uri: string;
 }
 
+/**
+ * Callback for receiving chunks read from a file, or error if something went wrong.
+ * 
+ * @since 1.0.0
+ */
+export type ReadFileInChunksCallback = (chunkRead: ReadFileResult | null, err?: any) => void;
+
 export interface IFilesystem {
   /**
    * Read a file from disk
@@ -482,12 +485,14 @@ export interface IFilesystem {
   readFile(options: ReadFileOptions): Promise<ReadFileResult>;
 
   /**
-   * Read a file from disk, in chunks
-   * Native only (not available in web)
-   * 
+   * Read a file from disk, in chunks.
+   * Native only (not available in web).
+   * Use the callback to receive each read chunk.
+   * If empty chunk is returned, it means file has been completely read.
+   *
    * @since 1.0.0
    */
-  readFileInChunks(options: ReadFileInChunksOptions): Promise<ReadFileResult>;
+  readFileInChunks(options: ReadFileInChunksOptions, success: (chunkRead: ReadFileResult) => void, error: (error: PluginError) => void): Promise<void>;
 
   /**
    * Write a file to disk in the specified location on device

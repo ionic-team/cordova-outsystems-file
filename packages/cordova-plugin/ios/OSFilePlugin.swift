@@ -20,11 +20,11 @@ private extension OSFilePlugin {
     @objc(readFile:)
     func readFile(command: CDVInvokedUrlCommand) {
         guard let options: IONReadFileOptions = command.createModel() else {
-            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readEntireFile)))
+            return commandDelegate.handle(command, status: .failure(.invalidInput(method: .readFile)))
         }
 
         performSinglePathOperation(command, options) {
-            .readEntireFile(url: $0, encoding: options.encoding)
+            .readFile(url: $0, encoding: options.encoding)
         }
     }
 

@@ -14,7 +14,7 @@ object OSFileErrors {
 
     fun invalidInputMethod(methodName: String): ErrorInfo = ErrorInfo(
         code = formatErrorCode(5),
-        message = "The '$methodName' input. parameters aren't valid."
+        message = "The '$methodName' input parameters aren't valid."
     )
 
     fun invalidPath(path: String): ErrorInfo = ErrorInfo(

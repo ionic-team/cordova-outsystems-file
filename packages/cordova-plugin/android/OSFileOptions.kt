@@ -52,11 +52,8 @@ internal data class OSFileDoubleUri(
 internal fun JSONObject.getReadFileOptions(): OSFileReadOptions? {
     try {
         val uri = getSingleIONFILEUri() ?: return null
-        val encodingName = optString(INPUT_ENCODING)
-        return OSFileReadOptions(
-            uri = uri,
-            options = IONFILEReadOptions(IONFILEEncoding.fromEncodingName(encodingName))
-        )
+        val encoding = IONFILEEncoding.fromEncodingName(optString(INPUT_ENCODING))
+        return OSFileReadOptions(uri = uri, options = IONFILEReadOptions(encoding))
     } catch (ex: JSONException) {
         return null
     }
@@ -68,14 +65,11 @@ internal fun JSONObject.getReadFileOptions(): OSFileReadOptions? {
 internal fun JSONObject.getReadFileInChunksOptions(): OSFileReadInChunksOptions? {
     try {
         val uri = getSingleIONFILEUri() ?: return null
-        val encodingName = optString(INPUT_ENCODING)
+        val encoding = IONFILEEncoding.fromEncodingName(optString(INPUT_ENCODING))
         val chunkSize = getInt(INPUT_CHUNK_SIZE).takeIf { it > 0 } ?: return null
         return OSFileReadInChunksOptions(
             uri = uri,
-            options = IONFILEReadInChunksOptions(
-                IONFILEEncoding.fromEncodingName(encodingName),
-                chunkSize
-            )
+            options = IONFILEReadInChunksOptions(encoding = encoding, chunkSize = chunkSize)
         )
     } catch (ex: JSONException) {
         return null
@@ -90,13 +84,14 @@ internal fun JSONObject.getWriteFileOptions(append: Boolean): OSFileWriteOptions
         val uri = getSingleIONFILEUri() ?: return null
         val data = getString(INPUT_DATA) ?: return null
         val recursive = optBoolean(INPUT_RECURSIVE, true)
-        val encodingName = optString(INPUT_ENCODING)
+        val encoding = IONFILEEncoding.fromEncodingName(optString(INPUT_ENCODING))
+        val saveMode = if (append) IONFILESaveMode.APPEND else IONFILESaveMode.WRITE
         return OSFileWriteOptions(
             uri = uri,
             options = IONFILESaveOptions(
                 data = data,
-                encoding = IONFILEEncoding.fromEncodingName(encodingName),
-                mode = if (append) IONFILESaveMode.APPEND else IONFILESaveMode.WRITE,
+                encoding = encoding,
+                mode = saveMode,
                 createFileRecursive = recursive
             )
         )

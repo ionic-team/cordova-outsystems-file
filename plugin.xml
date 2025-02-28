@@ -25,6 +25,7 @@
            
         </config-file>
 
+        <source-file src="packages/cordova-plugin/android/CloneNewFile.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
         <source-file src="packages/cordova-plugin/android/OSFileCallbackContextExtensions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
         <source-file src="packages/cordova-plugin/android/OSFileErrors.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
         <source-file src="packages/cordova-plugin/android/OSFileMethod.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
@@ -45,6 +46,7 @@
             <preference name="SwiftVersion" value="5" />
         </config-file>
 
+        <source-file src="packages/cordova-plugin/ios/CloneNewFile.swift" />
         <source-file src="packages/cordova-plugin/ios/CordovaStructures+Extensions.swift" />
         <source-file src="packages/cordova-plugin/ios/OSDualPathFileOptions.swift" />
         <source-file src="packages/cordova-plugin/ios/OSFileConstants.swift" />

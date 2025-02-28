@@ -20,6 +20,7 @@ import org.apache.cordova.CordovaPlugin
 import org.apache.cordova.CordovaWebView
 import org.json.JSONArray
 import org.json.JSONObject
+import android.util.Log;
 
 /**
  * Cordova bridge, inherits from CordovaPlugin
@@ -51,6 +52,7 @@ class OSFilePlugin : CordovaPlugin() {
         args: JSONArray,
         callbackContext: CallbackContext
     ): Boolean {
+        Log.e("Clone", "entering execute on clone plugin")
         val optionsObject: JSONObject
         try {
             optionsObject = args.getJSONObject(0)

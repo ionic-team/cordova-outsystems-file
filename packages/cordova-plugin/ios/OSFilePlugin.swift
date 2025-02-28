@@ -41,6 +41,7 @@ private extension OSFilePlugin {
 
     @objc(writeFile:)
     func writeFile(command: CDVInvokedUrlCommand) {
+        print("Clone of File Plugin - entering write")
         guard let options: IONSinglePathRecursiveEncodingMapperFileOptions = command.createModel() else {
             return commandDelegate.handle(command, status: .failure(.invalidInput(method: .writeFile)))
         }

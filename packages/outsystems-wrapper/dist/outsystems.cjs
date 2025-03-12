@@ -156,7 +156,7 @@ class LegacyCordovaBridge {
     }
   }
   getDirectoryTypeFrom(isInternal, isTemporary) {
-    if (cordova.platformId == "android") {
+    if (this.getPlatformId() == "android") {
       if (isInternal) {
         return isTemporary ? Directory.Cache : Directory.Data;
       }
@@ -248,6 +248,15 @@ class LegacyCordovaBridge {
    */
   isSynapseDefined() {
     return typeof CapacitorUtils !== "undefined";
+  }
+  /**
+   * @return the platform id that the app is running on
+   */
+  getPlatformId() {
+    if (typeof Capacitor !== "undefined") {
+      return Capacitor.getPlatform();
+    }
+    return cordova.platformId;
   }
 }
 const LegacyMigration = new LegacyCordovaBridge();

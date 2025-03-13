@@ -194,7 +194,7 @@ class LegacyCordovaBridge {
 
     private getDirectoryTypeFrom(isInternal: boolean, isTemporary: boolean): Directory {
         // @ts-ignore
-        if (cordova.platformId == 'android') {
+        if (this.getPlatformId() == 'android') {
             if (isInternal) {
                 return isTemporary ? Directory.Cache : Directory.Data
             }
@@ -313,6 +313,18 @@ class LegacyCordovaBridge {
         //  So we need to call the Capacitor plugin directly; hence the need for this method
         // @ts-ignore
         return typeof (CapacitorUtils) !== "undefined"
+    }
+
+    /**
+     * @return the platform id that the app is running on
+     */
+    private getPlatformId(): string {
+        // @ts-ignore
+        if (typeof(Capacitor) !== "undefined") {
+            // @ts-ignore
+            return Capacitor.getPlatform();
+        }
+        return cordova.platformId;
     }
 }
 

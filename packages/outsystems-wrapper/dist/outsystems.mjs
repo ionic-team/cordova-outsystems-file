@@ -245,7 +245,7 @@ class LegacyCordovaBridge {
    * @returns true if synapse is defined, false otherwise
    */
   isSynapseDefined() {
-    return typeof CapacitorUtils !== "undefined";
+    return typeof CapacitorUtils !== "undefined" && typeof CapacitorUtils.Synapse !== "undefined" && typeof CapacitorUtils.Synapse.Filesystem !== "undefined";
   }
 }
 const LegacyMigration = new LegacyCordovaBridge();
@@ -911,7 +911,7 @@ class OSFilePlugin {
    * @returns true if synapse is defined, false otherwise
    */
   isSynapseDefined() {
-    return typeof CapacitorUtils !== "undefined";
+    return typeof CapacitorUtils !== "undefined" && typeof CapacitorUtils.Synapse !== "undefined" && typeof CapacitorUtils.Synapse.Filesystem !== "undefined";
   }
 }
 const Instance = new OSFilePlugin();

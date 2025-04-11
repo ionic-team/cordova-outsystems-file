@@ -247,7 +247,7 @@ class LegacyCordovaBridge {
    * @returns true if synapse is defined, false otherwise
    */
   isSynapseDefined() {
-    return typeof CapacitorUtils !== "undefined";
+    return typeof CapacitorUtils !== "undefined" && typeof CapacitorUtils.Synapse !== "undefined" && typeof CapacitorUtils.Synapse.Filesystem !== "undefined";
   }
   /**
    * @return the platform id that the app is running on
@@ -922,7 +922,7 @@ class OSFilePlugin {
    * @returns true if synapse is defined, false otherwise
    */
   isSynapseDefined() {
-    return typeof CapacitorUtils !== "undefined";
+    return typeof CapacitorUtils !== "undefined" && typeof CapacitorUtils.Synapse !== "undefined" && typeof CapacitorUtils.Synapse.Filesystem !== "undefined";
   }
 }
 const Instance = new OSFilePlugin();

@@ -250,7 +250,7 @@ class OSFilePlugin {
         //  But it works with cordova via Github repository
         //  So we need to call the Capacitor plugin directly; hence the need for this method
         // @ts-ignore
-        return typeof (CapacitorUtils) !== "undefined"
+        return typeof (CapacitorUtils) !== "undefined" && typeof (CapacitorUtils.Synapse) !== "undefined" && typeof (CapacitorUtils.Synapse.Filesystem) !== "undefined"
     }
 }
 export const Instance = new OSFilePlugin()

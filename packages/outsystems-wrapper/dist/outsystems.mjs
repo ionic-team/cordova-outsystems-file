@@ -25,7 +25,11 @@ class LegacyCordovaBridge {
       recursive: true
     };
     let getUriSuccess = (uri) => {
-      success(uri);
+      let uriToReturn = uri;
+      if (!uri.endsWith("/")) {
+        uriToReturn = uri + "/";
+      }
+      success(uriToReturn);
     };
     let mkDirSuccess = () => {
       this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary);

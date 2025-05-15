@@ -12,7 +12,11 @@ class LegacyCordovaBridge {
         }
 
         let getUriSuccess = (uri: string) => { 
-            success(uri)
+            let uriToReturn = uri;
+            if (!uri.endsWith('/')) {
+                uriToReturn = uri + '/'
+            }
+            success(uriToReturn)
         }
         let mkDirSuccess = () => {            
             this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary)
@@ -324,6 +328,7 @@ class LegacyCordovaBridge {
             // @ts-ignore
             return Capacitor.getPlatform();
         }
+        // @ts-ignore
         return cordova.platformId;
     }
 }

@@ -17,9 +17,7 @@ allprojects {
 }
 
 dependencies{
-
-    // TODO to be replaced with 1.0.0 once it's published on maven
-    implementation("io.ionic.libs:ionfilesystem-android:0.0.2@aar")
+    implementation("io.ionic.libs:ionfilesystem-android:1.0.0@aar")
 
     implementation("com.github.outsystems:oscore-android:1.2.0@aar")
     implementation("com.github.outsystems:oscordova-android:2.0.1@aar")

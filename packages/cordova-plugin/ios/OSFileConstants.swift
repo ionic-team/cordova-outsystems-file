@@ -1,4 +1,4 @@
-struct Constants {
+struct OSFileConstants {
     struct ConfigurationValue {
         static let endOfFile = ""
     }

@@ -25,8 +25,8 @@ enum OSFileError: Error {
 
     func toDictionary() -> [String: String] {
             [
-                Constants.ErrorKey.code: "OS-PLUG-FILE-\(String(format: "%04d", code))",
-                Constants.ErrorKey.message: description
+                OSFileConstants.ErrorKey.code: "OS-PLUG-FILE-\(String(format: "%04d", code))",
+                OSFileConstants.ErrorKey.message: description
             ]
         }
 }

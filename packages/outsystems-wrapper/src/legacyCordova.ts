@@ -18,7 +18,7 @@ class LegacyCordovaBridge {
             this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary)
         }
         
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options)
         } else {
@@ -38,7 +38,7 @@ class LegacyCordovaBridge {
             recursive: true
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
         } else {
@@ -72,7 +72,7 @@ class LegacyCordovaBridge {
             success(directories, files);
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.readdir(readDirSuccess, error, options)
         } else {
@@ -112,7 +112,7 @@ class LegacyCordovaBridge {
             this.readFile(readFileSuccess, error, path, undefined, undefined)
         }
         
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, {path: path})
         } else {
@@ -134,7 +134,7 @@ class LegacyCordovaBridge {
             success(res.uri)
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.getUri(getUriSuccess, error, options)
         } else {
@@ -154,7 +154,7 @@ class LegacyCordovaBridge {
             recursive: true
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
         } else {
@@ -172,7 +172,7 @@ class LegacyCordovaBridge {
           directory
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
         } else {
@@ -305,12 +305,16 @@ class LegacyCordovaBridge {
     }
     
     /**
-     * @returns true if synapse is defined, false otherwise
+     * @returns true if synapse is defined and can be used, false otherwise
      */
-    private isSynapseDefined(): boolean {
-        // currently Synapse doesn't work in MABS 12 builds with Capacitor npm package
-        //  But it works with cordova via Github repository
-        //  So we need to call the Capacitor plugin directly; hence the need for this method
+    private canUseSynapse(): boolean {
+        if (this.isCapacitorPluginDefined()) {
+            // The Capacitor and Cordova plugins have parameters in the wrong order
+            // (Cordova declares options after callbacks in bridge, Capacitor uses Promises which means options come before callbacks)
+            // This makes it impossible to use Synapse because the API signatures are not the same.
+            //  Will only use Synapse for Cordova, which is as it was setup before.
+            return false
+        }
         // @ts-ignore
         return typeof (CapacitorUtils) !== "undefined" && typeof (CapacitorUtils.Synapse) !== "undefined" && typeof (CapacitorUtils.Synapse.Filesystem) !== "undefined"
     }

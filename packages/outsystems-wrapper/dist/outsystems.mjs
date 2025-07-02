@@ -30,7 +30,7 @@ class LegacyCordovaBridge {
     let mkDirSuccess = () => {
       this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary);
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options);
     } else {
       Capacitor.Plugins.Filesystem.mkdir(options).then(mkDirSuccess).catch(error);
@@ -43,7 +43,7 @@ class LegacyCordovaBridge {
       directory,
       recursive: true
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.rmdir(options).then(success).catch(error);
@@ -69,7 +69,7 @@ class LegacyCordovaBridge {
       );
       success(directories, files);
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.readdir(readDirSuccess, error, options);
     } else {
       Capacitor.Plugins.Filesystem.readdir(options).then(readDirSuccess).catch(error);
@@ -99,7 +99,7 @@ class LegacyCordovaBridge {
       type = this.getMimeType(res.name);
       this.readFile(readFileSuccess, error, path, void 0, void 0);
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, { path });
     } else {
       Capacitor.Plugins.Filesystem.stat({ path }).then(statSuccess).catch(error);
@@ -114,7 +114,7 @@ class LegacyCordovaBridge {
     let getUriSuccess = (res) => {
       success(res.uri);
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.getUri(getUriSuccess, error, options);
     } else {
       Capacitor.Plugins.Filesystem.getUri(options).then(getUriSuccess).catch(error);
@@ -128,7 +128,7 @@ class LegacyCordovaBridge {
       directory,
       recursive: true
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.writeFile(options).then(success).catch(error);
@@ -140,7 +140,7 @@ class LegacyCordovaBridge {
       path: `${path}/${name}`,
       directory
     };
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.deleteFile(options).then(success).catch(error);
@@ -242,9 +242,12 @@ class LegacyCordovaBridge {
     return typeof Capacitor !== "undefined" && typeof Capacitor.Plugins !== "undefined" && typeof Capacitor.Plugins.Filesystem !== "undefined";
   }
   /**
-   * @returns true if synapse is defined, false otherwise
+   * @returns true if synapse is defined and can be used, false otherwise
    */
-  isSynapseDefined() {
+  canUseSynapse() {
+    if (this.isCapacitorPluginDefined()) {
+      return false;
+    }
     return typeof CapacitorUtils !== "undefined" && typeof CapacitorUtils.Synapse !== "undefined" && typeof CapacitorUtils.Synapse.Filesystem !== "undefined";
   }
   /**
@@ -782,7 +785,7 @@ class OSFilePlugin {
       this.webPlugin.readFile(options).then((file) => success(file)).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.readFile(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.readFile(options).then(success).catch(error);
@@ -793,7 +796,7 @@ class OSFilePlugin {
       this.webPlugin.writeFile(options).then((result) => success(result)).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.writeFile(options).then(success).catch(error);
@@ -804,7 +807,7 @@ class OSFilePlugin {
       this.webPlugin.appendFile(options).then(() => success()).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.appendFile(options).then(success).catch(error);
@@ -815,7 +818,7 @@ class OSFilePlugin {
       this.webPlugin.deleteFile(options).then(() => success()).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.deleteFile(options).then(success).catch(error);
@@ -826,7 +829,7 @@ class OSFilePlugin {
       this.webPlugin.mkdir(options).then(() => success()).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.mkdir(options).then(success).catch(error);
@@ -837,7 +840,7 @@ class OSFilePlugin {
       this.webPlugin.rmdir(options).then(() => success()).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.rmdir(options).then(success).catch(error);
@@ -848,7 +851,7 @@ class OSFilePlugin {
       this.webPlugin.readdir(options).then((res) => success(res)).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.readdir(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.readdir(options).then(success).catch(error);
@@ -859,7 +862,7 @@ class OSFilePlugin {
       this.webPlugin.getUri(options).then((res) => success(res)).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.getUri(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.getUri(options).then(success).catch(error);
@@ -870,7 +873,7 @@ class OSFilePlugin {
       this.webPlugin.stat(options).then((res) => success(res)).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.stat(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.stat(options).then(success).catch(error);
@@ -881,7 +884,7 @@ class OSFilePlugin {
       this.webPlugin.rename(options).then(() => success()).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.rename(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.rename(options).then(success).catch(error);
@@ -892,7 +895,7 @@ class OSFilePlugin {
       this.webPlugin.copy(options).then((res) => success(res)).catch((err) => error(err));
       return;
     }
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       CapacitorUtils.Synapse.Filesystem.copy(success, error, options);
     } else {
       Capacitor.Plugins.Filesystem.copy(options).then(success).catch(error);
@@ -902,7 +905,7 @@ class OSFilePlugin {
    * @returns true if should use the web implementation
    */
   shouldUseCordovaWebImplementation() {
-    if (this.isSynapseDefined()) {
+    if (this.canUseSynapse()) {
       return false;
     }
     if (this.isCapacitorPluginDefined()) {
@@ -917,9 +920,12 @@ class OSFilePlugin {
     return typeof Capacitor !== "undefined" && typeof Capacitor.Plugins !== "undefined" && typeof Capacitor.Plugins.Filesystem !== "undefined";
   }
   /**
-   * @returns true if synapse is defined, false otherwise
+   * @returns true if synapse is defined and can be used, false otherwise
    */
-  isSynapseDefined() {
+  canUseSynapse() {
+    if (this.isCapacitorPluginDefined()) {
+      return false;
+    }
     return typeof CapacitorUtils !== "undefined" && typeof CapacitorUtils.Synapse !== "undefined" && typeof CapacitorUtils.Synapse.Filesystem !== "undefined";
   }
 }

@@ -16,7 +16,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
         } else {
@@ -35,7 +35,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
         } else {
@@ -54,7 +54,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options)
         } else {
@@ -74,7 +74,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
         } else {
@@ -93,7 +93,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options)
         } else {
@@ -112,7 +112,7 @@ class OSFilePlugin {
             return
         }
         
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
         } else {
@@ -131,7 +131,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.readdir(success, error, options)
         } else {
@@ -150,7 +150,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.getUri(success, error, options)
         } else {
@@ -169,7 +169,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.stat(success, error, options)
         } else {
@@ -188,7 +188,7 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.rename(success, error, options)
         } else {
@@ -207,7 +207,7 @@ class OSFilePlugin {
             return
         }
         
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // @ts-ignore
             CapacitorUtils.Synapse.Filesystem.copy(success, error, options)
         } else {
@@ -222,7 +222,7 @@ class OSFilePlugin {
      * @returns true if should use the web implementation
      */
     private shouldUseCordovaWebImplementation(): boolean {
-        if (this.isSynapseDefined()) {
+        if (this.canUseSynapse()) {
             // synapse defined <-> native mobile app <-> should use cordova web implementation
             return false
         }
@@ -243,12 +243,16 @@ class OSFilePlugin {
     }
 
     /**
-     * @returns true if synapse is defined, false otherwise
+     * @returns true if synapse is defined and can be used, false otherwise
      */
-    private isSynapseDefined(): boolean {
-        // currently Synapse doesn't work in MABS 12 builds with Capacitor npm package
-        //  But it works with cordova via Github repository
-        //  So we need to call the Capacitor plugin directly; hence the need for this method
+    private canUseSynapse(): boolean {
+        if (this.isCapacitorPluginDefined()) {
+            // The Capacitor and Cordova plugins have parameters in the wrong order
+            // (Cordova declares options after callbacks in bridge, Capacitor uses Promises which means options come before callbacks)
+            // This makes it impossible to use Synapse because the API signatures are not the same.
+            //  Will only use Synapse for Cordova, which is as it was setup before.
+            return false
+        }
         // @ts-ignore
         return typeof (CapacitorUtils) !== "undefined" && typeof (CapacitorUtils.Synapse) !== "undefined" && typeof (CapacitorUtils.Synapse.Filesystem) !== "undefined"
     }

@@ -4,11 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.2]
 
-### 01-07-2025
+### 01-09-2025
 
-- Fix: Usage of Synapse in OutSystems wrapper.
+### Fixes
+
+- **iOS** Do not add trailing slash to files
+- Usage of Synapse in OutSystems wrapper.
 
 ## [1.0.1]
 

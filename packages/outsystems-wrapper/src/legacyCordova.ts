@@ -18,9 +18,9 @@ class LegacyCordovaBridge {
             this.getFileUri(getUriSuccess, error, name, path, isInternal, isTemporary)
         }
         
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.mkdir(mkDirSuccess, error, options)
+            cordova.plugins.Filesystem.mkdir(mkDirSuccess, error, options)
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.mkdir(options)
@@ -38,9 +38,9 @@ class LegacyCordovaBridge {
             recursive: true
         }
 
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
+            cordova.plugins.Filesystem.rmdir(success, error, options)
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.rmdir(options)
@@ -72,9 +72,9 @@ class LegacyCordovaBridge {
             success(directories, files);
         }
 
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readdir(readDirSuccess, error, options)
+            cordova.plugins.Filesystem.readdir(readDirSuccess, error, options)
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.readdir(options)
@@ -112,9 +112,9 @@ class LegacyCordovaBridge {
             this.readFile(readFileSuccess, error, path, undefined, undefined)
         }
         
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.stat(statSuccess, error, {path: path})
+            cordova.plugins.Filesystem.stat(statSuccess, error, {path: path})
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.stat({path: path})
@@ -134,9 +134,9 @@ class LegacyCordovaBridge {
             success(res.uri)
         }
 
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.getUri(getUriSuccess, error, options)
+            cordova.plugins.Filesystem.getUri(getUriSuccess, error, options)
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.getUri(options)
@@ -154,9 +154,9 @@ class LegacyCordovaBridge {
             recursive: true
         }
 
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
+            cordova.plugins.Filesystem.writeFile(success, error, options)
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.writeFile(options)
@@ -172,9 +172,9 @@ class LegacyCordovaBridge {
           directory
         }
 
-        if (this.canUseSynapse()) {
+        if (this.isNewCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
+            cordova.plugins.Filesystem.deleteFile(success, error, options)
         } else {
             // @ts-ignore
             Capacitor.Plugins.Filesystem.deleteFile(options)
@@ -225,7 +225,6 @@ class LegacyCordovaBridge {
         if (this.isCapacitorPluginDefined()) {
             // The Cordova and Capacitor plugins have different signatures when it comes to readFileInChunks
             //  due to how the frameworks handle returning results in callbacks.
-            //  So this means that this method can never fully benefit from Synapse.
             let readInChunksCapacitorCallback = (res: ReadFileResult | null, err?: any) => {
                 if (err) {
                     error(err)
@@ -237,7 +236,7 @@ class LegacyCordovaBridge {
             Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback)
         } else {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options)
+            cordova.plugins.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options)
         }
     }
 
@@ -305,18 +304,11 @@ class LegacyCordovaBridge {
     }
     
     /**
-     * @returns true if synapse is defined and can be used, false otherwise
+     * @returns true if file cordova plugin is available; false otherwise
      */
-    private canUseSynapse(): boolean {
-        if (this.isCapacitorPluginDefined()) {
-            // The Capacitor and Cordova plugins have parameters in the wrong order
-            // (Cordova declares options after callbacks in bridge, Capacitor uses Promises which means options come before callbacks)
-            // This makes it impossible to use Synapse because the API signatures are not the same.
-            //  Will only use Synapse for Cordova, which is as it was setup before.
-            return false
-        }
+    private isNewCordovaPluginDefined(): boolean {
         // @ts-ignore
-        return typeof (CapacitorUtils) !== "undefined" && typeof (CapacitorUtils.Synapse) !== "undefined" && typeof (CapacitorUtils.Synapse.Filesystem) !== "undefined"
+        return (typeof(cordova) !== "undefined" && typeof(cordova.plugins) !== "undefined" && typeof(cordova.plugins.Filesystem) !== "undefined")
     }
 
     /**

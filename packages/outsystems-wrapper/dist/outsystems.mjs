@@ -33,7 +33,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.mkdir(mkDirSuccess, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.mkdir(options).then(mkDirSuccess).catch(error);
+      window.CapacitorPlugins.Filesystem.mkdir(options).then(mkDirSuccess).catch(error);
     }
   }
   deleteDirectory(success, error, path, isInternal, isTemporary) {
@@ -46,7 +46,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.rmdir(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.rmdir(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.rmdir(options).then(success).catch(error);
     }
   }
   listDirectory(success, error, path, isInternal, isTemporary) {
@@ -72,7 +72,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.readdir(readDirSuccess, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.readdir(options).then(readDirSuccess).catch(error);
+      window.CapacitorPlugins.Filesystem.readdir(options).then(readDirSuccess).catch(error);
     }
   }
   getFileData(success, error, name, path, isInternal, isTemporary) {
@@ -102,7 +102,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.stat(statSuccess, error, { path });
     } else {
-      Capacitor.Plugins.Filesystem.stat({ path }).then(statSuccess).catch(error);
+      window.CapacitorPlugins.Filesystem.stat({ path }).then(statSuccess).catch(error);
     }
   }
   getFileUri(success, error, name, path, isInternal, isTemporary) {
@@ -117,7 +117,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.getUri(getUriSuccess, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.getUri(options).then(getUriSuccess).catch(error);
+      window.CapacitorPlugins.Filesystem.getUri(options).then(getUriSuccess).catch(error);
     }
   }
   writeFile(success, error, name, path, data, isInternal, isTemporary) {
@@ -131,7 +131,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.writeFile(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.writeFile(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.writeFile(options).then(success).catch(error);
     }
   }
   deleteFile(success, error, path, name, isInternal, isTemporary) {
@@ -143,7 +143,7 @@ class LegacyCordovaBridge {
     if (this.isNewCordovaPluginDefined()) {
       cordova.plugins.Filesystem.deleteFile(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.deleteFile(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.deleteFile(options).then(success).catch(error);
     }
   }
   getOptionalDirectoryTypeFrom(isInternal, isTemporary) {
@@ -187,7 +187,7 @@ class LegacyCordovaBridge {
           readInChunksSuccessCallback(res);
         }
       };
-      Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback);
+      window.CapacitorPlugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback);
     } else {
       cordova.plugins.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options);
     }
@@ -239,7 +239,7 @@ class LegacyCordovaBridge {
    * @returns true if filesystem capacitor plugin is available; false otherwise
    */
   isCapacitorPluginDefined() {
-    return typeof Capacitor !== "undefined" && typeof Capacitor.Plugins !== "undefined" && typeof Capacitor.Plugins.Filesystem !== "undefined";
+    return typeof window !== "undefined" && typeof window.CapacitorPlugins !== "undefined" && typeof window.CapacitorPlugins.Filesystem !== "undefined";
   }
   /**
    * @returns true if file cordova plugin is available; false otherwise
@@ -785,7 +785,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.readFile(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.readFile(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.readFile(options).then(success).catch(error);
     }
   }
   writeFile(success, error, options) {
@@ -796,7 +796,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.writeFile(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.writeFile(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.writeFile(options).then(success).catch(error);
     }
   }
   appendFile(success, error, options) {
@@ -807,7 +807,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.appendFile(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.appendFile(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.appendFile(options).then(success).catch(error);
     }
   }
   deleteFile(success, error, options) {
@@ -818,7 +818,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.deleteFile(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.deleteFile(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.deleteFile(options).then(success).catch(error);
     }
   }
   mkdir(success, error, options) {
@@ -829,7 +829,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.mkdir(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.mkdir(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.mkdir(options).then(success).catch(error);
     }
   }
   rmdir(success, error, options) {
@@ -840,7 +840,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.rmdir(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.rmdir(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.rmdir(options).then(success).catch(error);
     }
   }
   readdir(success, error, options) {
@@ -851,7 +851,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.readdir(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.readdir(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.readdir(options).then(success).catch(error);
     }
   }
   getUri(success, error, options) {
@@ -862,7 +862,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.getUri(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.getUri(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.getUri(options).then(success).catch(error);
     }
   }
   stat(success, error, options) {
@@ -873,7 +873,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.stat(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.stat(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.stat(options).then(success).catch(error);
     }
   }
   rename(success, error, options) {
@@ -884,7 +884,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.rename(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.rename(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.rename(options).then(success).catch(error);
     }
   }
   copy(success, error, options) {
@@ -895,7 +895,7 @@ class OSFilePlugin {
     if (this.isCordovaPluginDefined()) {
       cordova.plugins.Filesystem.copy(success, error, options);
     } else {
-      Capacitor.Plugins.Filesystem.copy(options).then(success).catch(error);
+      window.CapacitorPlugins.Filesystem.copy(options).then(success).catch(error);
     }
   }
   /**
@@ -908,7 +908,7 @@ class OSFilePlugin {
    * @returns true if filesystem capacitor plugin is available; false otherwise
    */
   isCapacitorPluginDefined() {
-    return typeof Capacitor !== "undefined" && typeof Capacitor.Plugins !== "undefined" && typeof Capacitor.Plugins.Filesystem !== "undefined";
+    return typeof window !== "undefined" && typeof window.CapacitorPlugins !== "undefined" && typeof window.CapacitorPlugins.Filesystem !== "undefined";
   }
   /**
    * @returns true if file cordova plugin is available; false otherwise

@@ -21,7 +21,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.readFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readFile(options)
+            window.CapacitorPlugins.Filesystem.readFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -40,7 +40,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.writeFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.writeFile(options)
+            window.CapacitorPlugins.Filesystem.writeFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -59,7 +59,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.appendFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.appendFile(options)
+            window.CapacitorPlugins.Filesystem.appendFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -79,7 +79,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.deleteFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.deleteFile(options)
+            window.CapacitorPlugins.Filesystem.deleteFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -98,7 +98,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.mkdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.mkdir(options)
+            window.CapacitorPlugins.Filesystem.mkdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -117,7 +117,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.rmdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.rmdir(options)
+            window.CapacitorPlugins.Filesystem.rmdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -136,7 +136,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.readdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readdir(options)
+            window.CapacitorPlugins.Filesystem.readdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -155,7 +155,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.getUri(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.getUri(options)
+            window.CapacitorPlugins.Filesystem.getUri(options)
                 .then(success)
                 .catch(error)
         }
@@ -174,7 +174,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.stat(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.stat(options)
+            window.CapacitorPlugins.Filesystem.stat(options)
                 .then(success)
                 .catch(error)
         }
@@ -193,7 +193,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.rename(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.rename(options)
+            window.CapacitorPlugins.Filesystem.rename(options)
                 .then(success)
                 .catch(error)
         }
@@ -212,7 +212,7 @@ class OSFilePlugin {
             cordova.plugins.Filesystem.copy(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.copy(options)
+            window.CapacitorPlugins.Filesystem.copy(options)
                 .then(success)
                 .catch(error)
         }
@@ -230,7 +230,7 @@ class OSFilePlugin {
      */
     private isCapacitorPluginDefined(): boolean {
         // @ts-ignore
-        return (typeof(Capacitor) !== "undefined" && typeof(Capacitor.Plugins) !== "undefined" && typeof(Capacitor.Plugins.Filesystem) !== "undefined")
+        return (typeof(window) !== "undefined" && typeof(window.CapacitorPlugins) !== "undefined" && typeof(window.CapacitorPlugins.Filesystem) !== "undefined")
     }
 
     /**

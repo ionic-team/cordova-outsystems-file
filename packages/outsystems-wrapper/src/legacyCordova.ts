@@ -23,7 +23,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.mkdir(mkDirSuccess, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.mkdir(options)
+            window.CapacitorPlugins.Filesystem.mkdir(options)
                 .then(mkDirSuccess)
                 .catch(error)
         }
@@ -43,7 +43,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.rmdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.rmdir(options)
+            window.CapacitorPlugins.Filesystem.rmdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -77,7 +77,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.readdir(readDirSuccess, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readdir(options)
+            window.CapacitorPlugins.Filesystem.readdir(options)
                 .then(readDirSuccess)
                 .catch(error)
         }
@@ -117,7 +117,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.stat(statSuccess, error, {path: path})
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.stat({path: path})
+            window.CapacitorPlugins.Filesystem.stat({path: path})
                 .then(statSuccess)
                 .catch(error)
         }
@@ -139,7 +139,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.getUri(getUriSuccess, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.getUri(options)
+            window.CapacitorPlugins.Filesystem.getUri(options)
                 .then(getUriSuccess)
                 .catch(error)
         }
@@ -159,7 +159,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.writeFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.writeFile(options)
+            window.CapacitorPlugins.Filesystem.writeFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -177,7 +177,7 @@ class LegacyCordovaBridge {
             cordova.plugins.Filesystem.deleteFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.deleteFile(options)
+            window.CapacitorPlugins.Filesystem.deleteFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -233,7 +233,7 @@ class LegacyCordovaBridge {
                 }
             }
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback)
+            window.CapacitorPlugins.Filesystem.readFileInChunks(options, readInChunksCapacitorCallback)
         } else {
             // @ts-ignore
             cordova.plugins.Filesystem.readFileInChunks(readInChunksSuccessCallback, error, options)
@@ -300,7 +300,7 @@ class LegacyCordovaBridge {
      */
     private isCapacitorPluginDefined(): boolean {
         // @ts-ignore
-        return (typeof(Capacitor) !== "undefined" && typeof(Capacitor.Plugins) !== "undefined" && typeof(Capacitor.Plugins.Filesystem) !== "undefined")
+        return (typeof(window) !== "undefined" && typeof(window.CapacitorPlugins) !== "undefined" && typeof(window.CapacitorPlugins.Filesystem) !== "undefined")
     }
     
     /**

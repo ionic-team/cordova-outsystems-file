@@ -20,7 +20,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **iOS** Do not add trailing slash to files
 - Usage of Synapse in OutSystems wrapper.
->>>>>>> main
 
 ## [1.0.1]
 

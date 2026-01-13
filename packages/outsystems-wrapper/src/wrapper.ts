@@ -16,12 +16,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readFile(success, error, options)
+            cordova.plugins.Filesystem.readFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readFile(options)
+            window.CapacitorPlugins.Filesystem.readFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -35,12 +35,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.writeFile(success, error, options)
+            cordova.plugins.Filesystem.writeFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.writeFile(options)
+            window.CapacitorPlugins.Filesystem.writeFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -54,12 +54,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.appendFile(success, error, options)
+            cordova.plugins.Filesystem.appendFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.appendFile(options)
+            window.CapacitorPlugins.Filesystem.appendFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -74,12 +74,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.deleteFile(success, error, options)
+            cordova.plugins.Filesystem.deleteFile(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.deleteFile(options)
+            window.CapacitorPlugins.Filesystem.deleteFile(options)
                 .then(success)
                 .catch(error)
         }
@@ -93,12 +93,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.mkdir(success, error, options)
+            cordova.plugins.Filesystem.mkdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.mkdir(options)
+            window.CapacitorPlugins.Filesystem.mkdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -112,12 +112,12 @@ class OSFilePlugin {
             return
         }
         
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.rmdir(success, error, options)
+            cordova.plugins.Filesystem.rmdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.rmdir(options)
+            window.CapacitorPlugins.Filesystem.rmdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -131,12 +131,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.readdir(success, error, options)
+            cordova.plugins.Filesystem.readdir(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.readdir(options)
+            window.CapacitorPlugins.Filesystem.readdir(options)
                 .then(success)
                 .catch(error)
         }
@@ -150,12 +150,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.getUri(success, error, options)
+            cordova.plugins.Filesystem.getUri(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.getUri(options)
+            window.CapacitorPlugins.Filesystem.getUri(options)
                 .then(success)
                 .catch(error)
         }
@@ -169,12 +169,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.stat(success, error, options)
+            cordova.plugins.Filesystem.stat(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.stat(options)
+            window.CapacitorPlugins.Filesystem.stat(options)
                 .then(success)
                 .catch(error)
         }
@@ -188,12 +188,12 @@ class OSFilePlugin {
             return
         }
 
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.rename(success, error, options)
+            cordova.plugins.Filesystem.rename(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.rename(options)
+            window.CapacitorPlugins.Filesystem.rename(options)
                 .then(success)
                 .catch(error)
         }
@@ -207,12 +207,12 @@ class OSFilePlugin {
             return
         }
         
-        if (this.isSynapseDefined()) {
+        if (this.isCordovaPluginDefined()) {
             // @ts-ignore
-            CapacitorUtils.Synapse.Filesystem.copy(success, error, options)
+            cordova.plugins.Filesystem.copy(success, error, options)
         } else {
             // @ts-ignore
-            Capacitor.Plugins.Filesystem.copy(options)
+            window.CapacitorPlugins.Filesystem.copy(options)
                 .then(success)
                 .catch(error)
         }
@@ -222,16 +222,7 @@ class OSFilePlugin {
      * @returns true if should use the web implementation
      */
     private shouldUseCordovaWebImplementation(): boolean {
-        if (this.isSynapseDefined()) {
-            // synapse defined <-> native mobile app <-> should use cordova web implementation
-            return false
-        }
-        if (this.isCapacitorPluginDefined()) {
-            // capacitor plugin defined, so it means we have:
-            // - a native mobile app where capacitor plugin comes without Synapse (MABS 12 issue) -> use capacitor plugin
-            return false
-        }
-        return true
+        return !(this.isCapacitorPluginDefined() || this.isCordovaPluginDefined())
     }
 
     /**
@@ -239,18 +230,15 @@ class OSFilePlugin {
      */
     private isCapacitorPluginDefined(): boolean {
         // @ts-ignore
-        return (typeof(Capacitor) !== "undefined" && typeof(Capacitor.Plugins) !== "undefined" && typeof(Capacitor.Plugins.Filesystem) !== "undefined")
+        return (typeof(window) !== "undefined" && typeof(window.CapacitorPlugins) !== "undefined" && typeof(window.CapacitorPlugins.Filesystem) !== "undefined")
     }
 
     /**
-     * @returns true if synapse is defined, false otherwise
+     * @returns true if file cordova plugin is available; false otherwise
      */
-    private isSynapseDefined(): boolean {
-        // currently Synapse doesn't work in MABS 12 builds with Capacitor npm package
-        //  But it works with cordova via Github repository
-        //  So we need to call the Capacitor plugin directly; hence the need for this method
+    private isCordovaPluginDefined(): boolean {
         // @ts-ignore
-        return typeof (CapacitorUtils) !== "undefined" && typeof (CapacitorUtils.Synapse) !== "undefined" && typeof (CapacitorUtils.Synapse.Filesystem) !== "undefined"
+        return (typeof(cordova) !== "undefined" && typeof(cordova.plugins) !== "undefined" && typeof(cordova.plugins.Filesystem) !== "undefined")
     }
 }
 export const Instance = new OSFilePlugin()

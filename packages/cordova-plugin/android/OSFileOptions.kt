@@ -1,5 +1,6 @@
 package com.outsystems.plugins.file
 
+import io.ionic.libs.ionfilesystemlib.model.IONFILEConstants
 import io.ionic.libs.ionfilesystemlib.model.IONFILEEncoding
 import io.ionic.libs.ionfilesystemlib.model.IONFILEFolderType
 import io.ionic.libs.ionfilesystemlib.model.IONFILEReadInChunksOptions
@@ -13,6 +14,8 @@ import org.json.JSONObject
 private const val INPUT_PATH = "path"
 private const val INPUT_DIRECTORY = "directory"
 private const val INPUT_ENCODING = "encoding"
+private const val INPUT_OFFSET = "offset"
+private const val INPUT_LENGTH = "length"
 private const val INPUT_CHUNK_SIZE = "chunkSize"
 private const val INPUT_DATA = "data"
 private const val INPUT_RECURSIVE = "recursive"
@@ -53,7 +56,15 @@ internal fun JSONObject.getReadFileOptions(): OSFileReadOptions? {
     try {
         val uri = getSingleIONFILEUri() ?: return null
         val encoding = IONFILEEncoding.fromEncodingName(optString(INPUT_ENCODING))
-        return OSFileReadOptions(uri = uri, options = IONFILEReadOptions(encoding))
+        val offsetAndLength = getOffsetAndLength()
+        return OSFileReadOptions(
+            uri = uri,
+            options = IONFILEReadOptions(
+                encoding,
+                offset = offsetAndLength.first,
+                length = offsetAndLength.second
+            )
+        )
     } catch (ex: JSONException) {
         return null
     }
@@ -67,9 +78,16 @@ internal fun JSONObject.getReadFileInChunksOptions(): OSFileReadInChunksOptions?
         val uri = getSingleIONFILEUri() ?: return null
         val encoding = IONFILEEncoding.fromEncodingName(optString(INPUT_ENCODING))
         val chunkSize = getInt(INPUT_CHUNK_SIZE).takeIf { it > 0 } ?: return null
+        val offsetAndLength = getOffsetAndLength()
         return OSFileReadInChunksOptions(
             uri = uri,
-            options = IONFILEReadInChunksOptions(encoding = encoding, chunkSize = chunkSize)
+            options =
+                IONFILEReadInChunksOptions(
+                    encoding = encoding,
+                    chunkSize = chunkSize,
+                    offset = offsetAndLength.first,
+                    length = offsetAndLength.second
+                )
         )
     } catch (ex: JSONException) {
         return null
@@ -145,6 +163,11 @@ internal fun JSONObject.getSingleIONFILEUri(): IONFILEUri.Unresolved? {
         return null
     }
 }
+
+private fun JSONObject.getOffsetAndLength(): Pair<Int, Int> = Pair(
+    optInt(INPUT_OFFSET, 0).takeIf { it >= 0 } ?: 0,
+    optInt(INPUT_LENGTH, -1).takeIf { it > 0 } ?: IONFILEConstants.LENGTH_READ_TIL_EOF
+)
 
 private fun unresolvedUri(path: String, directoryAlias: String?) = IONFILEUri.Unresolved(
     parentFolder = IONFILEFolderType.fromStringAlias(directoryAlias),

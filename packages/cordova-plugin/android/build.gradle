@@ -18,7 +18,7 @@ allprojects {
 
 dependencies{
     //implementation("io.ionic.libs:ionfilesystem-android:1.0.0@aar")
-    implementation(files('IONFilesystemLib-debug.aar'))
+    implementation(files('libs/IONFilesystemLib-debug.aar'))
 
     implementation("com.github.outsystems:oscore-android:1.2.0@aar")
     implementation("com.github.outsystems:oscordova-android:2.0.1@aar")

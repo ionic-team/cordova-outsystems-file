@@ -56,13 +56,15 @@
         <source-file src="packages/cordova-plugin/ios/IONFILEStructures+Converters.swift" />
         <source-file src="packages/cordova-plugin/ios/OSSinglePathFileOptions.swift" />
     
-        <podspec>
+        <framework src="packages/cordova-plugin/ios/IONFilesystemLib.xcframework" embed="true" custom="true" />
+
+        <!--<podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
                 <pod name="IONFilesystemLib" spec="1.0.1" />
             </pods>
-        </podspec> 
+        </podspec>-->
     </platform>
 </plugin>

@@ -19,9 +19,6 @@ allprojects {
 dependencies{
     implementation("io.ionic.libs:ionfilesystem-android:1.0.0@aar")
 
-    implementation("com.github.outsystems:oscore-android:1.2.0@aar")
-    implementation("com.github.outsystems:oscordova-android:2.0.1@aar")
-
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 

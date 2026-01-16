@@ -19,11 +19,11 @@ class OSFileOperationExecutor {
             var resultData: PluginResultData?
 
             switch operation {
-            case .readFile(let url, let encoding):
-                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding).textValue
+            case .readFile(let url, let encoding, let offset, let length):
+                let fullData = try service.readEntireFile(atURL: url, withEncoding: encoding, andOffset: offset, andLength: length).textValue
                 resultData = [OSFileConstants.ResultDataKey.data: fullData]
-            case .readFileInChunks(let url, let encoding, let chunkSize):
-                try processFileInChunks(at: url, withEncoding: encoding, chunkSize: chunkSize, for: operation, command)
+            case .readFileInChunks(let url, let encoding, let chunkSize, let offset, let length):
+                try processFileInChunks(at: url, withEncoding: encoding, chunkSize: chunkSize, offset: offset, length: length, for: operation, command)
                 return
             case .write(let url, let encodingMapper, let recursive):
                 try service.saveFile(atURL: url, withEncodingAndData: encodingMapper, includeIntermediateDirectories: recursive)
@@ -61,9 +61,9 @@ class OSFileOperationExecutor {
 }
 
 private extension OSFileOperationExecutor {
-    func processFileInChunks(at url: URL, withEncoding encoding: IONFILEEncoding, chunkSize: Int, for operation: OSFileOperation, _ command: CDVInvokedUrlCommand) throws {
+    func processFileInChunks(at url: URL, withEncoding encoding: IONFILEEncoding, chunkSize: Int, offset: Int, length: Int, for operation: OSFileOperation, _ command: CDVInvokedUrlCommand) throws {
         let chunkSizeToUse = chunkSizeToUse(basedOn: chunkSize, and: encoding)
-        try service.readFileInChunks(atURL: url, withEncoding: encoding, andChunkSize: chunkSizeToUse)
+        try service.readFileInChunks(atURL: url, withEncoding: encoding, andChunkSize: chunkSizeToUse, andOffset: offset, andLength: length)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -87,8 +87,8 @@ private extension OSFileOperationExecutor {
         var path = ""
         var method: OSFileMethod = OSFileMethod.getUri
         switch operation {
-        case .readFile(let url, _): path = url.absoluteString; method = .readFile
-        case .readFileInChunks(let url, _, _): path = url.absoluteString; method = .readFileInChunks
+        case .readFile(let url, _, _, _): path = url.absoluteString; method = .readFile
+        case .readFileInChunks(let url, _, _, _, _): path = url.absoluteString; method = .readFileInChunks
         case .write(let url, _, _): path = url.absoluteString; method = .writeFile
         case .append(let url, _, _): path = url.absoluteString; method = .appendFile
         case .delete(let url): path = url.absoluteString; method = .deleteFile

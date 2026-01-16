@@ -8,7 +8,7 @@
   <p align="center">
     OutSystems' Cordova Plugin for File Management.
     <br />
-    <a href="https://github.com/ionic-team/repo_name">🔌 Capacitor Plugin</a>
+    <a href="https://github.com/ionic-team/capacitor-filesystem">🔌 Capacitor Plugin</a>
     ·
     <a href="https://github.com/ionic-team/ion-android-filesystem">🤖 Android Library</a>
     ·

@@ -41,9 +41,13 @@ class IONSinglePathRecursiveFileOptions: OSSinglePathFileOptions {
 
 class IONReadFileOptions: OSSinglePathFileOptions {
     let encoding: IONFILEEncoding
+    let offset: Int
+    let length: Int
 
     enum CodingKeys: CodingKey {
         case encoding
+        case offset
+        case length
     }
 
     required init(from decoder: any Decoder) throws {
@@ -51,6 +55,16 @@ class IONReadFileOptions: OSSinglePathFileOptions {
 
         let encodingText = try container.decodeIfPresent(String.self, forKey: .encoding)
         encoding = .create(from: encodingText)
+        if let decodedOffset = try container.decodeIfPresent(Int.self, forKey: .offset) {
+            offset = decodedOffset
+        } else {
+            offset = 0
+        }
+        if let decodedLength = try container.decodeIfPresent(Int.self, forKey: .length) {
+            length = decodedLength
+        } else {
+            length = -1
+        }
 
         try super.init(from: decoder)
     }

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.outsystems.plugins.filesystem" version="1.0.3" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="com.outsystems.plugins.filesystem" version="1.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>OSFilePlugin</name>
     <description>OutSystems' cordova geolocation plugin</description>
     <author>OutSystems Inc</author>
@@ -60,8 +60,8 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="IONFilesystemLib" spec="1.0.1" />
+                <pod name="IONFilesystemLib" spec="1.1.0" />
             </pods>
-        </podspec> 
+        </podspec>
     </platform>
 </plugin>

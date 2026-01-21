@@ -24,7 +24,7 @@ private extension OSFilePlugin {
         }
 
         performSinglePathOperation(command, options) {
-            .readFile(url: $0, encoding: options.encoding)
+            .readFile(url: $0, encoding: options.encoding, offset: options.offset, length: options.length)
         }
     }
 
@@ -35,7 +35,7 @@ private extension OSFilePlugin {
         }
 
         performSinglePathOperation(command, options) {
-            .readFileInChunks(url: $0, encoding: options.encoding, chunkSize: options.chunkSize)
+            .readFileInChunks(url: $0, encoding: options.encoding, chunkSize: options.chunkSize, offset: options.offset, length: options.length)
         }
     }
 

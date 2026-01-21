@@ -199,7 +199,8 @@ export interface ReadFileOptions {
      */
     encoding?: Encoding;
     /**
-     * The offset to start reading the file from, in bytes. Can be used in conjunction with length to partially read files.
+     * The offset to start reading the file from, in bytes.
+     * Can be used in conjunction with length to partially read files.
      *
      * @since 1.1.0
      * @default 0

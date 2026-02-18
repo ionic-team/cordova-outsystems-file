@@ -60,7 +60,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="IONFilesystemLib" spec="1.1.0" />
+                <pod name="IONFilesystemLib" spec="1.1.1" />
             </pods>
         </podspec>
     </platform>

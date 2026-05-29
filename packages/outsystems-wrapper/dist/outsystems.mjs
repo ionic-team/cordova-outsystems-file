@@ -359,7 +359,7 @@ const _FilesystemWeb = class _FilesystemWeb {
   /**
    * Not available in web
    */
-  readFileInChunks(options, success, error) {
+  readFileInChunks(_options, _success, _error) {
     throw new Error("Method not implemented.");
   }
   /**

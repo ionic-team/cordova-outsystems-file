@@ -154,7 +154,7 @@ export class FilesystemWeb implements IFilesystem {
   /**
    * Not available in web
    */
-  readFileInChunks(options: ReadFileInChunksOptions, success: (chunkRead: ReadFileResult) => void, error: (error: PluginError) => void): Promise<void> {
+  readFileInChunks(_options: ReadFileInChunksOptions, _success: (chunkRead: ReadFileResult) => void, _error: (error: PluginError) => void): Promise<void> {
     throw new Error('Method not implemented.');
   }
 

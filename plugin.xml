@@ -1,66 +1,59 @@
-<?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.outsystems.plugins.filesystem" version="1.1.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin id="com.outsystems.plugins.filesystem" version="1.1.2" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>OSFilePlugin</name>
     <description>OutSystems' cordova geolocation plugin</description>
     <author>OutSystems Inc</author>
-
     <js-module name="Filesystem" src="packages/cordova-plugin/dist/plugin.js">
-        <clobbers target="cordova.plugins.Filesystem" />
+        <clobbers target="cordova.plugins.Filesystem"/>
     </js-module>
     <platform name="android">
-        <hook type="before_plugin_install" src="packages/cordova-plugin/android/hooks/installDependencies.js" />
-        <hook type="after_prepare" src="packages/cordova-plugin/android/hooks/androidSetRequestLegacyStorage.js" />
-        
+        <hook type="before_plugin_install" src="packages/cordova-plugin/android/hooks/installDependencies.js"/>
+        <hook type="after_prepare" src="packages/cordova-plugin/android/hooks/androidSetRequestLegacyStorage.js"/>
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="OSFilePlugin">
-                <param name="android-package" value="com.outsystems.plugins.file.OSFilePlugin" />
-                <param name="onload" value="true" />
+                <param name="android-package" value="com.outsystems.plugins.file.OSFilePlugin"/>
+                <param name="onload" value="true"/>
             </feature>
-            <preference name="GradlePluginKotlinEnabled" value="true" />
-            <preference name="GradlePluginKotlinCodeStyle" value="official" />
+            <preference name="GradlePluginKotlinEnabled" value="true"/>
+            <preference name="GradlePluginKotlinCodeStyle" value="official"/>
             <preference name="AndroidXEnabled" value="true"/>
         </config-file>
-        
         <config-file target="AndroidManifest.xml" parent="/*">
-            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
         </config-file>
-
-        <source-file src="packages/cordova-plugin/android/OSFileCallbackContextExtensions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <source-file src="packages/cordova-plugin/android/OSFileErrors.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <source-file src="packages/cordova-plugin/android/OSFileMethod.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <source-file src="packages/cordova-plugin/android/OSFileOptions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <source-file src="packages/cordova-plugin/android/OSFilePermissionsHelper.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <source-file src="packages/cordova-plugin/android/OSFilePlugin.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <source-file src="packages/cordova-plugin/android/OSFileResults.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file" />
-        <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference" />
-        
+        <source-file src="packages/cordova-plugin/android/OSFileCallbackContextExtensions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <source-file src="packages/cordova-plugin/android/OSFileErrors.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <source-file src="packages/cordova-plugin/android/OSFileMethod.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <source-file src="packages/cordova-plugin/android/OSFileOptions.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <source-file src="packages/cordova-plugin/android/OSFilePermissionsHelper.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <source-file src="packages/cordova-plugin/android/OSFilePlugin.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <source-file src="packages/cordova-plugin/android/OSFileResults.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
+        <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference"/>
     </platform>
-   <platform name="ios">
+    <platform name="ios">
         <config-file parent="/*" target="config.xml">
             <feature name="OSFilePlugin">
-                <param name="ios-package" value="OSFilePlugin" />
+                <param name="ios-package" value="OSFilePlugin"/>
             </feature>
-            <preference name="SwiftVersion" value="5" />
+            <preference name="SwiftVersion" value="5"/>
         </config-file>
-
-        <source-file src="packages/cordova-plugin/ios/CordovaStructures+Extensions.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSDualPathFileOptions.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSFileConstants.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSFileError.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSFileLocationResolver.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSFileOperation.swift" />     
-        <source-file src="packages/cordova-plugin/ios/OSFileOperationExecutor.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSFilePlugin.swift" />
-        <source-file src="packages/cordova-plugin/ios/IONFILEStructures+Converters.swift" />
-        <source-file src="packages/cordova-plugin/ios/OSSinglePathFileOptions.swift" />
-    
+        <source-file src="packages/cordova-plugin/ios/CordovaStructures+Extensions.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSDualPathFileOptions.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSFileConstants.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSFileError.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSFileLocationResolver.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSFileOperation.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSFileOperationExecutor.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSFilePlugin.swift"/>
+        <source-file src="packages/cordova-plugin/ios/IONFILEStructures+Converters.swift"/>
+        <source-file src="packages/cordova-plugin/ios/OSSinglePathFileOptions.swift"/>
         <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="IONFilesystemLib" spec="1.1.2" />
+                <pod name="IONFilesystemLib" spec="1.1.2"/>
             </pods>
         </podspec>
     </platform>

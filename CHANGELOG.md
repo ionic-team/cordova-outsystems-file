@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.1...1.1.2) (2026-07-14)
+
+
+### Bug Fixes
+
+* **android:** Remove kapt and custom maven repo ([#24](https://github.com/ionic-team/cordova-outsystems-file/issues/24)) ([87c6d64](https://github.com/ionic-team/cordova-outsystems-file/commit/87c6d643cecf51e9b1e720f79e18fb8a4a5bbc8b))
+
 ## [1.1.1]
 
 ### Fixes

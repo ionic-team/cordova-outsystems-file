@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.2...1.1.3) (2026-09-08)
+
+
+### Bug Fixes
+
+* **ios:** raw file paths without a scheme couldn't be accessed ([f8fc7cc](https://github.com/ionic-team/cordova-outsystems-file/commit/f8fc7ccabe6f6914933e2d62b7ee01a53e81d77a))
+
 ## [1.1.2](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.1...1.1.2) (2026-07-14)
 
 

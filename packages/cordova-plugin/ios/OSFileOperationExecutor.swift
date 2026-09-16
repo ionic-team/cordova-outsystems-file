@@ -51,7 +51,7 @@ class OSFileOperationExecutor {
                 resultData = [OSFileConstants.ResultDataKey.uri: destination.absoluteString]
             }
 
-            status = .success(data: resultData)
+            status = .success(shouldKeepCallback: false, data: resultData)
         } catch {
             status = .failure(mapError(error, for: operation))
         }
@@ -67,7 +67,7 @@ private extension OSFileOperationExecutor {
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
-                    self.commandDelegate.handle(command, status: .success(data: [OSFileConstants.ResultDataKey.data: OSFileConstants.ConfigurationValue.endOfFile]))
+                    self.commandDelegate.handle(command, status: .success(shouldKeepCallback: false, data: [OSFileConstants.ResultDataKey.data: OSFileConstants.ConfigurationValue.endOfFile]))
                 case .failure(let error):
                     self.commandDelegate.handle(command, status: .failure(self.mapError(error, for: operation)))
                 }

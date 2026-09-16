@@ -11,7 +11,11 @@ enum PluginStatus {
         switch self {
         case .success(let shouldKeepCallback, let data):
             keepCallback = shouldKeepCallback
-            result = CDVPluginResult(status: .ok, messageAs: data)
+            if let data {
+                result = CDVPluginResult(status: .ok, messageAs: data)
+            } else {
+                result = CDVPluginResult(status: .ok)
+            }
         case .failure(let error):
             result = CDVPluginResult(status: .error, messageAs: error.toDictionary())
         }

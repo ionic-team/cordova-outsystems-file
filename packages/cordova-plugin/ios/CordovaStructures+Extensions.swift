@@ -1,3 +1,7 @@
+#if canImport(Cordova)
+import Cordova
+#endif
+
 typealias PluginResultData = [String: Any]
 
 enum PluginStatus {

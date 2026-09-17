@@ -1,3 +1,7 @@
+#if canImport(Cordova)
+import Cordova
+#endif
+
 import Combine
 import Foundation
 import IONFilesystemLib

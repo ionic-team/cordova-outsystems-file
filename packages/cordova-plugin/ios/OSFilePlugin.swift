@@ -1,3 +1,7 @@
+#if canImport(Cordova)
+import Cordova
+#endif
+
 import IONFilesystemLib
 
 typealias FileService = any IONFILEDirectoryManager & IONFILEFileManager

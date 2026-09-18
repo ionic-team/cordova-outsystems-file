@@ -1,29 +1,38 @@
+#if canImport(Cordova)
+import Cordova
+#endif
+
 typealias PluginResultData = [String: Any]
 
 enum PluginStatus {
-    case success(shouldKeepCallback: Bool = false, data: PluginResultData?)
+    case success(shouldKeepCallback: Bool, data: PluginResultData?)
     case failure(OSFileError)
 
-    var pluginResult: CDVPluginResult {
+    var pluginResult: CDVPluginResult? {
         var keepCallback = false
-        let result: CDVPluginResult
+        let result: CDVPluginResult?
 
         switch self {
         case .success(let shouldKeepCallback, let data):
             keepCallback = shouldKeepCallback
-            result = CDVPluginResult(status: .ok, messageAs: data)
+            if let data {
+                result = CDVPluginResult(status: .ok, messageAs: data)
+            } else {
+                result = CDVPluginResult(status: .ok)
+            }
         case .failure(let error):
             result = CDVPluginResult(status: .error, messageAs: error.toDictionary())
         }
-        result.keepCallback = NSNumber(booleanLiteral: keepCallback)
-        
+        result?.keepCallback = NSNumber(booleanLiteral: keepCallback)
+
         return result
     }
 }
 
 extension CDVCommandDelegate {
     func handle(_ command: CDVInvokedUrlCommand, status: PluginStatus) {
-        send(status.pluginResult, callbackId: command.callbackId)
+        guard let result = status.pluginResult else { return }
+        send(result, callbackId: command.callbackId)
     }
 }
 

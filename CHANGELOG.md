@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.3...1.1.4) (2026-09-18)
+
+
+### Bug Fixes
+
+* Cordova iOS 8 / MABS 13 compatibility and SPM support ([#26](https://github.com/ionic-team/cordova-outsystems-file/issues/26)) ([7bfbaf2](https://github.com/ionic-team/cordova-outsystems-file/commit/7bfbaf279c16558e07b51f92b79a97f5123eeaa9))
+
 ## [1.1.3](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.2...1.1.3) (2026-09-08)
 
 

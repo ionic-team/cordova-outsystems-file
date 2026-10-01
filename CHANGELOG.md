@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.5...1.1.6) (2026-10-01)
+
+
+### Bug Fixes
+
+* **android:** contain Directory-scoped paths to their target directory ([#28](https://github.com/ionic-team/cordova-outsystems-file/issues/28)) ([7fced52](https://github.com/ionic-team/cordova-outsystems-file/commit/7fced52418c4c3b76b97e25d5021e47de7879c2a))
+
 ## [1.1.5](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.4...1.1.5) (2026-10-01)
 
 

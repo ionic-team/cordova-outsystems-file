@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.4...1.1.5) (2026-10-01)
+
+
+### Bug Fixes
+
+* **android:** remove q dependency from before_plugin_install hook ([#27](https://github.com/ionic-team/cordova-outsystems-file/issues/27)) ([8dacb4f](https://github.com/ionic-team/cordova-outsystems-file/commit/8dacb4f89f08a8e1b69a29c24db66e938054ff16))
+
 ## [1.1.4](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.3...1.1.4) (2026-09-18)
 
 

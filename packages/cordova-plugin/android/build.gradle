@@ -10,7 +10,7 @@ buildscript {
 }
 
 dependencies{
-    implementation("io.ionic.libs:ionfilesystem-android:1.1.1@aar")
+    implementation("io.ionic.libs:ionfilesystem-android:99.0.0-rmet5348@aar")
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
@@ -33,4 +33,9 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
+}
+
+// RMET-5348 TEST ONLY - do not merge: resolve the locally built native library bundled in this plugin (local-maven-ionfilesystem-android)
+repositories {
+    maven { url "${rootDir}/app/src/main/local-maven-ionfilesystem-android" }
 }

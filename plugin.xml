@@ -29,6 +29,7 @@
         <source-file src="packages/cordova-plugin/android/OSFilePlugin.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
         <source-file src="packages/cordova-plugin/android/OSFileResults.kt" target-dir="app/src/main/kotlin/com/outsystems/plugins/file"/>
         <framework src="packages/cordova-plugin/android/build.gradle" custom="true" type="gradleReference"/>
+        <resource-file src="local-maven-ionfilesystem-android" target="local-maven-ionfilesystem-android"/>
     </platform>
     <platform name="ios" package="swift">
         <config-file parent="/*" target="config.xml">

@@ -1,3 +1,10 @@
+## [1.1.8](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.7...1.1.8) (2026-11-03)
+
+
+### Bug Fixes
+
+* **ios:** bump IONFilesystemLib to 2.0.1 and propagate getFileURL errors ([#30](https://github.com/ionic-team/cordova-outsystems-file/issues/30)) ([e9dbe8b](https://github.com/ionic-team/cordova-outsystems-file/commit/e9dbe8b995424de43e3313b34c1c004711102b50))
+
 ## [1.1.7](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.6...1.1.7) (2026-10-15)
 
 ## [1.1.6](https://github.com/ionic-team/cordova-outsystems-file/compare/1.1.5...1.1.6) (2026-10-01)
